@@ -60,7 +60,6 @@ Campus Connect takes advantage of GitHub Flow to streamline collaboration across
 Info about branches, GitHub issues, and pull requests go here.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 
 ## Resources
 The following resources were used for every part of Campus Connect, including the GitHub page and data:
 * [Best-README-Template (github.com)](https://github.com/othneildrew/Best-README-Template/tree/master)
