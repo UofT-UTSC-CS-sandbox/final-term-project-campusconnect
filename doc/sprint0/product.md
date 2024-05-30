@@ -53,9 +53,9 @@ Although Piazza is great and flexible, allowing students to ask questions anytim
 Of the sample students surveyed, 94.8% indicated interest in the services we plan to offer. For tutoring specifically, 72.2% showed interest, and 60% indicated they would be willing to pay hourly for the tutoring services.
 
 #### Q4: What does "DONE" means to your Team 
- * The whole team needs to agree as to what ”done” means for the features you will
-   implement.
- * Definition of done applies to all userstories
+ * Frontend should be complete and interactive
+ * Backend and database should be integrated
+ * Unit test for the component(s) should be completed
 
 ----
 
