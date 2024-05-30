@@ -5,18 +5,18 @@
 
 #### Q1: What are you planning to build?
 
-YOUR ANSWER GOES HERE ...
+Campus Connect is an innovative educational web application designed to provide university students with personalized and high-quality tutoring services specifically tailored to their course syllabus. This platform combats several significant challenges faced by students, particularly those in their first and second year. Many first and second year students often lack sufficient personalized support and guidance for their academic studies. Traditional online tutoring services tend to be expensive and may not align well with the unique curriculum of individual universities. Furthermore, generic online resources such as YouTube often lack the specificity and direct relevance required for effective learning.
 
- * Short (2-5 min' read)
- * Start with a single sentence, high-level description of the product.
- * Be clear - Describe the problem you are solving in simple terms.
- * Be concrete. For example:
-    * What are you planning to build? Is it a website, mobile app,
-   browser extension, command-line app, etc.?      
-    * When describing the problem/need, give concrete examples of common use cases.
- * Focus on *what* your product does, and avoid discussing *how* you're going to implement it.      
-   For example: This is not the time or the place to talk about which programming language and/or framework you are planning to use.
- * **Feel free (and very much encouraged) to include useful diagrams, mock-ups and/or links**.
+Moreover, students typically have limited access to academic help, being confined to scheduled office hours with professors or TAs, which require them to be available at specific times and often physically present on campus. Classroom forums like Piazza offer a place to ask questions, but these platforms are not catered to individual needs and learning styles and do not facilitate live, interactive conversations. Campus Connect addresses these issues by providing a more accessible, flexible, and tailored solution.
+
+The platform connects students with certified upper-year peers who have excelled in the courses they tutor or have previous teaching experience in that course. The selection process for tutors is based on various metrics, such as their grades in the specific course and the subsequent course, ensuring they have a deep understanding of the subject matter, their previous teaching experience, and an AI-powered interview that assesses their communication skills.
+
+Tutors can set their availability and select the courses they are qualified to teach, giving them the flexibility to work around their schedules. When students need help, they can find tutors with matching availability, language preferences, and teaching style and book sessions through the app, ensuring that assistance is always within reach. This system allows for a highly individualized, focused, and effective tutoring experience, matched to the student's specific needs and learning style.
+
+A unique feature of Campus Connect is the ability to record tutoring sessions, which are then stored securely on the cloud. This enables students to revisit these sessions at any time, reinforcing their learning and providing a valuable resource for review. Additionally, the platform employs advanced AI technology to summarize these recorded conversations, giving students concise and easily understandable summaries that they can refer to later. This feature enhances the learning experience by ensuring that critical information is retained and readily accessible.
+
+To maintain high standards and encourage continuous improvement, Campus Connect allows students to rate their tutors and leave comments on their teaching. This feedback mechanism helps to ensure that the quality of tutoring remains high and provides tutors with valuable insights to refine their methods of teaching. For senior students, Campus Connect offers an excellent opportunity to earn pay off tuition fees and potentially secure money and gain teaching experience, helping them future TA positions. By bridging the gap between students in need of academic support and those who can provide it, Campus Connect aims to foster a collaborative and supportive educational environment, enhancing the academic success and experience of all participants.
+
 
 
 #### Q2: Who are your target users? (2-3 personas)
