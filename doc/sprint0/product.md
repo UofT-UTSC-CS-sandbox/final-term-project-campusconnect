@@ -21,11 +21,10 @@ YOUR ANSWER GOES HERE ...
 
 #### Q2: Who are your target users? (2-3 personas)
 
-YOUR ANSWER GOES HERE ...
+The target users for our CampusConnect app will be a combination of both students receiving tutoring services and students providing tutoring. These will be primarily 18-22 year olds attending the University of Toronto, with a wide variety of diverse backgrounds. Students looking to receive tutoring services could be doing so for several reasons. One expected group of users looking for tutoring is first-year students struggling with the adjustment to university after high school. They will greatly benefit from the mentorship and guidance that upper-year tutors would provide, along with the personalized assistance on first-year course material. Other students who would use CampusConnect for tutoring services are those frustrated with the current academic resources available such as course websites including Piazza, discussion boards, office hours, and TA assistance. 
 
- * Short (2-5 min' read max)
- * Be specific (e.g. )
- * You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)), or add a pdf
+The second group of users for CampusConnect are students willing to provide tutoring services. These students would likely be in their upper years of university and potentially have work experience through internships or other transferable skills. Many of these users would have received high grades in their past courses and would benefit from a platform to share their knowledge with those who need it. It would also be useful for those looking to add experiences to their resumes ahead of an upcoming job search. Any students looking to earn an extra income to help pay for tuition fees, rent, or other living expenses would also be attracted to our application. Overall, a variety of student users would benefit from our application. 
+Personas: submitted in personas.pdf
 
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
@@ -56,6 +55,7 @@ Of the sample students surveyed, 94.8% indicated interest in the services we pla
  * Frontend should be complete and interactive
  * Backend and database should be integrated
  * Unit test for the component(s) should be completed
+ * Criteria for each user story have been met
 
 ----
 
