@@ -48,31 +48,19 @@ Another popular option for students is Piazza, a flexible alternative to allow s
 
 CampusConnect sees potential in students benefiting from the services offered, and students see it too. Of the sample students surveyed, 94.8% indicated interest in services planned to be offered. For tutoring specifically, 72.2% showed interest, and of the interested students, 82.9% indicated they would be willing to pay hourly for the tutoring services.
 
-#### Q4: What does "DONE" means to your Team 
- * Frontend should be complete and interactive
- * Backend and database should be integrated
- * Unit test for the component(s) should be completed
- * Criteria for each user story have been met
+#### Q4: What does "DONE" mean to your Team 
+Our team believes that "Done" means we have produced a working product of our application; i.e., the front-end is complete and interactive, and the back-end and database are integrated. Unit tests for all components should also be completed. For each user story, the acceptance criteria should be fulfilled.
 
 ----
 
 
-
 ### Highlights
 
-YOUR ANSWER GOES HERE ...
-
-Specify 3 - 5 key decisions and/or insights that came up during your meetings
-and/or collaborative process. Here are few questions that can guide you
-
- * Short (5 min' read max)
- * Decisions can be related to the product and/or the team process.
-    * Mention which alternatives you were considering.
-    * Present the arguments for each alternative.
-    * Explain why the option you decided on makes the most sense for your team/product/users.
- * Essentially, we want to understand how (and why) you ended up with your current product plan.
- * How did you organise the team? Which tools did you use, if any?
- * How frequently did you meet?
+Sprint 0: For this sprint, our team primarily communicated via Discord and in-person meetings. We met roughly 3-4 times a week and constantly messaged as needed throughout the week. This decision was made based on team member's availability and convenience. 
+Our team decided to develop a web application, as this would better enable certain large-screen features critical to our product such as video calling and screen sharing.
+While deciding which features we would like our application to include, we developed a strategy of brainstorming many different ideas, then reviewing the feasibility of each one and narrowing down the list, keeping the others on a "wishlist." For example, the key features we chose to incorporate were: a page where students can search a UTSC course and view a list of tutors available for that course, a filter to sort tutors by price/tutor rating/language spoken, comprehensive video/voice calling, chat with history, recordings and transcripts of calls using AI, and the ability to rate and review tutors; among others. These were features we believed made it unique from other tutoring services and thus were most important. Other features we thought would enhance the application but that we deemed lower priority due to the scope of the course were: a pop-up Q&A session hosted by tutors for a particular course that students could join anytime, and an in-depth tutor interview process using AI to detect personable traits such as eye contact, emotion, body language, etc.
+Lastly, another key decision made in this sprint was the technology stack. Our group decided to use the MERN stack due to its scalability, flexibility, and abundance of available resources.
+ 
  
  
   
