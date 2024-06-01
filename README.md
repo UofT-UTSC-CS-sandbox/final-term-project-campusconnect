@@ -50,6 +50,13 @@ As students of University of Toronto, Campus Connect wants students’ questions
 
 These poor experiences from students who have a hard time with what's provided at school is what motivated the team to create Campus Connect and build ULearn. 
 
+### The ULearn Team:
+* Michael Walker
+* Aarushi Doshi
+* Miri Huang
+* Anusha Karkhanis
+* Arina Azmi
+
 You can learn more about ULearn by reading the [product.md](https://github.com/UofT-UTSC-CS-sandbox/final-term-project-campusconnect/blob/main/doc/sprint0/product.md).
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
