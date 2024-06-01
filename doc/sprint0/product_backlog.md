@@ -121,3 +121,16 @@
     - Acceptance criteria: Given the student is viewing the tutor’s profile, when they click the give feedback button, they should be able to rate (out of 5 stars) and write feedback for the tutor.
     - Priority: Medium
 
+# Non-Functional Requirements and System Constraints
+
+#### Non-Functional Requirements
+
+1. AI transcription should be fast and 99% accurate
+2. Chat should be real-time
+3. Video/audio calls should be high-quality 
+
+#### System Constraints
+
+1. Resume uploads should be allowed in either PDF or DOCX format
+
+
