@@ -34,3 +34,29 @@ h1 {
 .clerk-button:hover {
   background-color: #0056b3 !important;
 }
+
+.user-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  margin: 0 10px;
+}
+
+button {
+  align-items: left;
+  justify-content: left;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+

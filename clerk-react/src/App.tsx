@@ -1,40 +1,54 @@
 import './App.css';
-import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/clerk-react';
+import UploadPage from './UploadPage';
 
-const clerkPublishableKey = 'YOUR_CLERK_PUBLISHABLE_KEY';
-
-const appearance = {
-    elements: {
-        card: {
-            backgroundColor: '#ffffff',
-            borderRadius: '10px',
-            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-        },
-        button: {
-            backgroundColor: '#007bff',
-            color: '#fff',
-            hoverBackgroundColor: '#0056b3',
-        },
-    },
-};
 
 function App() {
+  const { user } = useUser();
+
   return (
-    <>
-      {/* <ClerkProvider publishableKey={clerkPublishableKey} appearance={appearance}> */}
-        <header>
-          <SignedOut>
-            <h1>Welcome to your ulearnrnrnrnrn app!</h1>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <h1>Welcome to your alsdhladhakshd app!</h1>
-            <UserButton />
-          </SignedIn>
-        </header>
-      {/* </ClerkProvider> */}
-      <h1>Ulearn</h1>
-    </>
+    <Router>
+      <header>
+        <SignedOut>
+          <h1>Welcome to your ulearn app!</h1>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+        <div className="user-button-wrapper">
+              <UserButton />
+            </div>
+          <h1>Welcome to your ulearn app {user?.firstName}!</h1>
+          <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/upload">Upload</Link>
+          </li>
+        </ul>
+      </nav>
+      <Routes>
+        <Route 
+          path="/" 
+          element={
+            <div>
+              <h1>Ulearn</h1>
+              <SignedIn>
+                <Link to="/upload">
+                  <button>Go to Upload Page</button>
+                </Link>
+              </SignedIn>
+            </div>
+          } 
+        />
+        <Route path="/upload" element={<UploadPage />} />
+      </Routes>
+        </SignedIn>
+      </header>
+      
+    </Router>
   );
 }
 
