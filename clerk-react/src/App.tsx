@@ -7,6 +7,7 @@ import UploadPage from './UploadPage';
 function App() {
   const { user } = useUser();
 
+
   return (
     <Router>
       <header>
