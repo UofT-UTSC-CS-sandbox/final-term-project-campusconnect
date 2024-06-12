@@ -13,8 +13,8 @@ mongoose.connect("mongodb+srv://ulearncc:aammmulearn@ulearn.jjcv6kg.mongodb.net/
 }).catch((err) => console.log(err));
 
 app.post(('/login'), (req, res) => {
-    const {clerkID} = req.body;
-    UserModel.findOne({clerkID: clerkID})
+    const {email} = req.body;
+    UserModel.findOne({email: email})
     .then(user => {
         if(user) {
             res.json("found");
