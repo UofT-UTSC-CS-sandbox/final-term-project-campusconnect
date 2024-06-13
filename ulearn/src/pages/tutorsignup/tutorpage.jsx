@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import './tutorpage.css';
-import VerifyTutor from './tutorverification.jsx'
+import VerifyTutor from '../../components/tutorverification.jsx'
 import pdfToText from "react-pdftotext";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-let file;
+let file = null;
 
 function getFile(event) {
   file = event.target.files[0]
@@ -38,21 +38,22 @@ function TutorPage(){
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let courses = ["CSCA08"]
+    let courses = selectedOptions.map(option => option.value)
+    if (courses == [] || file == null || rate == null || description == null || user == null){
+      toast.warn("Please fill out all details.")
+      return
+    }
+    const email = String(user.primaryEmailAddress);
     const transcript = pdfToText(file).then(text => {return text}).catch(error => console.error("Failed to extract text from pdf"));
     const textoftranscript = await transcript;
     let pass = VerifyTutor(courses, textoftranscript);
     if (pass == 1){
-      
-    }
-
-    const email = String(user.primaryEmailAddress);
-
-     const dataToSend = {
+      console.log(pass)
+      const dataToSend = {
         email: email,
-        verifiedCourses: selectedOptions.map(option => option.value),
-       rate: rate,
-       description: description
+        verifiedCourses: courses,
+        rate: rate,
+        description: description
      };
      console.log(dataToSend); //rate correctly stores rate, description correctly stores description
   
@@ -63,12 +64,7 @@ function TutorPage(){
        .catch(error => {
          console.error('Failed to send data:', error);
        });
-
-    //things that need to happen: 
-    //1. verify selected courses with uploaded transcript
-    //2. check if all required fields are filled, if not, raise error
-    //3. if all fields are filled, send data to database (verified courses, rate, additional info)
-    
+    }
   };
 
   return (
