@@ -1,4 +1,5 @@
-import pdfToText from "react-pdftotext";
+import {ToastContainer, toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function getCourseGrade(course, text){
     let courseindex = text.search(course)
@@ -12,17 +13,23 @@ function getCourseGrade(course, text){
     }
     let smallertext = smalltext.substring(creditindex)
     let finalgrade = smallertext.slice(7,10);
-    console.log(finalgrade)
+    let grade = parseInt(finalgrade)
     return(
-        finalgrade
+        grade
     )
 }
 
 function VerifyTutor(courses, text){
+    let pass = 1;
     for (let i = 0; i < courses.length; i++){
         let grade = getCourseGrade(courses[i], text);
         if (grade < 80){
+            pass = 0;
+            toast.error("You are not elligible to teach " + courses[i] + ". Please remove course from selection.");
         }
     }
+    return(
+        pass
+    )
 }
 export default VerifyTutor;

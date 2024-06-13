@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import './tutorpage.css';
-import VerifyTutor from './tutorverification'
+import VerifyTutor from './tutorverification.jsx'
 import pdfToText from "react-pdftotext";
+import {ToastContainer, toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 let file;
 
@@ -30,11 +32,15 @@ function TutorPage(){
     setSelectedOptions(selectedOption);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("hello")
     let courses = ["CSCA08"]
-    pdfToText(file).then(text => VerifyTutor(courses, text)).catch(error => console.error("Failed to extract text from pdf"))
+    const transcript = pdfToText(file).then(text => {return text}).catch(error => console.error("Failed to extract text from pdf"));
+    const textoftranscript = await transcript;
+    let pass = VerifyTutor(courses, textoftranscript);
+    if (pass == 1){
+      
+    }
     //things that need to happen: 
     //1. verify selected courses with uploaded transcript
     //2. check if all required fields are filled, if not, raise error
@@ -44,6 +50,7 @@ function TutorPage(){
 
   return (
     <div>
+      <ToastContainer></ToastContainer>
       <form onSubmit={handleSubmit} style={{ display: 'flex', height: '100vh' }}>
        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
          <img src="https://png.pngtree.com/png-clipart/20230825/original/pngtree-tutor-isolated-cartoon-vector-illustrations-picture-image_8710246.png" alt="ULearn Logo" style={{ maxWidth: '100%', maxHeight: '100%' }} />

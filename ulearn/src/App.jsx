@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import './App.css';
 import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react";
 import axios from 'axios'; // Import axios library
-import TutorPage from './components/tutorpage';
+import TutorPage from './pages/tutorsignup/tutorpage';
 import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 
 function App() {
