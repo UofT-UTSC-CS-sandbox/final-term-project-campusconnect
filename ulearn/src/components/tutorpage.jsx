@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import './tutorpage.css';
+import VerifyTutor from './tutorverification'
+import pdfToText from "react-pdftotext";
+
+let file;
+
+function getFile(event) {
+  file = event.target.files[0]
+}
 import axios from 'axios';
 import { useUser } from "@clerk/clerk-react";
 
@@ -12,8 +20,6 @@ const options = [
   {value: 'MATA31', label: 'MATA31'}, 
   {value: 'MATA37', label: 'MATA37'}, 
 ];
-
-
 
 function TutorPage(){
   const { isSignedIn, user } = useUser();
@@ -30,6 +36,9 @@ function TutorPage(){
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("hello")
+    let courses = ["CSCA08"]
+    pdfToText(file).then(text => VerifyTutor(courses, text)).catch(error => console.error("Failed to extract text from pdf"))
 
     const email = String(user.primaryEmailAddress);
 
@@ -56,10 +65,9 @@ function TutorPage(){
     
   };
 
-  
-
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', height: '100vh' }}>
+    <div>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', height: '100vh' }}>
        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
          <img src="https://png.pngtree.com/png-clipart/20230825/original/pngtree-tutor-isolated-cartoon-vector-illustrations-picture-image_8710246.png" alt="ULearn Logo" style={{ maxWidth: '100%', maxHeight: '100%' }} />
        </div>
@@ -80,9 +88,11 @@ function TutorPage(){
       <textarea value={description} onChange={e => setDescription(e.target.value)} />
       <br />
       <h3>Upload your latest unofficial transcript:</h3>
+      <input id='transcript' type="file" accept="application/pdf" onChange={getFile}/>
       </div>
-      <button type="submit" className="submit-button">Submit</button>
+      <input type="submit" className="submit-button" value="Submit"></input>
      </form>
+    </div>
   );
 
 

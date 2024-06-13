@@ -3,6 +3,7 @@ import './App.css';
 import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react";
 import axios from 'axios'; // Import axios library
 import TutorPage from './components/tutorpage';
+import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 
 function App() {
   const { isSignedIn, user } = useUser();
@@ -45,6 +46,11 @@ function App() {
       </header>
       {/* </ClerkProvider> */}
       <h1>Ulearn</h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/tutorsignup' exact={true} element={<TutorPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
