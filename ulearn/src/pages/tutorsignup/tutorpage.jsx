@@ -11,6 +11,8 @@ let file;
 function getFile(event) {
   file = event.target.files[0]
 }
+import axios from 'axios';
+import { useUser } from "@clerk/clerk-react";
 
 const options = [
   {value: 'CSCA08', label: 'CSCA08'}, 
@@ -22,7 +24,9 @@ const options = [
 ];
 
 function TutorPage(){
+  const { isSignedIn, user } = useUser();
   
+
   const [rate, setRate] = useState('');
   const [description, setDescription] = useState('');
 
@@ -41,6 +45,25 @@ function TutorPage(){
     if (pass == 1){
       
     }
+
+    const email = String(user.primaryEmailAddress);
+
+     const dataToSend = {
+        email: email,
+        verifiedCourses: selectedOptions.map(option => option.value),
+       rate: rate,
+       description: description
+     };
+     console.log(dataToSend); //rate correctly stores rate, description correctly stores description
+  
+     axios.post(`http://localhost:3001/tutors`, dataToSend)
+       .then(response => {
+         console.log(response.data);
+       })
+       .catch(error => {
+         console.error('Failed to send data:', error);
+       });
+
     //things that need to happen: 
     //1. verify selected courses with uploaded transcript
     //2. check if all required fields are filled, if not, raise error

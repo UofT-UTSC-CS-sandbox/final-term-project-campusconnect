@@ -31,10 +31,15 @@ function App() {
       {/* <ClerkProvider publishableKey={clerkPublishableKey} appearance={appearance}> */}
       <header>
         <SignedOut>
+        
           <h1>Welcome to your ulearnrnrnrnrn app!</h1>
+          
           <SignInButton />
+          
         </SignedOut>
+        
         <SignedIn>
+        <TutorPage />
           <h1>Welcome to your alsdhladhakshd app!</h1>
           <UserButton />
         </SignedIn>
