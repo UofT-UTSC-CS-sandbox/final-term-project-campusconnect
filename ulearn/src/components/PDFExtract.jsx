@@ -17,7 +17,27 @@ function extractText(event) {
 }
 
 function parsetext(text){
+    const course = "CSCA08"
+    let i = text.search(course)
     console.log(text)
+    if (i == -1){
+        console.error("Could not find course in transcript")
+    }
+    console.log(i)
+    console.log(text[i])
+    let smalltext = text.substring(i)
+    console.log(smalltext)
+    let j = smalltext.search("0.50")
+    if (j == -1){
+        console.error("Could not find credit in transcript")
+    }
+    console.log(j)
+    console.log(text[j])
+    let smallertext = smalltext.substring(j)
+    console.log(smallertext)
+    let finalgrade = smallertext.slice(7,10);
+    console.log(finalgrade)
+   
 }
 
 function PDFExtract() {

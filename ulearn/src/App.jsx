@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import './App.css';
 import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react";
 import axios from 'axios'; // Import axios library
+import PDFExtract from './components/PDFExtract';
 
 function App() {
   const { isSignedIn, user } = useUser();
@@ -36,6 +37,7 @@ function App() {
           <h1>Welcome to your alsdhladhakshd app!</h1>
           <UserButton />
         </SignedIn>
+        <PDFExtract></PDFExtract>
       </header>
       {/* </ClerkProvider> */}
       <h1>Ulearn</h1>
