@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import './App.css';
 import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react";
 import axios from 'axios'; // Import axios library
+import TutorPage from './components/tutorpage';
 
 function App() {
   const { isSignedIn, user } = useUser();
@@ -29,10 +30,15 @@ function App() {
       {/* <ClerkProvider publishableKey={clerkPublishableKey} appearance={appearance}> */}
       <header>
         <SignedOut>
+        
           <h1>Welcome to your ulearnrnrnrnrn app!</h1>
+          
           <SignInButton />
+          
         </SignedOut>
+        
         <SignedIn>
+        <TutorPage />
           <h1>Welcome to your alsdhladhakshd app!</h1>
           <UserButton />
         </SignedIn>
