@@ -146,7 +146,6 @@ const PersonalInfoPage = () => {
                             value={selectedUniversity}
                             onChange={handleUniChange}
                             styles={pipCustomStyles}
-                            className='pip-select'
                         />                
                     </div>
                     <div>
@@ -157,7 +156,6 @@ const PersonalInfoPage = () => {
                             value={selectedYear}
                             onChange={handleYearChange}
                             styles={pipCustomStyles}
-                            className='pip-select'
                         />
                     </div>
                     <div>
@@ -169,7 +167,6 @@ const PersonalInfoPage = () => {
                             onChange={handleLanguageChange}
                             isMulti={true}
                             styles={pipCustomStyles}
-                            className='pip-select'
                         />
                     </div>
                     <input className='pip-next-button' type='submit' value='Next'></input>                   
