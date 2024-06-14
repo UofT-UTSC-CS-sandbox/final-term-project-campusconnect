@@ -48,7 +48,6 @@ function TutorPage(){
     const textoftranscript = await transcript;
     let pass = VerifyTutor(courses, textoftranscript);
     if (pass == 1){
-      console.log(pass)
       const dataToSend = {
         email: email,
         verifiedCourses: courses,
