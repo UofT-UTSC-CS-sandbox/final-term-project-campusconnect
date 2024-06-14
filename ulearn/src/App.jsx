@@ -10,11 +10,10 @@ function App() {
     if (isSignedIn && user) {
       const clerkId = user.id;
       const email = String(user.primaryEmailAddress);
-      const name = user.firstName + " " + user.lastName;
+      const name = user.fullName;
 
       //const profileImageUrl = user.profileImageUrl;
       //alert(profileImageUrl);
-      //user.setProfileImage({ url: 'https://example.com/image.jpg' });
       //alert(user.language);
       if (!user.hasImage) {
         //alert('Please upload a profile picture before proceeding.');
@@ -37,6 +36,13 @@ function App() {
 
   }, [isSignedIn, user]);
 
+  function activateLasers() {
+    user?.setProfileImage({
+      file: './image.webp', // Relative path to the image file in the same directory
+    });
+  }
+  
+
   return (
     <>
       <header>
@@ -48,8 +54,11 @@ function App() {
           <h1>Welcome to your ulearn app!</h1>
           
           <UserButton />
-
-        </SignedIn>
+        
+          <button onClick={activateLasers}>
+           Activate Lasers
+            </button>
+          </SignedIn>
       </header>
       <h1>Ulearn</h1>
     </>
