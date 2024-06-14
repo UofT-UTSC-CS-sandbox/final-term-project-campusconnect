@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './App.css';
-import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react";
 import axios from 'axios'; // Import axios library
 
 function App() {
@@ -26,19 +26,14 @@ function App() {
 
   return (
     <>
-      {/* <ClerkProvider publishableKey={clerkPublishableKey} appearance={appearance}> */}
-      <header>
         <SignedOut>
-          <h1>Welcome to your ulearnrnrnrnrn app!</h1>
+          <h1>Welcome to ULearn!</h1>
           <SignInButton />
         </SignedOut>
         <SignedIn>
-          <h1>Welcome to your alsdhladhakshd app!</h1>
+          <h1>Hello {user.firstName}! Welcome to your ULearn HomePage!</h1>
           <UserButton />
         </SignedIn>
-      </header>
-      {/* </ClerkProvider> */}
-      <h1>Ulearn</h1>
     </>
   );
 }
