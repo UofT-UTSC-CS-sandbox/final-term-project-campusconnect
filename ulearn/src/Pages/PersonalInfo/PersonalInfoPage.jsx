@@ -108,16 +108,14 @@ const PersonalInfoPage = () => {
             const email = String(user.primaryEmailAddress);
             const name = user.fullName;
             let languages = selectedLanguages.map(lang => lang.value)
+            const university = selectedUniversity.value;
+            const year = selectedYear.value;
             axios.post(`http://localhost:3001/login`, { email })
                       .then(response => {
                         if (response.data === "found") {
                           console.log(clerkId);
-                          axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, selectedUniversity, selectedYear, languages })
+                          axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, university, year, languages })
                             .then(response => {
-                              console.log(response.data);
-                              console.log(selectedUniversity)
-                              console.log(selectedYear)
-                              console.log(languages)
                               window.location.href = "/whoAreYou"
                             });
                         }

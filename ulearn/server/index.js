@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const UserModel = require('./models/User');
 const cors = require('cors');
+const TutorModel = require('./models/Tutor');
 
 const app = express();
 app.use(express.json());
@@ -59,6 +60,12 @@ app.post(('/updatePersonalInfo'), (req, res) => {
         res.status(500).json({ error: "Internal server error" });
       });
 });
+
+app.post('/tutors', (req, res) => {
+    TutorModel.create(req.body)
+    .then(tutors => res.json(tutors))
+    .catch(err => res.json(err))
+  });
 
 // Example route to get user info and save to MongoDB
 app.post('/register', (req, res) => {
