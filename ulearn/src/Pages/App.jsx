@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import './App.css';
-import slogan from '../assets/images/slogan.png';
 import tutoringImage from '../assets/images/img2.png';
 import PersonalInfoPage from './PersonalInfo/PersonalInfoPage';
-import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
+import { SignUp, SignedIn, SignedOut, SignInButton, useUser,RedirectToSignIn } from "@clerk/clerk-react";
 import axios from 'axios';
 
 function App() {
   const { isSignedIn, user } = useUser();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isSignedIn && user) {
@@ -27,22 +28,16 @@ function App() {
     }
   }, [isSignedIn, user]);
 
+  useEffect(() => {
+    if (isSignedIn) {
+      navigate("/personalInfo"); }
+  }, [isSignedIn]);
+
   return (
-    <div className="app-container">
+    <div>
       <SignedOut>
-        <h2>ULearn!</h2>
-        <div className="home-container">
-          <h1>Online tutoring that releases potential</h1>
-          <p>Are University Courses Overwhelming You? Discover Tailored Tutoring Solutions to Help You Excel and Achieve Your Goals!</p>
-          <div className="search-container">
-            <SignInButton />
-          </div>
-          <img src={tutoringImage} alt="Tutoring" className="tutoring-image" />
-        </div>
+        <RedirectToSignIn />
       </SignedOut>
-      <SignedIn>
-        <PersonalInfoPage />
-      </SignedIn>
     </div>
   );
 }
