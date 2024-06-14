@@ -15,6 +15,11 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    profileImageUrl: {
+        type: String,
+        //required: true, //unsure
+    }
+
     // Add any other fields you need
 });
 
