@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import { UserButton, useUser } from '@clerk/clerk-react';
+import { UserButton, useUser} from '@clerk/clerk-react';
 import './PersonalInfoPage.css';
 import vectImg from '../../assets/images/vectImg.png'
 import { universities, years, languages } from './constants';
@@ -66,6 +66,23 @@ const PersonalInfoPage = () => {
               })
                 .then(() => {
                   console.log('Profile picture uploaded successfully');
+                  if (user) {
+
+                    const clerkId = user.id;
+                    const email = String(user.primaryEmailAddress);
+                    const name = user.fullName;
+                    const image = user.imageUrl;
+                    axios.post(`http://localhost:3001/login`, { email })
+                      .then(response => {
+                        if (response.data === "found") {
+                          console.log(clerkId);
+                          axios.post(`http://localhost:3001/update`, { clerkId, email, name, image })
+                            .then(response => {
+                              console.log(response.data);
+                            });
+                        }
+                      });
+                  }
                 })
                 .catch((error) => {
                   console.error('Failed to upload profile picture:', error);
@@ -81,7 +98,15 @@ const PersonalInfoPage = () => {
     
     const handleNext = (event) => {
         event.preventDefault();
-        if (selectedLanguages && selectedUniversity && selectedYear) {
+        console.log(user.hasImage);
+        if (!user.hasImage) {
+            
+            //toast("Please upload a profile picture");
+            alert("Please upload a profile picture");
+            
+            return
+        }
+        if (selectedLanguages && selectedUniversity && selectedYear && user.hasImage) {
             // console.log("IM HERE");
             window.location.href = "/whoAreYou"
         }
@@ -98,7 +123,7 @@ const PersonalInfoPage = () => {
                 <form onSubmit={handleNext}>
                     <h2>Personal Info</h2>
                     <UserButton />
-                    <input type='button' value='UploadPicture' onClick={handleImageUplaod}></input>   
+                    <input required={true} type='button' value='UploadPicture' onClick={handleImageUplaod}></input>   
 
                     <div>
                         <Select 

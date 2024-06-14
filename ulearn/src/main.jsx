@@ -6,6 +6,9 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import PersonalInfoPage from './Pages/PersonalInfo/PersonalInfoPage.jsx'
 import WhoAreYouPage from './Pages/WhoAreYou/whoAreYouPage.jsx'
 import App from './Pages/App.jsx'
+import TutorPage from './Pages/tutor/tutorpage.jsx'
+import HomePage from './Pages/Home/homepage.jsx'
+
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 if (!PUBLISHABLE_KEY) {
@@ -20,6 +23,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App/>} />
         <Route path="/personalInfo" element={<PersonalInfoPage/>} />
         <Route path="/whoAreYou" element={<WhoAreYouPage/>} />
+        <Route path="/tutorInfo" element={<TutorPage />}/>
+        <Route path="/homePage" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
     </ClerkProvider>

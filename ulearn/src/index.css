@@ -79,9 +79,9 @@ body {
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(22, 86, 166);
-  background-size: cover;
-  background-position: center;
+  /* background-color: rgb(22, 86, 166); */
+  /* background-size: cover; */
+  /* background-position: center; */
 }
 .poppins-extralight {
   font-family: "Poppins", sans-serif;

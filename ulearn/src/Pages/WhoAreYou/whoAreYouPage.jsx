@@ -11,13 +11,17 @@ const WhoAreYouPage = () => {
         setSelectedRole(role);
     };
 
-    // const handleNext = () => {
-    //     if (selectedRole === 'student') {
-    //         history.push('../HomePage/home.jsx');
-    //     }
-    // };
-
+    const handleNext = (event) => {
+        event.preventDefault();
+        if (selectedRole === 'tutor') {
+            window.location.href = "/tutorInfo"
+        }
+        else {
+            window.location.href = "/homePage"
+        }
+    }
     return (
+        <form onSubmit={handleNext}>
         <div className="selection-container">
             <h2>Who are you?</h2>
             <UserButton />
@@ -37,12 +41,13 @@ const WhoAreYouPage = () => {
                     <p>Tutor</p>
                 </div>
             </div>
-            <button disabled={!selectedRole}>
+            {/* <button disabled={!selectedRole}>
                 Next
-            </button>
+            </button> */}
+            <input type='submit' value='Next' disabled={!selectedRole}></input>
         </div>
+        </form>
     );
 };
 
 export default WhoAreYouPage;
-
