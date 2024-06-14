@@ -41,10 +41,7 @@ const WhoAreYouPage = () => {
                     <p>Tutor</p>
                 </div>
             </div>
-            {/* <button disabled={!selectedRole}>
-                Next
-            </button> */}
-            <input type='submit' value='Next' disabled={!selectedRole}></input>
+            <input className="wayp-next-button" type='submit' value='Next' disabled={!selectedRole}></input>
         </div>
         </form>
     );

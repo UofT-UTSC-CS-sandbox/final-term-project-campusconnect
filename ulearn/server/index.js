@@ -23,7 +23,6 @@ app.post(('/login'), (req, res) => {
     .then(user => {
         if(user) {
             res.json("found");
-            //UserModel.updateOne({email: email}, {image: image, clerkId: clerkId, name: name})
         }
         else {
             res.json("not found");
@@ -37,6 +36,21 @@ app.post(('/update'), (req, res) => {
     UserModel.findOneAndUpdate(
       { email: email },
       { clerkId, name, image },
+      { new: true, upsert: true } // upsert: true will create a new document if no document matches the query
+    )
+      .then(user => res.json(user), console.log("User found successfully"))
+      .catch(err => {
+        console.error("Error during registration:", err);
+        res.status(500).json({ error: "Internal server error" });
+      });
+});
+
+app.post(('/updatePersonalInfo'), (req, res) => {
+    const { clerkId, email, name, university, year, languages } = req.body;
+
+    UserModel.findOneAndUpdate(
+      { email: email },
+      { clerkId, name, university, year, languages},
       { new: true, upsert: true } // upsert: true will create a new document if no document matches the query
     )
       .then(user => res.json(user), console.log("User found successfully"))

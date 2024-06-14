@@ -6,7 +6,7 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import PersonalInfoPage from './Pages/PersonalInfo/PersonalInfoPage.jsx'
 import WhoAreYouPage from './Pages/WhoAreYou/whoAreYouPage.jsx'
 import App from './Pages/App.jsx'
-import TutorPage from './Pages/tutor/tutorpage.jsx'
+import TutorPage from './Pages/TutorInfo/tutorInfoPage.jsx'
 import HomePage from './Pages/Home/homepage.jsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY

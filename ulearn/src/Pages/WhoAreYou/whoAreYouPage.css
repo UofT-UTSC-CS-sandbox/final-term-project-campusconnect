@@ -5,11 +5,13 @@
 }
 
 .selection-container h2 {
-    color: white;
+    color: black;
+    justify-content: right;
+    margin-left: 500px;
 }
 .image-buttons {
     display: flex;
-    justify-content: center;
+    justify-content: right;
     gap: 40px;
 }
 
@@ -31,7 +33,14 @@
     border: 2px solid #000;
 }
 
-button {
+.wayp-next-button {
+    margin-left: 500px;
+    width: 200px;
+    border: 2px black solid;
+    border-radius: 40px;
+}
+
+/* button {
     margin-top: 20px;
     padding: 10px 20px;
     font-size: 20px;
@@ -40,9 +49,9 @@ button {
     border-radius: 40px;
     cursor: pointer;
     color: black
-}
-
+} */
+/* 
 button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
-}
+} */

@@ -3,17 +3,17 @@ import Select from 'react-select';
 import { UserButton, useUser} from '@clerk/clerk-react';
 import './PersonalInfoPage.css';
 import vectImg from '../../assets/images/vectImg.png'
-import { universities, years, languages } from './constants';
+import { universities, years, languages } from './constants.jsx';
 import axios from 'axios';
 
 
-const customStyles = {
+const pipCustomStyles = {
     control: (provided, state) => ({
         ...provided,
         border: '2px solid black',
         borderRadius: '40px',
         padding: '5px',
-        margin: '30px 0px',
+        margin: '15px 0px',
         boxShadow: state.isFocused ? '0 0 0 1px black' : null,
         '&:hover': {
             borderColor: 'black',
@@ -95,31 +95,44 @@ const PersonalInfoPage = () => {
         input.click();
            
       };
-    
+
     const handleNext = (event) => {
         event.preventDefault();
         console.log(user.hasImage);
         if (!user.hasImage) {
-            
-            //toast("Please upload a profile picture");
             alert("Please upload a profile picture");
-            
             return
         }
         if (selectedLanguages && selectedUniversity && selectedYear && user.hasImage) {
-            // console.log("IM HERE");
-            window.location.href = "/whoAreYou"
+            const clerkId = user.id;
+            const email = String(user.primaryEmailAddress);
+            const name = user.fullName;
+            let languages = selectedLanguages.map(lang => lang.value)
+            axios.post(`http://localhost:3001/login`, { email })
+                      .then(response => {
+                        if (response.data === "found") {
+                          console.log(clerkId);
+                          axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, selectedUniversity, selectedYear, languages })
+                            .then(response => {
+                              console.log(response.data);
+                              console.log(selectedUniversity)
+                              console.log(selectedYear)
+                              console.log(languages)
+                              window.location.href = "/whoAreYou"
+                            });
+                        }
+                      });
         }
         else {
             return
         }
     }
     return (
-        <div className='container'>
-            <div className='image-container'>
+        <div className='pip-container'>
+            <div className='pip-image-container'>
                 <img src={vectImg}></img>
             </div>
-            <div className='wrapper'>
+            <div className='pip-wrapper'>
                 <form onSubmit={handleNext}>
                     <h2>Personal Info</h2>
                     <UserButton />
@@ -132,7 +145,8 @@ const PersonalInfoPage = () => {
                             options={universities}
                             value={selectedUniversity}
                             onChange={handleUniChange}
-                            styles={customStyles}
+                            styles={pipCustomStyles}
+                            className='pip-select'
                         />                
                     </div>
                     <div>
@@ -142,7 +156,8 @@ const PersonalInfoPage = () => {
                             options={years}
                             value={selectedYear}
                             onChange={handleYearChange}
-                            styles={customStyles}
+                            styles={pipCustomStyles}
+                            className='pip-select'
                         />
                     </div>
                     <div>
@@ -153,13 +168,14 @@ const PersonalInfoPage = () => {
                             value={selectedLanguages}
                             onChange={handleLanguageChange}
                             isMulti={true}
-                            styles={customStyles}
+                            styles={pipCustomStyles}
+                            className='pip-select'
                         />
                     </div>
-                    <input type='submit' value='Next'></input>                   
+                    <input className='pip-next-button' type='submit' value='Next'></input>                   
                 </form>
             </div>
-    </div>
+        </div>
     );
 };
 

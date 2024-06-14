@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Select from "react-select";
-import './tutorpage.css';
-import VerifyTutor from './tutorverification.jsx';
+import './tutorInfoPage.css';
+import VerifyTutor from './tutorVerification.jsx';
 import pdfToText from "react-pdftotext";
 import {ToastContainer, toast} from "react-toastify";
+import { UserButton } from "@clerk/clerk-react";
 import "react-toastify/dist/ReactToastify.css";
-import logo from "../../assets/images/vectImg.png";
+import vectImg from "../../assets/images/vectImg.png";
 let file = null;
 
 function getFile(event) {
@@ -23,13 +24,15 @@ const options = [
   {value: 'MATA37', label: 'MATA37'}, 
 ];
 
-const customStyle = {
+const tipCustomStyle = {
     control: (provided, state) => ({
         ...provided,
         border: '2px solid black',
         borderRadius: '40px',
         padding: '5px',
-        margin: '30px 0px',
+        margin: '15px 0px',
+        width: '300px',
+        height: '60px',
         boxShadow: state.isFocused ? '0 0 0 1px black' : null,
         '&:hover': {
             borderColor: 'black',
@@ -50,14 +53,10 @@ const customStyle = {
 }
 
 function TutorPage(){
-  const { isSignedIn, user } = useUser();
-  
-
+  const { user } = useUser();
   const [rate, setRate] = useState('');
   const [description, setDescription] = useState('');
-
   const [selectedOptions, setSelectedOptions] = useState([]);
-
   const handleChange = (selectedOption) => {
     setSelectedOptions(selectedOption);
   };
@@ -95,24 +94,22 @@ function TutorPage(){
   };
 
   return (
-    <div>
+    <div className="tip-container">
       <ToastContainer></ToastContainer>
       <form onSubmit={handleSubmit} >
-       <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-         <img src={logo} alt="ULearn Logo"   />
+       <div className="tip-image-container">
+         <img src={vectImg} alt="ULearn Logo"/>
        </div>
-       {/* <div style={{ borderLeft: '2px solid black', height: '100vh' }}></div> */}
-       <div className="wrapper">
-         {/* above is the style for image on left side and textboxes on the right with line down middle*/}
-
+       <div className="tip-wrapper">
          <h2>Tutor Info</h2>
+         <UserButton/>
          <Select required={true}
-         placeholder="Which courses would you like to teach?"
+         placeholder="Please enter course "
            options={options}
            value={selectedOptions}
            onChange={handleChange}
            isMulti={true}
-           styles={customStyle}
+           styles={tipCustomStyle}
            />
     
       
@@ -120,7 +117,7 @@ function TutorPage(){
       <textarea value={description} placeholder="Add any additional information about yourself" onChange={e => setDescription(e.target.value)} required={true} />
       <h4>Upload your latest unofficial transcript:</h4>
       <input id='transcript' type="file" accept="application/pdf" onChange={getFile} required={true}/>
-      <input type="submit" className="submit-button" value="Submit"></input>
+      <input type="submit" className="tip-submit-button" value="Submit"></input>
 
       </div>
      </form>

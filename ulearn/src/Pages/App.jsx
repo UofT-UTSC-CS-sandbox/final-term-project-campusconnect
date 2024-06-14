@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
-import './App.css';
-import tutoringImage from '../assets/images/img2.png';
-import PersonalInfoPage from './PersonalInfo/PersonalInfoPage';
 import { useNavigate } from "react-router-dom";
-import { SignUp, SignedIn, SignedOut, SignInButton, useUser,RedirectToSignIn } from "@clerk/clerk-react";
+import { SignedOut, useUser,RedirectToSignIn } from "@clerk/clerk-react";
 import axios from 'axios';
 
 function App() {
