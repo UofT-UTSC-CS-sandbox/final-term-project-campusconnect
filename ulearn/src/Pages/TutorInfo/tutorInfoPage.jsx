@@ -65,8 +65,8 @@ function TutorPage(){
     event.preventDefault();
     let courses = selectedOptions.map(option => option.value)
     const email = String(user.primaryEmailAddress);
-    const transcript = pdfToText(file).then(text => {return text}).catch(error => console.error("Failed to extract text from pdf"));
-    const textoftranscript = await transcript;
+    let transcript = pdfToText(file).then(text => {return text}).catch(error => console.error("Failed to extract text from pdf"));
+    let textoftranscript = await transcript;
     let pass = VerifyTutor(courses, textoftranscript);
     if (isNaN(rate)){
       toast.error("Please enter a valid rate (numbers only)")
@@ -83,14 +83,17 @@ function TutorPage(){
   
      axios.post(`http://localhost:3001/tutors`, dataToSend)
        .then(response => {
-         console.log(response.data);
+         console.log(response.data)
        })
        .catch(error => {
          console.error('Failed to send data:', error);
        });
+       toast.success("Your account has been created!")
+       window.location.href = "/homePage"
     }
-    window.location.href = "/homePage";
-    toast.success("Your account has been created!");
+    else{
+      return
+    }
   };
 
   return (
