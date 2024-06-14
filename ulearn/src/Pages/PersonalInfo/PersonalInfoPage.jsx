@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import { UserButton } from '@clerk/clerk-react';
+import { UserButton, useUser } from '@clerk/clerk-react';
 import './PersonalInfoPage.css';
 import vectImg from '../../assets/images/vectImg.png'
 import { universities, years, languages } from './constants';
+import axios from 'axios';
+
 
 const customStyles = {
     control: (provided, state) => ({
@@ -31,6 +33,7 @@ const customStyles = {
 };
 
 const PersonalInfoPage = () => {
+    const { user } = useUser();
     const [selectedUniversity, setSelectedUniversity] = useState(null);
     const [selectedYear, setSelectedYear] = useState(null);
     const [selectedLanguages, setSelectedLanguages] = useState([]);
@@ -46,6 +49,36 @@ const PersonalInfoPage = () => {
     const handleLanguageChange = (selectedLanguages) => {
         setSelectedLanguages(selectedLanguages);
     };
+
+    const handleImageUplaod = (event) => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+
+        input.onchange = (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const imageData = reader.result;
+              user.setProfileImage({
+                file: imageData
+              })
+                .then(() => {
+                  console.log('Profile picture uploaded successfully');
+                })
+                .catch((error) => {
+                  console.error('Failed to upload profile picture:', error);
+                });
+                
+            };
+            reader.readAsDataURL(file);
+          }
+        };
+        input.click();
+           
+      };
+    
     const handleNext = (event) => {
         event.preventDefault();
         if (selectedLanguages && selectedUniversity && selectedYear) {
@@ -65,6 +98,8 @@ const PersonalInfoPage = () => {
                 <form onSubmit={handleNext}>
                     <h2>Personal Info</h2>
                     <UserButton />
+                    <input type='button' value='UploadPicture' onClick={handleImageUplaod}></input>   
+
                     <div>
                         <Select 
                             placeholder="Which University do you attend?"
