@@ -15,6 +15,7 @@ function App() {
       const clerkId = user.id;
       const email = String(user.primaryEmailAddress);
       const name = user.fullName;
+  
       axios.post(`http://localhost:3001/login`, { email })
         .then(response => {
           if (response.data === "not found") {
@@ -23,10 +24,11 @@ function App() {
               .then(response => {
                 console.log(response.data);
               });
-          }
+          } 
         });
     }
   }, [isSignedIn, user]);
+  
 
   useEffect(() => {
     if (isSignedIn) {
