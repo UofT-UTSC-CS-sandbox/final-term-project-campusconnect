@@ -81,8 +81,8 @@ To setup your environment to start coding, [click here](https://github.com/UofT-
 To create a branch, please follow this guideline: `category/task-name`
 
 Here is a list of categories:
-* `new`: Implementing a new feature.
-* `fix`: Fixing and tweaking bugs and other issues.
+* `feature`: Implementing a new feature.
+* `fix`: Fixing bugs and tweaking existing features.
 * `test`: Implementing tests.
 * `junk`: Experimental branch that gets discarded.
 
