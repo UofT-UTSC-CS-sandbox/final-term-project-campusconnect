@@ -15,7 +15,20 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // Add any other fields you need
+    image: {
+        type: String,
+    },
+    university: {
+        type: String,
+    },
+    year: {
+        type: Number,
+    },
+    languages: {
+        type: [{
+            type: String
+        }],
+    },
 });
 
 const UserModel = mongoose.model('User', UserSchema);
