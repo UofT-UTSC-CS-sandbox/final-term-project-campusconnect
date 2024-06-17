@@ -1,146 +1,226 @@
+
 # Product/Team Name: ULearn/CampusConnect
 
-  
+## Sprint One Iteration Plan
 
-## Iteration 01 - Review & Retrospect
+June 3rd 2024
 
-  
+## 1. Process
 
--   When: June 14, 2024
-    
--   Where: Online (Discord)
-    
+Start date: Mon June 3, 2024
 
-  
-
-### Decisions that turned out well
+End date: Fri June 14, 2024
 
   
 
-**1.  Taking on a reasonable amount of story points**: we chose to take on 31 story points as this was our first sprint and we wanted to use it to gauge our abilities to better prepare for the coming sprints. Because we took on fewer points, we were able to successfully complete everything we planned and get the foundation of our application created.
-    
-**2.  Peer programming**: we regularly collaborated with each other to perform code reviews. This was especially helpful for debugging other’s work and allowed us to stay informed on what everyone else was working on. If two people worked on similar tasks, they would engage in peer programming. One example of when it was used was when we were all initially learning how to write user input to MongoDB, as it is a new tool for all of us.
-    
-**3.  Creating well-defined roles and responsibilities**: we split our work evenly into well-defined roles and responsibilities for each team member. Each of us was responsible for a different page, and developed it entirely from the UI to the connection with the database.
-    
+### 1.1 Roles & responsibilities
 
   
 
-### Decisions that did not turn out as well as we hoped
+To enhance our team's collaboration, we have assigned each member a specific task or responsibility. Additionally, we're implementing pair programming to foster better integration between backend and frontend development. This means team members working on backend tasks will collaborate closely with those handling frontend and other functionalities.
 
   
 
-#### 1.  Lack of cohesive working
+#### 1.  Michael Walker: Scrum Master
     
 
-- Connecting everything was extremely difficult since we all built our functionalities separately. This caused a massive time crunch where huge sacrifices had to be made to ensure we had a working demo.
+-   Create final set of user stories
     
--   There were also multiple instances where people’s functionalities depended on other people’s functionalities to be fully completed, causing delays in people’s work as well as a lot of time spent explaining functionalities.
+-   Break down user stories to be more granular for each sprint
     
-
-#### 2.  Prioritizing signup and login instead of homepage
+-   Setup database and help teammates communicate with the database when needed
     
-- Although our signup/login implemented some complex features, prioritizing it led to us falling behind as we currently have less time to implement features and functionalities that have a greater impact on the final product.
+-   Organize general flow of pages and code structure
     
-
-#### 3.  Lack of focus on documentation
+-   Facilitate team meetings
     
-
--   The lack of documentation led to group members needing to explain their work verbally, which made some group members lose time as they had to wait for specific people to explain certain parts.
+-   Maintain JIRA board and assign tasks on JIRA
     
--   The lack of documentation also led to people who had to explain their parts lose time as they had to spend the time that could have been used to fix, document, or improve their parts on teaching and explaining their code to multiple people.
+-   Page(s): Login and verification with email (frontend + connection to database)
     
 
-  
-  
-
-#### 4.  Not enough time spent on testing
+#### 2.  Aarushi Doshi: Developer + tester
     
 
--   Lack of testing led to the discovery of a few bugs that were discovered very late into the sprint, which further increased the stress of the already present time crunch.
+-   Assist in breakdown of user stories to be more granular for each sprint
+    
+-   Check/Approve all Pull Requests before merging to dev branch
+    
+-   Test application after each merge to ensure code is working
+    
+-   Inform teammates of new merges
+    
+-   Deploy to main branch
+    
+-   Page(s): Personal Info, and Who Are You Pages (frontend + connection to database)
     
 
-  
-
-### Planned changes
-
-  
-
-#### 1.  Teammates working on similar pages should meet before starting their pages
+#### 3.  Arina Azmi: Developer + Designer
     
 
--   Since we decided to split tasks based on pages, some teammates with similar pages had completely different UI/styling, and file structure/organization.
+-   Take meeting minutes and keep team updated on new developments
     
--   Ex. The tutor info and personal info pages were assigned to different people, therefore the routing between pages, and the UI for each page was done differently.
+-   Check/Approve all Pull Requests before merging to dev branch
     
--   Ex. The file upload and profile picture upload tasks were given to different people and so the efforts were split, even though the tasks were essentially the same
+-   Confirm final UI before merging branches with dev
     
--   Moving forward, we have decided that those who have similar tasks and pages to work on, will meet before starting their respective tasks and finalize important decisions, such as UI, file structure, functionality, etc.
+-   Assist in breakdown of user stories to be more granular for each sprint
     
-
-#### 2.  Code reviews earlier on and more frequently so that changes are merged sequentially
-    
-
--   We decided to split the tasks and work on them individually. Due to this, we all had our individual tasks completed in our local environments, but we were lacking the flow of our pages (e.x from login to personal info page, and then from the personal info page to the tutor info page).
-    
--   Moving forward, we have decided to merge our codes more frequently throughout the sprint rather than at the very end once all the tasks are 100% complete.
+-   Page(s): Sign up page and profile picture upload functionality (frontend + connection to database)
     
 
-### 3.  More focus on documentation so individuals don’t have to explain their code to each teammate
+#### 4.  Miri Huang: Developer
     
 
--   Since we decided to split tasks, each individual completed their part and structured their code in a manner that best suited them. Due to this, it was difficult to understand each other’s code and code structure and we often spent many hours understanding each other’s code or meeting with that individual teammate to understand their code better
+-   Assist in breakdown of user stories to be more granular for each sprint
     
--   Moving forward, we have made the decision to add more comments and give focus to documentation, in order to not waste time understanding other’s code.
+-   Page(s): Develop pdf transcript verification functionality with toast messages (connection to database)
+    
+
+#### 5.  Anusha Karkhanis: Developer
+    
+
+-   Assist in breakdown of user stories to be more granular for each sprint
+    
+-   Page(s): Tutor Info Page including PDF uploading (frontend + connection to database)
     
 
   
 
-## Product - Review
+In addition to their specific roles, all team members are responsible to assist other teammates when needed.
+
+  
+  
+  
+  
+
+### 1.2 Events
 
   
 
-### Goals and/or tasks that were met/completed:
+**1.  Daily Standups**: These meetings will take place online (Discord or Slack) and occasionally in-person, at 6pm EST every weekday. During each standup meeting, each team member will have the opportunity to discuss what they have completed since the last meeting, what they are planning to complete by the next meeting, and if they are having any issues and require assistance. This will also be the time to make any larger team decisions, such as changing UI, using a different API, etc.
+    
+**2.  Weekly Scrum Meeting**: For the next 2 Saturday’s at 11am EST, the entire team will meet to discuss the final pages that have been made and the complete weekly progress. During these meetings we will merge our individual codes onto the dev branch and discuss any larger blockers that any teammates are having
+    
+**3.  Final Sprint 1 Meeting**: On Thurs June 13th, the entire team will meet online at 3pm to go over the final steps and ensure that all code is working. During this meeting all code on the dev branch will be thoroughly tested.
+    
 
   
 
-#### 1.  Pages for User info (Personal and Tutor)
-    
-
--   All users were able to add their own personal info, such as languages, university, years
-    
--   Tutors were able to add info regarding the courses they wanted to teach, their hourly rate, and description
-    
-
-#### 2.  Transcript verification
-    
-
--   Tutors were able to upload their transcript and get it verified to check if they were eligible to teach a certain course
-    
-
-#### 3.  Login + authentication
-    
-
--   Users were able to create an account with their email, have the email verified and then proceed to login
-    
-
-### Goals and/or tasks that were planned but not met/completed:
+## 2. Product: Goals and Tasks
 
   
 
-All goals and tasks that were planned for this sprint were completed.
+### 2.1 Sign Up
+
+One of our main priorities is to allow users to easily sign up and create an account on ULearn. Users should be able to register with the full name, email, and a password along with additional personal information, such as University, year, and spoken languages.
 
   
 
-### Meeting Highlights
+-   Users should be able to register with their first and last name, and password.
+    
+-   During this account creation process, it is important to validate the provided arguments and ensure that the user does not already exist in the system.
+    
+-   Once the information is entered, a 6-digit verification code will be sent to their email
+    
+-   Another screen will appear where users will have to enter this 6-digit code
+    
+-   This will be done using the Clerk API
+    
+-   After the code is entered successfully, the user will be navigated to the Personal Info page.
+    
+-   On the Personal Info page, new users must select their University, year of study, and the languages they speak, from 3 different dropdown menus.
+    
+-   On this page, new users must also upload a profile picture. This can be of type .png, .jpg, or .jpeg
+    
+-   Then, users can click Next and they will be navigated to the Who Are You page, where they can select between 2 Vector image buttons, to choose if they are signing up as a Student or Tutor.
+    
+-   If they sign up as a student, they will be redirected to their home page. If the user signs up as a tutor, they will be navigated to the Tutor Info page.
+    
+-   On the Tutor Info page, users will need to enter other information such as the courses they want to teach (this will be done by a dropdown menu), their hourly rate (which will be an input field) and any additional information they would like to display about themselves. Once this is complete, users will need to upload their pdf transcript.
+    
+
+  
+  
+  
+  
+  
+  
+
+### 2.2 Transcript Verification
+
+It is crucial that only qualified tutors are accepted to teach. We have decided that only those with a grade above 80 in the course should be eligible to teach.
 
   
 
-**1.  Prioritize UI/UX**: Based on the feedback received from the TA during our demo, going forward, a greater emphasis will be placed on the UI and UX design of our application. Our focus during this sprint was mostly on functionality, but we have learned the importance of developing a comprehensive product. In the coming sprints, we will ensure that our features are user-friendly, easy to navigate, well-designed, and provide value for the user.
+-   Once users upload their transcript, their grades for each course will automatically be verified using a pdf scanner
     
-**2.  Maintain Code Quality**: Incorporating code reviews and pair programming was greatly beneficial to our team in this sprint, so we will be utilizing them more in the future. This will help to catch bugs early on and allow us to write clean code following SOLID principles. Additionally, a greater emphasis on documentation through code comments and docstrings will benefit us and future developers.
+-   It will be ensured that the user has a mark above 80 for each of the courses the user has stated that they would like to teach.
     
-**3.  Collaboration and Communication**: Foster a more collaborative environment where open communication is encouraged and work is completed cohesively and as a team, rather than individually. Based on our sprint review, we would like to encourage more collaborative working to ensure alignment and collective problem-solving, thereby enhancing productivity and innovation.
+-   Once the verification is complete, users will receive a toast message on their screen indicating if they are or aren’t eligible to teach the courses they have selected. If they are eligible to teach all their courses, users can select the next button and their account setup will have been completed. Else, users will have to remove the courses that they are not eligible to teach, before being able to proceed to their home page.
     
 
-.
+  
+
+### 2.3 Login
+
+Once an account has successfully been created, users must easily be able to login to their account with their email and password.
+
+  
+
+-   When on the homepage of the application, existing users should be able to enter their email and password and click Login to be navigated to their homepage if they have completed the entire sign up process.
+    
+-   If users still have not completed the sign up process, they will be redirected to the Personal Info page, where they will have to continue finishing the sign up process.
+    
+
+  
+
+## 3. Product: Artifacts
+
+  
+
+### 3.1 Division of Responsibilities
+
+  
+
+Tasks are assigned based on similarity between user stories, difficulty of the task, and personal preference/familiarity with technologies. For example, since the first 2 pages (Personal Info and Who Are You) are very co-related, those pages will be assigned to one person, and since one of our teammates has had experience with MongoDB, they will take on the task to allow users to login/sign up, and add their info to the database. The team member taking on this task will not take on any other tasks, because this is quite difficult and time consuming to do.
+
+  
+
+We also prioritized each task based on flow of pages. The sign up should come first, then personal info, and last tutor info with transcript verification. If tasks are done in a sequential order, we will be able to test the app in an orderly manner, to check that pages are being navigated correctly and ensure that pages flow smoothly.
+
+  
+
+### 3.2 JIRA Management
+
+  
+
+We will keep track of user stories in our JIRA backlog for the sprint and assign points to each user story to estimate how difficult a task is. We will reassess the points after each week to ensure that we have taken on an appropriate amount of work for the sprint. Once a user story is completed, the ticker will be marked as complete on our JIRA board. If time permits, that user will take on 1 of the 2-3 user stories that we will keep in our sprint wishlist, which we will decide on at the beginning of each sprint.
+
+  
+
+[JIRA Board](https://cscc01-campusconnect.atlassian.net/jira/software/projects/SCRUM/boards/1/backlog?atlOrigin=eyJpIjoiZmRlY2IxNzRhMmI4NGQyMDkyNzUzYmZlYjg5MDcwMWIiLCJwIjoiaiJ9)
+
+  
+
+### 3.3 Team Organization
+
+  
+
+At the beginning of each sprint, the team will fill out a when-to-meet to indicate the times that they will be available over the following 2 weeks. This way, we can set specific times for our standups and even know when other teammates may be available to help with a blocker.
+
+  
+
+To ensure that the team is always on the same page, after each standup, Arina will make a short to-do listing the tasks that are yet to be completed for the sprint, alongside who needs to complete each task and which ones require collaborative effort. This will help all team members be aware of which tasks are left, and we will be able to plan out our schedule more effectively.
+
+  
+
+### 3.4 Sprint Retrospective
+
+  
+
+Once this Sprint is complete, our team will meet to go over all aspects of the sprint and discuss what went well, what could be improved and what didn’t go well for the sprint. This will help us improve for the upcoming sprints.
+
+  
+
+![](https://lh7-us.googleusercontent.com/docsz/AD_4nXeyATVVai9nUH1Qezxo6jmCrgvTORfV9PQHNrhJ31CLy2T0exAFN5HPE2rrZdWw6piXxNN0Q5iTMwz98-qBRt3wCCPItssEIXcCf_sRRrF7_xUyMqhQgp91Ekfj57wYB2qU0Kidtw3g_yiuCk4l2VZ0KgJ0?key=HfT6ilJiyZWgTsdVbQNQcA)
