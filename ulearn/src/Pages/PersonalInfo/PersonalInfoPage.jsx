@@ -58,38 +58,35 @@ const PersonalInfoPage = () => {
         input.onchange = (event) => {
           const file = event.target.files[0];
           if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              const imageData = reader.result;
-              user.setProfileImage({
-                file: imageData
-              })
-                .then(() => {
-                  console.log('Profile picture uploaded successfully');
-                  if (user) {
+            const formData = new FormData();
+                formData.append('profileImage', file);
+                formData.append('email', user.primaryEmailAddress.emailAddress);
+                formData.append('name', user.fullName);
 
-                    const clerkId = user.id;
-                    const email = String(user.primaryEmailAddress);
-                    const name = user.fullName;
-                    const image = user.imageUrl;
-                    axios.post(`http://localhost:3001/login`, { email })
-                      .then(response => {
-                        if (response.data === "found") {
-                          console.log(clerkId);
-                          axios.post(`http://localhost:3001/update`, { clerkId, email, name, image })
-                            .then(response => {
-                              console.log(response.data);
-                            });
-                        }
-                      });
-                  }
-                })
-                .catch((error) => {
-                  console.error('Failed to upload profile picture:', error);
-                });
-                
-            };
-            reader.readAsDataURL(file);
+                // Upload the image to your server
+                axios.post('http://localhost:3001/upload', formData)
+                    .then(response => {
+                        console.log('Profile picture uploaded successfully:', response.data);
+
+                        // Set the profile picture on Clerk
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            const imageData = reader.result;
+                            user.setProfileImage({
+                                file: imageData
+                            })
+                                .then(() => {
+                                    console.log('Profile picture set on Clerk successfully');
+                                })
+                                .catch((error) => {
+                                    console.error('Failed to set profile picture on Clerk:', error);
+                                });
+                        };
+                        reader.readAsDataURL(file);
+                    })
+                    .catch((error) => {
+                        console.error('Failed to upload profile picture to server:', error);
+                    });
           }
         };
         input.click();

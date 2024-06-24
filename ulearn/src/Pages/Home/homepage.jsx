@@ -1,26 +1,84 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { UserButton, useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 import './homePage.css'; // Import your CSS file
+//import { tutors } from './TutorProfiles.jsx';
+import axios from 'axios';
 
-const tutors = [
-  { id: 1, name: 'Tutor 1', courses: 'MATA31, MATA67, MATA67, MATA67, MATA67', rating: 5, image: '${user.imageURL}' },
-  { id: 2, name: 'Tutor 2', courses: 'MATA31, MATA67', rating: 4.5, image: 'path-to-image' },
-  { id: 3, name: 'Tutor 2', courses: 'MATA31, MATA67', rating: 5, image: 'path-to-image' },
-  { id: 4, name: 'Tutor 2', courses: 'MATA31, MATA67', rating: 5, image: 'path-to-image' },
-  { id: 5, name: 'Tutor 2', courses: 'MATA31, MATA67', rating: 5, image: 'path-to-image' },
-  { id: 6, name: 'Tutor 2', courses: 'MATA31, MATA67', rating: 5, image: 'path-to-image' },
-  { id: 9, name: 'Tutor 2', courses: 'MATA31, MATA67', rating: 5, image: 'path-to-image' },
-  // Add more tutors as needed
-];
 
 function HomePage() {
     const { user } = useUser();
 
-    const handleImageUplaod = () => {
-    
-    console.log(user.imageUrl);
-  };
+    const [tutors, setTutors] = useState([]);
+
+    useEffect(() => {
+ 
+      });
+      
+    // for testing purposes, placeholder for now  
+    const handleSearch = () => {
+
+        // fetch all tutors from the database
+        axios.get(`http://localhost:3001/gettutors`)
+        .then(tutorsResponse => {
+            console.log("tutors fetched");
+            // store tutors in tutorsData
+            const tutorsData = tutorsResponse.data;
+
+            // for each tutor in tutorsData, 
+            tutorsData.forEach(tutor => {
+                // fetch the email, verified courses of the tutor
+                const email = tutor.email;
+                const courses = tutor.verifiedCourses;
+                console.log('Fetching data for email:', email);
+
+                // in the future, need to fetch rating as well
+
+                // fetch the user data of the tutor, using email 
+                axios.get('http://localhost:3001/getUserByEmail', { params: { email: email }})
+                    .then(userResponse => {
+                        if (userResponse.data) {
+                            console.log('User data:', userResponse.data);
+                            const tutorData = {
+                                name: userResponse.data.name,
+                                email: userResponse.data.email,
+                                image: `http://localhost:3001/${userResponse.data.image}`,
+                                courses: courses,
+                                rating: 5, // Assuming a default rating of 5 if not provided (placeholder for now)
+                                
+                            };
+                            
+                            console.log('image link: ', tutorData.image);
+                            
+
+                            // test 
+                            // Log the tutor data to verify the image link
+                            console.log('Tutor data:', tutorData);
+
+                            // update tutor array with the tutor data
+                            // only add tutor if not already in the array
+                            setTutors(prevTutors => {
+                                if (!prevTutors.some(t => t.email === tutorData.email)) {
+                                    return [...prevTutors, tutorData];
+                                } else {
+                                    return prevTutors;
+                                }
+                            });
+                        } else {
+                            console.log('User not found for email:', email);
+                        }
+                    })
+                    .catch(userError => {
+                        console.error('Error fetching user by email:', email, userError);
+                    });
+                });
+            })
+            .catch(tutorsError => {
+                console.error('Error fetching tutors:', tutorsError);
+            });
+    };
+
 
 
   return (
@@ -34,7 +92,7 @@ function HomePage() {
       </div>
       <button className="setting-button">Tabs</button>
       <div className="search-bar">
-        <input type="text" placeholder="Search" onClick={handleImageUplaod}/>
+        <input type="text" placeholder="Search" onClick={handleSearch}/>
         <button className="filter-button">Filter</button>
       </div>
       <div className="header2-home">
@@ -42,7 +100,7 @@ function HomePage() {
       </div>
       <div className="tutors-container">
         {tutors.map(tutor => (
-          <Link to={`/tutor/${tutor.id}`} key={tutor.id} className="tutor-card">
+          <Link to={`/tutor/${tutor.name}`} key={tutor.name} className="tutor-card">
             <img src={tutor.image} alt={tutor.name} />
             <div className="tutor-info">
               <div className="tutor-rating">
