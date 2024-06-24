@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { UserButton, useUser } from '@clerk/clerk-react';
-import { Link } from 'react-router-dom';
+import { Link, parsePath } from 'react-router-dom';
 import './homePage.css'; // Import your CSS file
 //import { tutors } from './TutorProfiles.jsx';
 import axios from 'axios';
@@ -13,11 +13,12 @@ function HomePage() {
     const [tutors, setTutors] = useState([]);
 
     useEffect(() => {
- 
-      });
+        console.log("Component mounted, fetching tutors");
+        populateTutors();
+    }, []);
       
     // for testing purposes, placeholder for now  
-    const handleSearch = () => {
+    const populateTutors = () => {
 
         // fetch all tutors from the database
         axios.get(`http://localhost:3001/gettutors`)
@@ -79,6 +80,10 @@ function HomePage() {
             });
     };
 
+    // placeholder for search 
+    const handleSearch = () => {
+        console.log("Search bar clicked");
+    }
 
 
   return (
@@ -101,11 +106,12 @@ function HomePage() {
       <div className="tutors-container">
         {tutors.map(tutor => (
           <Link to={`/tutor/${tutor.name}`} key={tutor.name} className="tutor-card">
-            <img src={tutor.image} alt={tutor.name} />
+             <img src={tutor.image} alt={tutor.name} className="tutor-image" />
             <div className="tutor-info">
-              <div className="tutor-rating">
-                {'★'.repeat(tutor.rating)}{'☆'.repeat(5 - tutor.rating)}
-              </div>
+                <p className="tutor-name">{tutor.name}</p>
+                <div className="tutor-rating">
+                    {'★'.repeat(tutor.rating)}{'☆'.repeat(5 - tutor.rating)}
+                </div>
               <p>Courses: {tutor.courses}</p>
             </div>
           </Link>

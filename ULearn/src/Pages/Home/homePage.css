@@ -85,7 +85,7 @@
     text-decoration: none;
     color: inherit;
     width: 200px;
-    height: 200px; /* Set height */
+    height: 250px; /* Set height */
   }
   
   .tutor-card img {
@@ -98,6 +98,11 @@
     padding: 10px;
   }
   
+  .tutor-name {
+    font-weight: bold;
+    margin-top: 8px;
+}
+
   .tutor-rating {
     color: gold;
     font-size: 1.2em;
