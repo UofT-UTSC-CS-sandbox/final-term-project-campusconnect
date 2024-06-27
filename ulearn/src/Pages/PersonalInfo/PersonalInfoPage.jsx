@@ -58,35 +58,20 @@ const PersonalInfoPage = () => {
         input.onchange = (event) => {
           const file = event.target.files[0];
           if (file) {
-            const formData = new FormData();
-                formData.append('profileImage', file);
-                formData.append('email', user.primaryEmailAddress.emailAddress);
-                formData.append('name', user.fullName);
-
-                // Upload the image to your server
-                axios.post('http://localhost:3001/upload', formData)
-                    .then(response => {
-                        console.log('Profile picture uploaded successfully:', response.data);
-
-                        // Set the profile picture on Clerk
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                            const imageData = reader.result;
-                            user.setProfileImage({
-                                file: imageData
-                            })
-                                .then(() => {
-                                    console.log('Profile picture set on Clerk successfully');
-                                })
-                                .catch((error) => {
-                                    console.error('Failed to set profile picture on Clerk:', error);
-                                });
-                        };
-                        reader.readAsDataURL(file);
-                    })
-                    .catch((error) => {
-                        console.error('Failed to upload profile picture to server:', error);
-                    });
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const imageData = reader.result;
+              user.setProfileImage({
+                file: imageData
+              })
+                .then(() => {
+                  console.log('Profile picture uploaded successfully');
+                })
+                .catch((error) => {
+                  console.error('Failed to upload profile picture:', error);
+                });
+            };
+            reader.readAsDataURL(file);
           }
         };
         input.click();
@@ -107,11 +92,13 @@ const PersonalInfoPage = () => {
             let languages = selectedLanguages.map(lang => lang.value)
             const university = selectedUniversity.value;
             const year = selectedYear.value;
+            const image = user.imageUrl;
+
             axios.post(`http://localhost:3001/login`, { email })
                       .then(response => {
                         if (response.data === "found") {
                           console.log(clerkId);
-                          axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, university, year, languages })
+                          axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, university, year, languages, image })
                             .then(response => {
                               window.location.href = "/whoAreYou"
                             });
