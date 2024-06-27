@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const UserModel = require('./models/User');
 const cors = require('cors');
 const TutorModel = require('./models/Tutor');
+const { StreamClient } = require("@stream-io/node-sdk");
+require('dotenv').config({path: '../.env.local'}); 
 
 const app = express();
 app.use(express.json());
@@ -74,6 +76,24 @@ app.post('/register', (req, res) => {
     .catch(err => res.json(err))
     
 })
+
+const STREAM_VIDEO_API_KEY = process.env.STREAM_VIDEO_API_KEY;
+const STREAM_VIDEO_SECRET_KEY = process.env.STREAM_VIDEO_SECRET_KEY;
+
+app.get('/getVideoToken', (req, res) => {
+  const user = req.body;
+  if (!user) {
+    throw new Error("User not found");
+  }
+  if (!apiKey) {
+    throw new Error("Missing API Key");
+  }
+  const client = new streamClient(STREAM_VIDEO_API_KEY, STREAM_VIDEO_SECRET_KEY);
+  const exp = Math.round(new Date().now() / 1000) + 60 * 60;
+  const issued = Math.floor(new Date().now() / 1000) - 60;
+  const token = (client.createToken(user.id, exp, issued));
+  res.json(token);
+});
 
 app.listen("3001", () => {
     console.log(`Server started on port 3001`);

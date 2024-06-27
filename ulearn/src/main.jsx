@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App/>} />
+        <Route path="/" element={<HomePage/>} />
         <Route path="/personalInfo" element={<PersonalInfoPage/>} />
         <Route path="/whoAreYou" element={<WhoAreYouPage/>} />
         <Route path="/tutorInfo" element={<TutorPage />}/>
