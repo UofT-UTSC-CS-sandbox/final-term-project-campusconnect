@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}  
+
+.tip-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 200px;
+}
+
+.tip-image-container {
+  position: absolute;
+  left: 20px;
+  display: flex;
+  justify-content: flex-start; 
+}
+
+.tip-image-container img {
+  height: 600px;
+  width: 500px;
+  justify-content: flex-start; 
+}
+
+.tip-wrapper{
+  width: 420px;
+  height: 520px;
+  background-color: white;
+  color:black;
+  border-radius: 20px;
+  padding: 30px 40px;
+  border: 2px solid black;
+  backdrop-filter: blur(30px);
+  margin-left: 600px;
+  margin-top: 80px;
+      
+}
+
+.tip-wrapper h2 {
+  margin-left: 100px;
+}
+  
+.tip-submit-button {
+  width: 100px;
+  padding: 10px 20px;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 110px;
+}
+
+.tip-submit-button:hover {
+  background-color: rgb(22, 86, 166);
+}
+
+textarea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 20px 0;
+  width: 300px;
+  font-size: 16px;
+  color: black;
+  background-color: white; /* Light gray background */
+  border: 2px solid black; /* Border color */
+  border-radius: 40px; /* Fully rounded corners */
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+input{
+  background-color: white;
+  color: black;
+  width: 300px;
+  height: 50px;
+  padding: 10px;
+  margin-top: 15px;
+  border: 2px solid black;
+  border-radius: 40px;
+  font-size: 16px;
+
+}

@@ -69,7 +69,7 @@ ULearn takes advantage of GitHub Flow to streamline collaboration across differe
 ### Setup:
 To setup your environment to start coding, [click here](https://github.com/UofT-UTSC-CS-sandbox/final-term-project-campusconnect/blob/main/doc/sprint0/setup.md).
 ### Branches:
-To create a branch, please follow this guideline: `category/task-name`
+To create a branch, please follow this guideline: `category-task-name`
 
 Here is a list of categories:
 * `new`: Implementing a new feature.
@@ -77,7 +77,7 @@ Here is a list of categories:
 * `test`: Implementing tests.
 * `junk`: Experimental branch that gets discarded.
 
-`task-name` must be an abstract and short summary of the branch's main objective. For example: `new/2FA` would be used to for developing 2 factor authentication login.
+`task-name` must be an abstract and short summary of the branch's main objective. For example: `new-2FA` would be used to for developing 2 factor authentication login.
 
 ### Issues:
 Issues can be reported using GitHub Issues. Please use the template provided to help developers detect and fix bugs sooner.
