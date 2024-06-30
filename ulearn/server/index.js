@@ -77,7 +77,7 @@ app.post('/register', (req, res) => {
     
 })
 
-const STREAM_VIDEO_API_KEY = process.env.STREAM_VIDEO_API_KEY;
+const STREAM_VIDEO_API_KEY = process.env.VITE_STREAM_VIDEO_API_KEY;
 const STREAM_VIDEO_SECRET_KEY = process.env.STREAM_VIDEO_SECRET_KEY;
 
 app.post('/getVideoToken', (req, res) => {
@@ -85,12 +85,13 @@ app.post('/getVideoToken', (req, res) => {
   if (!user) {
     throw new Error("User not found");
   }
-  if (!apiKey) {
+  if (!STREAM_VIDEO_API_KEY || !STREAM_VIDEO_SECRET_KEY) {
     throw new Error("Missing API Key");
   }
-  const client = new streamClient(STREAM_VIDEO_API_KEY, STREAM_VIDEO_SECRET_KEY);
-  const exp = Math.round(new Date().now() / 1000) + 60 * 60;
-  const issued = Math.floor(new Date().now() / 1000) - 60;
+  const client = new StreamClient(STREAM_VIDEO_API_KEY, STREAM_VIDEO_SECRET_KEY);
+  const date = new Date().getTime();
+  const exp = Math.round(date / 1000) + 60 * 60;
+  const issued = Math.floor(date / 1000) - 60;
   const token = (client.createToken(user.id, exp, issued));
   res.send(token);
 });

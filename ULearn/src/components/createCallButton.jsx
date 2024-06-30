@@ -1,7 +1,6 @@
 import { useUser } from '@clerk/clerk-react';
-import { Call, useStreamVideoClient } from '@stream-io/video-react-sdk';
+import { useStreamVideoClient } from '@stream-io/video-react-sdk';
 import { useState } from 'react';
-import { Router } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 
 const CreateCallButton = () => {
@@ -13,12 +12,14 @@ const CreateCallButton = () => {
         description: '',
         link: '',
     })
-    const [callDetails, setCallDetails] = useState<Call>(null);
+    const [callDetails, setCallDetails] = useState(null);
 
     const handleCreate = async () => {
+        console.log(client);
         if (!client || !user) {
             return;
         }
+        
         try {
             const id = crypto.randomUUID();
             const call = client.call('default', id);
