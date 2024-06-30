@@ -6,11 +6,11 @@ import axios from 'axios';
 const apiKey = process.env.STREAM_VIDEO_API_KEY;
 
 const StreamVideoProvider = () => {
-  const [videoClient, setVideoClient] = useState < StreamVideoClient > (null);
+  const [videoClient, setVideoClient] = useState (null);
 
   useEffect(() => {
     const { user, isLoaded } = useUser();
-    const token = axios.get('/getVideoToken', user);
+    const token = axios.post('/getVideoToken', user);
     if (!isLoaded || !user) return;
     if (!apiKey) throw new Error("Missing API Key");
 

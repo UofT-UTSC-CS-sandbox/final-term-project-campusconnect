@@ -80,7 +80,7 @@ app.post('/register', (req, res) => {
 const STREAM_VIDEO_API_KEY = process.env.STREAM_VIDEO_API_KEY;
 const STREAM_VIDEO_SECRET_KEY = process.env.STREAM_VIDEO_SECRET_KEY;
 
-app.get('/getVideoToken', (req, res) => {
+app.post('/getVideoToken', (req, res) => {
   const user = req.body;
   if (!user) {
     throw new Error("User not found");
@@ -92,7 +92,7 @@ app.get('/getVideoToken', (req, res) => {
   const exp = Math.round(new Date().now() / 1000) + 60 * 60;
   const issued = Math.floor(new Date().now() / 1000) - 60;
   const token = (client.createToken(user.id, exp, issued));
-  res.json(token);
+  res.send(token);
 });
 
 app.listen("3001", () => {
