@@ -20,7 +20,7 @@ if (!PUBLISHABLE_KEY) {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-        <StreamVideoCallProvider>
+      <StreamVideoCallProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<App />} />
