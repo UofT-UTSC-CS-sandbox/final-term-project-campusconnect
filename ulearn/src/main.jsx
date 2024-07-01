@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
+import '@stream-io/video-react-sdk/dist/css/styles.css'
 import './index.css'
 import { ClerkProvider } from '@clerk/clerk-react'
 import PersonalInfoPage from './Pages/PersonalInfo/PersonalInfoPage.jsx'
@@ -10,6 +11,7 @@ import TutorPage from './Pages/TutorInfo/tutorInfoPage.jsx'
 import HomePage from './Pages/Home/homepage.jsx'
 import StreamVideoCallProvider from './Pages/StreamVideoCallProvider.jsx'
 import Meeting from './Pages/Meeting.jsx'
+
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 

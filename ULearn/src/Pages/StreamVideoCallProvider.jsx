@@ -24,7 +24,7 @@ const StreamVideoCallProvider = ({ children }) => {
         user: {
           id: user.id,
           name: user.fullName,
-          image: user.profileImageUrl,
+          image: user.imageUrl,
         },
         token,
       });
