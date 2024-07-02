@@ -15,7 +15,6 @@ const CreateCallButton = () => {
     const [callDetails, setCallDetails] = useState(null);
 
     const handleCreate = async () => {
-        console.log(client);
         if (!client || !user) {
             return;
         }

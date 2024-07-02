@@ -1,10 +1,11 @@
 import { DeviceSettings, VideoPreview, useCall } from "@stream-io/video-react-sdk";
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 const MeetingSetup = ({ setIsSetupComplete }) => {
     const [isMicCamEnabled, setIsMicCamEnabled] = useState(false);
     const call = useCall();
+    const navigate = useNavigate();
 
     if (!call) {
         throw new Error("usecall must be used within StreamCall component");
@@ -21,22 +22,39 @@ const MeetingSetup = ({ setIsSetupComplete }) => {
     }, [isMicCamEnabled, call?.camera, call?.microphone]);
 
     return (
-        <div>
-            <h1>Setup</h1>
+        <div className="flex h-screen w-full flex-col items-center justify-center gap-3">
+            <h1 className="text-3xl font-bold">Setup</h1>
             <VideoPreview />
-            <div>
-                <label>
-                    <input type="checkbox" checked={isMicCamEnabled} onChange={(e) => setIsMicCamEnabled(e.target.checked)} />
+            <div className="flex h-16 items-center justify-center gap-3">
+                <label className="flex items-center justify-center gap-2 font-medium">
+                    <input
+                        type="checkbox"
+                        checked={isMicCamEnabled}
+                        onChange={(e) => setIsMicCamEnabled(e.target.checked)}
+                        className="m-0 w-auto" />
                     Join with mic and camera off
                 </label>
-                <DeviceSettings />
+                <div className="text-white">
+                    <DeviceSettings />
+                </div>
             </div>
-            <button onClick={() => {
-                call.join();
-                setIsSetupComplete(true);
-            }}>
-                Join Call
-            </button>
+            <div className="flex items-center gap-2">
+                <button
+                    className="border-2 border-black rounded-md px-3 py-1"
+                    onClick={() => {
+                        call.join();
+                        setIsSetupComplete(true);
+                    }}>
+                    Join Call
+                </button>
+                <button
+                    className="border-2 border-black rounded-md px-3 py-1"
+                    onClick={() => {
+                        navigate(-1);
+                    }}>
+                    Exit
+                </button>
+            </div>
         </div>
     );
 };

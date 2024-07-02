@@ -6,11 +6,10 @@ import {
   SpeakerLayout,
 } from "@stream-io/video-react-sdk";
 import { useState } from "react";
-import classNames from "classnames";
 import { Users } from "lucide-react";
 
 const MeetingRoom = () => {
-  const [layout, setLayout] = useState("speaker-left");
+  const [layout, setLayout] = useState("grid");
   const [showParticipants, setShowParticipants] = useState(false);
 
   const CallLayout = () => {
@@ -25,13 +24,13 @@ const MeetingRoom = () => {
   };
 
   return (
-    <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
+    <section className="relative h-screen w-full overflow-hidden pt-4 text-white ">
       <div className="relative flex size-full items-center justify-center">
-        <div className="flex size-full max-w-[1000px] items-center">
+        <div className="flex size-full p-2 max-w-[1300px] items-center">
           <CallLayout />
         </div>
         <div
-          className={` text-black h-[calc(100vh-86px)] ml-2 ${showParticipants ? 'block' : 'hidden'}`}
+          className={` text-black rounded-xl m-2 border-2 border-black p-4 h-[calc(100vh-86px)] ml-2 ${showParticipants ? 'block' : 'hidden'}`}
         >
           <CallParticipantsList onClose={() => setShowParticipants(false)} />
         </div>
@@ -41,7 +40,7 @@ const MeetingRoom = () => {
         <select
           value={layout}
           onChange={(e) => setLayout(e.target.value)}
-          className="bg-[#10232d] rounded-lg px-1.5 py-1.5 outline-none text-center cursor-pointer hover:bg-[#2a3942]"
+          className="bg-black rounded-lg px-1.5 py-1.5 outline-none cursor-pointer hover:bg-[#323b44]"
         >
           <option value="speaker-left">Speaker Left</option>
           <option value="speaker-right">Speaker Right</option>
@@ -49,7 +48,7 @@ const MeetingRoom = () => {
         </select>
         <CallStatsButton />
         <button onClick={() => setShowParticipants((prev) => !prev)}>
-          <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[4c535b]">
+          <div className="cursor-pointer rounded-2xl bg-black px-4 py-2 hover:bg-[#323b44]">
             <Users size={20} className="text-white" />
           </div>
         </button>
