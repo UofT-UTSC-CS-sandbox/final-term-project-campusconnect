@@ -6,7 +6,8 @@ import {
   SpeakerLayout,
 } from "@stream-io/video-react-sdk";
 import { useState } from "react";
-import { Users } from "lucide-react";
+import { Grid2X2, Users } from "lucide-react";
+import EndCallButton from "../components/endCallButton";
 
 const MeetingRoom = () => {
   const [layout, setLayout] = useState("grid");
@@ -40,7 +41,7 @@ const MeetingRoom = () => {
         <select
           value={layout}
           onChange={(e) => setLayout(e.target.value)}
-          className="bg-black rounded-lg px-1.5 py-1.5 outline-none cursor-pointer hover:bg-[#323b44]"
+          className="bg-black rounded-md px-1.5 py-1.5 outline-none cursor-pointer hover:bg-[#323b44]"
         >
           <option value="speaker-left">Speaker Left</option>
           <option value="speaker-right">Speaker Right</option>
@@ -48,10 +49,11 @@ const MeetingRoom = () => {
         </select>
         <CallStatsButton />
         <button onClick={() => setShowParticipants((prev) => !prev)}>
-          <div className="cursor-pointer rounded-2xl bg-black px-4 py-2 hover:bg-[#323b44]">
+          <div className="cursor-pointer rounded-md bg-black px-5 py-2 hover:bg-[#323b44]">
             <Users size={20} className="text-white" />
           </div>
         </button>
+        <EndCallButton />
       </div>
     </section>
   );
