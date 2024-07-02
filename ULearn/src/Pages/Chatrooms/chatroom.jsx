@@ -12,6 +12,7 @@ import {
 } from 'stream-chat-react';
 import './chatroom_layout.css';
 import 'stream-chat-react/dist/css/v2/index.css';
+import { useUser } from '@clerk/clerk-react';
 
 const apiKey = 'g8evherw6njt';
 //const apiSecret = '2x2rezwpctxjeuvu65vt5hxwtzg84ve6zhnyfbt5e7bwd7h4emckuavq28ghph6p';
@@ -26,7 +27,30 @@ const filters = { members: { $in: [userId] }, type: 'messaging' };
 const options = { presence: true, state: true };
 const sort = { last_message_at: -1 };
 
+/*//new miri temp
+const chatClient = new StreamChat(apiKey)
+//const userToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidWxlYXJuNCIsImV4cCI6MTcyMDE5NTg1OH0.0pPNRVFlNMQ-kdJDBUzwv69iqPEyLPWURJp79eGykQ0"
 
+axios.post("/getChatroomToken", async (req, res) => {
+    const { user_id } = req.body;
+    try {
+      const token = await chatClient.createToken(user_id.toString());
+      res.status(200).json({
+        payload: token,
+      });
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(400);
+    }
+  });
+
+const set = await chatClient.connectUser({id: userID}, token);
+
+const channel = client.channel('messaging', {
+    members: ['ulearn4', 'user2'],
+});
+await channel.create();
+//*/
 
 const chatRoom = () => {
   const [client, setClient] = useState(null);

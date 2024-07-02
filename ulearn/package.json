@@ -20,7 +20,9 @@
     "react-router": "^6.23.1",
     "react-router-dom": "^6.23.1",
     "react-select": "^5.8.0",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "stream-chat": "^8.37.0",
+    "stream-chat-react": "^11.23.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
