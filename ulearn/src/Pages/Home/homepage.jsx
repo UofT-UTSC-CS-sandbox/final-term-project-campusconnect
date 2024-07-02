@@ -4,9 +4,11 @@ import { UserButton, useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 import './homePage.css'; // Import your CSS file
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 function HomePage() {
+    let navigate = useNavigate()
     const { user } = useUser(); // can be used to fetch user specific data
 
     const [tutors, setTutors] = useState([]);
@@ -112,7 +114,7 @@ function HomePage() {
 
     // Function to handle click and redirect to tutor's page
     const handleTutorClick = (tutorName) => {
-        window.location.href = `/tutor/${tutorName}`;
+        navigate(`/tutor/${tutorName}`)
     };
 
     // placeholder for search 
