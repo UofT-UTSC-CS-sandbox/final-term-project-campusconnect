@@ -8,7 +8,7 @@ import WhoAreYouPage from './Pages/WhoAreYou/whoAreYouPage.jsx'
 import App from './Pages/App.jsx'
 import TutorPage from './Pages/TutorInfo/tutorInfoPage.jsx'
 import HomePage from './Pages/Home/homepage.jsx'
-
+import ChatRoom from './Pages/Chatrooms/chatroom.jsx'
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 if (!PUBLISHABLE_KEY) {
@@ -25,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/whoAreYou" element={<WhoAreYouPage/>} />
         <Route path="/tutorInfo" element={<TutorPage />}/>
         <Route path="/homePage" element={<HomePage />} />
+        <Route path="/chatRoom" element={<ChatRoom />} />
       </Routes>
     </BrowserRouter>
     </ClerkProvider>

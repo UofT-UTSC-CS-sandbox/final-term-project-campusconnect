@@ -4,6 +4,7 @@ const UserModel = require('./models/User');
 const path = require('path'); // Import the path module
 const cors = require('cors');
 const TutorModel = require('./models/Tutor');
+const { StreamClient } = require("@stream-io/node-sdk");
 
 const app = express();
 app.use(express.json());
@@ -83,6 +84,21 @@ app.get('/getUserByEmail', async (req, res) => {
   }
 });
 
+const apiKey = 'g8evherw6njt';
+const secret = '2x2rezwpctxjeuvu65vt5hxwtzg84ve6zhnyfbt5e7bwd7h4emckuavq28ghph6p';
+
+app.post('/getChatToken', (req, res) => {
+  const user = req.body;
+  if (!user) {
+    throw new Error("User not found");
+  }
+  if (!apiKey || !secret) {
+    throw new Error("Missing API Key");
+  }
+  const client = new StreamClient(apiKey, secret);
+  const token = (client.createToken(user.id));
+  res.send(token);
+});
 
 app.listen("3001", () => {
     console.log(`Server started on port 3001`);
