@@ -6,7 +6,6 @@ function homePage(){
             <h1>Home Page</h1>
             <p>Welcome to uLearn</p>
             <UserButton />
-            <CreateCallButton />
         </div>
 
     )

@@ -13,7 +13,7 @@ import EndCallButton from "./endCallButton";
 import { useNavigate } from "react-router-dom";
 
 const MeetingRoom = () => {
-  const [layout, setLayout] = useState("grid");
+  const [layout, setLayout] = useState("speaker-right");
   const [showParticipants, setShowParticipants] = useState(false);
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
@@ -26,12 +26,9 @@ const MeetingRoom = () => {
   if (callingState !== CallingState.JOINED) return <h1>Joining...</h1>;
 
   const CallLayout = () => {
-    switch (layout) {
-      case "grid":
-        return <PaginatedGridLayout />;
-      case "speaker-right":
+    if (layout === "speaker-right") {
         return <SpeakerLayout participantsBarPosition="left" />;
-      default:
+    } else {
         return <SpeakerLayout participantsBarPosition="right" />;
     }
   };
@@ -39,7 +36,7 @@ const MeetingRoom = () => {
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white ">
       <div className="relative flex size-full items-center justify-center">
-        <div className="flex size-full p-2 max-w-[1300px] items-center">
+        <div className="flex size-9/12 p-2 items-center">
           <CallLayout />
         </div>
         <div
@@ -59,7 +56,6 @@ const MeetingRoom = () => {
         >
           <option value="speaker-left">Speaker Left</option>
           <option value="speaker-right">Speaker Right</option>
-          <option value="grid">Grid</option>
         </select>
         <CallStatsButton />
         <button onClick={() => setShowParticipants((prev) => !prev)}>

@@ -1,5 +1,6 @@
 import { useUser } from '@clerk/clerk-react';
 import { useStreamVideoClient } from '@stream-io/video-react-sdk';
+import { Phone } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {toast} from "react-toastify";
@@ -52,7 +53,7 @@ const CreateCallButton = () => {
 
     return (
         <div>
-            <button onClick={handleCreate}>Create Call</button>
+            <Phone color="black" className="cursor-pointer" size={20} onClick={handleCreate} />
         </div>
     );
 };
