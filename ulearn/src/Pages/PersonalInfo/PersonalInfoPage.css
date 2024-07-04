@@ -1,45 +1,72 @@
-body {
-    background-image: linear-gradient(to right, rgb(22, 86, 166) 0%, rgb(22, 86, 166) 35%, white 35%, white 100%);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-
-.pip-container {
+.pip-body {
     display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
     align-items: center;
-    justify-content: flex-start;
-    gap: 200px;
 }
-.pip-image-container {
+.pip-title {
+    font-size: 40px;
+    margin-left: 30px;
+}
+.pip-background-overlay {
     position: absolute;
-    left: 20px;
-    display: flex;
-    justify-content: flex-start; 
-}
-
-.pip-image-container img {
-    height: 600px;
-    width: 500px;
-    justify-content: flex-start; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/images/nbg2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: blur(6px); /* Adjust the blur radius as needed */
+    z-index: -1; /* Ensure the overlay is behind other content */
 }
 .pip-wrapper {
     width: 420px;
-    background-color: white;
     color:black;
     border-radius: 20px;
-    padding: 30px 40px;
-    border: 2px solid black;
+    padding: 10px;
     backdrop-filter: blur(30px);
-    margin-left: 800px;
-    margin-top: 80px;
 }
-.pip-wrapper h2 {
-    font-size: 30px;
-    text-align: center;
-    color: black;
+.pip-upload-button {
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 1px;
+    box-shadow: 0 0 0 1px black;
+    height: 50px;
+    width: auto;
+    min-width: 400px;
+    max-width: auto;
+    background-color: white;
+    cursor: pointer;
 }
 
+.pip-upload-button:hover {
+    border-color: black;
+}
 .pip-next-button {
-    width: 200px;
-    border: 2px black solid;
-    border-radius: 40px;
-    margin-left: 70px;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 1px;
+    box-shadow: 0 0 0 1px black;
+    height: 50px;
+    width: auto;
+    min-width: 400px;
+    max-width: auto;
+    background-color: white;
+    cursor: pointer;
+}
+.pip-next-button:hover {
+    border-color: black;
+}
+.pip-user-button-container {
+    position: absolute;
+    left: 20px; /* Adjust the left position as needed */
+    top: 37px; /* Adjust the top position as needed */
 }
