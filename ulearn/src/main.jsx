@@ -10,7 +10,7 @@ import App from './Pages/App.jsx'
 import TutorPage from './Pages/TutorInfo/tutorInfoPage.jsx'
 import HomePage from './Pages/Home/homepage.jsx'
 import StreamVideoCallProvider from './Pages/StreamVideoCallProvider.jsx'
-import Meeting from './Pages/Meeting.jsx'
+import Meeting from './Pages/Meeting/Meeting.jsx'
 
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
