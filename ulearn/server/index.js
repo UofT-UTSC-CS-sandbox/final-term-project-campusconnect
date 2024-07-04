@@ -93,7 +93,7 @@ const STREAM_VIDEO_SECRET_KEY = process.env.STREAM_VIDEO_SECRET_KEY;
    * Stream client for video streaming.
    * @type {StreamClient}
    */
-  
+
 app.post('/getVideoToken', (req, res) => {
   const user = req.body;
   if (!user) {
@@ -102,7 +102,6 @@ app.post('/getVideoToken', (req, res) => {
   if (!STREAM_VIDEO_API_KEY || !STREAM_VIDEO_SECRET_KEY) {
     throw new Error("Missing API Key");
   }
-  
   const client = new StreamClient(STREAM_VIDEO_API_KEY, STREAM_VIDEO_SECRET_KEY);
   const date = new Date().getTime();
   const exp = Math.round(date / 1000) + 60 * 60;
@@ -110,6 +109,19 @@ app.post('/getVideoToken', (req, res) => {
   const token = (client.createToken(user.id, exp, issued));
   res.send(token);
 });
+
+app.post('/getChatToken', (req, res) => {
+  const user = req.body;
+  if (!user){
+    throw new Error("User not found");
+  }
+  if (!STREAM_VIDEO_API_KEY || !STREAM_VIDEO_SECRET_KEY) {
+    throw new Error("Missing API Key");
+  }
+  const client = new StreamClient(STREAM_VIDEO_API_KEY, STREAM_VIDEO_SECRET_KEY);
+  const token = (client.createToken(user.id));
+  res.send(token);
+})
 
 app.listen("3001", () => {
     console.log(`Server started on port 3001`);
