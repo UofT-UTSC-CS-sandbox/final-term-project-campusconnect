@@ -2,6 +2,8 @@ import { useUser } from '@clerk/clerk-react';
 import { useStreamVideoClient } from '@stream-io/video-react-sdk';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateCallButton = () => {
     let navigate = useNavigate();
@@ -38,10 +40,13 @@ const CreateCallButton = () => {
             setCallDetails(call);
 
             if (!values.description) {
+                toast.success("Meeting created successfully")
                 navigate(`/meeting/${call.id}`);
             }
+
         } catch (error) {
             console.log(error);
+            toast.error("Error: Failed to create meeting")
         }
     };
 
