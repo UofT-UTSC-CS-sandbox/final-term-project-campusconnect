@@ -1,16 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-body {
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .poppins-extralight {
   font-family: "Poppins", sans-serif;
   font-weight: 200;
@@ -21,4 +23,14 @@ body {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
+}
+
+.str-video {
+  --str-video__base-color6: #000000;
+  --str-video__button-primary-base: #000000;
+  --str-video__background-color5: #000000;
+  --str-video__primary-color: #8c959f;
+  --str-video__livestream-overlay-color: rgba(39, 42, 48, 0.25);
+  --str-video__livestream-overlay-color-hovered: rgba(39, 42, 48, 0.5);
+  
 }

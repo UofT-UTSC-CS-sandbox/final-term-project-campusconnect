@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
 import { UserButton, useUser} from '@clerk/clerk-react';
-import './PersonalInfoPage.css';
-import vectImg from '../../assets/images/vectImg.png'
+import './PersonalInfoPage.css'
 import { universities, years, languages } from './constants.jsx';
 import axios from 'axios';
 
@@ -11,13 +10,20 @@ const pipCustomStyles = {
     control: (provided, state) => ({
         ...provided,
         border: '2px solid black',
-        borderRadius: '40px',
-        padding: '5px',
-        margin: '15px 0px',
+        borderRadius: '20px',
+        padding: '1px',
+        margin: '20px 0px',
         boxShadow: state.isFocused ? '0 0 0 1px black' : null,
         '&:hover': {
             borderColor: 'black',
         },
+        minHeight: '15px', // Set the minimum height of the control
+        height: 'auto',
+        maxHeight: 'auto',
+        width: 'auto',     // Allows the width to be dynamic
+        minWidth: '400px', // Minimum width of the control
+        maxWidth: 'auto',
+       
     }),
     menu: (provided) => ({
         ...provided,
@@ -31,12 +37,12 @@ const pipCustomStyles = {
         },
     }),
 };
-
 const PersonalInfoPage = () => {
     const { user } = useUser();
     const [selectedUniversity, setSelectedUniversity] = useState(null);
     const [selectedYear, setSelectedYear] = useState(null);
     const [selectedLanguages, setSelectedLanguages] = useState([]);
+    const [selectedRole, setSelectedRole] = useState(null);
 
     const handleUniChange = (selectedUniversity) => {
         setSelectedUniversity(selectedUniversity);
@@ -50,76 +56,94 @@ const PersonalInfoPage = () => {
         setSelectedLanguages(selectedLanguages);
     };
 
+    const handleRoleChange = (selectedRole) => {
+        setSelectedRole(selectedRole);
+    };
+
     const handleImageUplaod = (event) => {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
 
         input.onchange = (event) => {
-          const file = event.target.files[0];
-          if (file) {
+            const file = event.target.files[0];
+            if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-              const imageData = reader.result;
-              user.setProfileImage({
+                const imageData = reader.result;
+                user.setProfileImage({
                 file: imageData
-              })
+                })
                 .then(() => {
-                  console.log('Profile picture uploaded successfully');
+                    if (user) {
+                    const clerkId = user.id;
+                    const email = String(user.primaryEmailAddress);
+                    const name = user.fullName;
+                    const image = user.imageUrl;
+                    axios.post(`http://localhost:3001/login`, { email })
+                        .then(response => {
+                        if (response.data === "found") {
+                            axios.post(`http://localhost:3001/update`, { clerkId, email, name, image })
+                            .then(response => {
+                                console.log(response.data);
+                            });
+                        }
+                        });
+                    }
                 })
                 .catch((error) => {
-                  console.error('Failed to upload profile picture:', error);
+                    console.error('Failed to upload profile picture:', error);
                 });
+                
             };
             reader.readAsDataURL(file);
-          }
+            }
         };
         input.click();
-           
-      };
+    };
 
     const handleNext = (event) => {
         event.preventDefault();
-        console.log(user.hasImage);
         if (!user.hasImage) {
             alert("Please upload a profile picture");
             return
         }
-        if (selectedLanguages && selectedUniversity && selectedYear && user.hasImage) {
+        if (selectedLanguages && selectedUniversity && selectedYear && selectedRole && user.hasImage) {
             const clerkId = user.id;
             const email = String(user.primaryEmailAddress);
             const name = user.fullName;
             let languages = selectedLanguages.map(lang => lang.value)
             const university = selectedUniversity.value;
             const year = selectedYear.value;
-            const image = user.imageUrl;
-
             axios.post(`http://localhost:3001/login`, { email })
-                      .then(response => {
+                        .then(response => {
                         if (response.data === "found") {
-                          console.log(clerkId);
-                          axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, university, year, languages, image })
+                            axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, university, year, languages })
                             .then(response => {
-                              window.location.href = "/whoAreYou"
+                                if (selectedRole.value === 'Tutor') { 
+                                    window.location.href = "/tutorInfo"
+                                }
+                                else {
+                                    window.location.href = "/homePage"
+                                }
                             });
                         }
-                      });
+                        });
         }
         else {
             return
         }
     }
     return (
-        <div className='pip-container'>
-            <div className='pip-image-container'>
-                <img src={vectImg}></img>
-            </div>
+        <div>
+            <div className='pip-background-overlay'></div>
+            <h2 className='pip-title'>Register Account</h2>
             <div className='pip-wrapper'>
                 <form onSubmit={handleNext}>
-                    <h2>Personal Info</h2>
-                    <UserButton />
-                    <input required={true} type='button' value='UploadPicture' onClick={handleImageUplaod}></input>   
-
+                    <div className='pip-user-button-container'>
+                        <UserButton/>
+                    </div>
+                    <input required={true} type='button' value='Upload Picture' onClick={handleImageUplaod} className='pip-upload-button'></input>   
                     <div>
                         <Select 
                             placeholder="Which University do you attend?"
@@ -151,11 +175,22 @@ const PersonalInfoPage = () => {
                             styles={pipCustomStyles}
                         />
                     </div>
+                    <div>
+                        <Select
+                            placeholder="What do you want to sign up as?"
+                            required={true}
+                            options={[ { value: 'Tutor', label: "Tutor" },
+                                { value: 'Student', label: "Student" }]}
+                            value={selectedRole}
+                            onChange={handleRoleChange}
+                            styles={pipCustomStyles}
+                        />
+                    </div>
                     <input className='pip-next-button' type='submit' value='Next'></input>                   
                 </form>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default PersonalInfoPage;
