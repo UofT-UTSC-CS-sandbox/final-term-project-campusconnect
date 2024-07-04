@@ -14,6 +14,7 @@ import './chatroom_layout.css';
 import 'stream-chat-react/dist/css/v2/index.css';
 import { useUser } from "@clerk/clerk-react";
 import axios from 'axios';
+import { useLocation } from 'react-router';
 
 //const apiKey = 'g8evherw6njt';
 //const apiSecret = '2x2rezwpctxjeuvu65vt5hxwtzg84ve6zhnyfbt5e7bwd7h4emckuavq28ghph6p';
@@ -29,6 +30,10 @@ const apiKey = import.meta.env.VITE_STREAM_VIDEO_API_KEY;
 
 
 const ChatRoom = () => {
+  const {state} = useLocation();
+  const {clerkid} = state;
+  console.log(clerkid);
+
   const [client, setClient] = useState(null);
   const { isLoaded } = useUser(null);
   const {user} = useUser();

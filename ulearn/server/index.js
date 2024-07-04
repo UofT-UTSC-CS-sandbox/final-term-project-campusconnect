@@ -85,6 +85,7 @@ app.get('/getUserByEmail', async (req, res) => {
   }
 });
 
+
 const STREAM_VIDEO_API_KEY = process.env.VITE_STREAM_VIDEO_API_KEY;
 const STREAM_VIDEO_SECRET_KEY = process.env.STREAM_VIDEO_SECRET_KEY;
 
