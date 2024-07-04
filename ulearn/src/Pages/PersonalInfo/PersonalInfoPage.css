@@ -1,6 +1,6 @@
-body {
+/* body {
     background-image: linear-gradient(to right, rgb(22, 86, 166) 0%, rgb(22, 86, 166) 35%, white 35%, white 100%);
-}
+} */
 
 .pip-container {
     display: flex;
