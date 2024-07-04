@@ -14,7 +14,6 @@ import './chatroom_layout.css';
 import 'stream-chat-react/dist/css/v2/index.css';
 import { useUser } from "@clerk/clerk-react";
 import axios from 'axios';
-
 const ChatRoom = () => {
   const apiKey = 'g8evherw6njt';
   const [client, setClient] = useState(null);

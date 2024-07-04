@@ -9,6 +9,7 @@ import App from './Pages/App.jsx'
 import TutorPage from './Pages/TutorInfo/tutorInfoPage.jsx'
 import HomePage from './Pages/Home/homepage.jsx'
 import ChatRoom from './Pages/Chatrooms/chatroom.jsx'
+
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 if (!PUBLISHABLE_KEY) {

@@ -5,6 +5,7 @@ const path = require('path'); // Import the path module
 const cors = require('cors');
 const TutorModel = require('./models/Tutor');
 const { StreamClient } = require("@stream-io/node-sdk");
+require('dotenv').config({path: '../.env.local'}); 
 
 const app = express();
 app.use(express.json());
@@ -84,21 +85,40 @@ app.get('/getUserByEmail', async (req, res) => {
   }
 });
 
-const apiKey = 'g8evherw6njt';
-const secret = '2x2rezwpctxjeuvu65vt5hxwtzg84ve6zhnyfbt5e7bwd7h4emckuavq28ghph6p';
+const STREAM_VIDEO_API_KEY = process.env.VITE_STREAM_VIDEO_API_KEY;
+const STREAM_VIDEO_SECRET_KEY = process.env.STREAM_VIDEO_SECRET_KEY;
 
-app.post('/getChatToken', (req, res) => {
+app.post('/getVideoToken', (req, res) => {
   const user = req.body;
   if (!user) {
     throw new Error("User not found");
   }
-  if (!apiKey || !secret) {
+  if (!STREAM_VIDEO_API_KEY || !STREAM_VIDEO_SECRET_KEY) {
     throw new Error("Missing API Key");
   }
-  const client = new StreamClient(apiKey, secret);
-  const token = (client.createToken(user.id));
+  const client = new StreamClient(STREAM_VIDEO_API_KEY, STREAM_VIDEO_SECRET_KEY);
+  const date = new Date().getTime();
+  const exp = Math.round(date / 1000) + 60 * 60;
+  const issued = Math.floor(date / 1000) - 60;
+  const token = (client.createToken(user.id, exp, issued));
   res.send(token);
 });
+
+app.post('/getChatroomToken', (req, res) => {
+  const user = req.body;
+  if (!user){
+    throw new Error("User not found");
+  }
+  if (!STREAM_VIDEO_API_KEY || !STREAM_VIDEO_SECRET_KEY) {
+    throw new Error("Missing API Key");
+  }
+  const client = new StreamClient(STREAM_VIDEO_API_KEY, STREAM_VIDEO_SECRET_KEY);
+  const date = new Date().getTime();
+  const exp = Math.round(date / 1000) + 60 * 60;
+  const issued = Math.floor(date / 1000) - 60;
+  const token = (client.createToken(user.id, exp, issued));
+  res.send(token);
+})
 
 app.listen("3001", () => {
     console.log(`Server started on port 3001`);
