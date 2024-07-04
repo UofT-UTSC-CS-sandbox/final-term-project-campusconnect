@@ -2,16 +2,28 @@ import {
   CallControls,
   CallParticipantsList,
   CallStatsButton,
+  CallingState,
   PaginatedGridLayout,
   SpeakerLayout,
+  useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import { useState } from "react";
 import { Grid2X2, Users } from "lucide-react";
 import EndCallButton from "../components/endCallButton";
+import { useNavigate } from "react-router-dom";
 
 const MeetingRoom = () => {
   const [layout, setLayout] = useState("grid");
   const [showParticipants, setShowParticipants] = useState(false);
+  const { useCallCallingState } = useCallStateHooks();
+  const callingState = useCallCallingState();
+  const navigate = useNavigate();
+
+  if (callingState === CallingState.LEFT) {
+    navigate("/homePage");
+  }
+
+  if (callingState !== CallingState.JOINED) return <h1>Joining...</h1>;
 
   const CallLayout = () => {
     switch (layout) {
@@ -31,12 +43,14 @@ const MeetingRoom = () => {
           <CallLayout />
         </div>
         <div
-          className={` text-black rounded-xl m-2 border-2 border-black p-4 h-[calc(100vh-86px)] ml-2 ${showParticipants ? 'block' : 'hidden'}`}
+          className={` text-black rounded-xl m-2 border-2 border-black p-4 h-[calc(100vh-86px)] ml-2 ${
+            showParticipants ? "block" : "hidden"
+          }`}
         >
           <CallParticipantsList onClose={() => setShowParticipants(false)} />
         </div>
       </div>
-      <div className="fixed bottom-0 flex w-full items-center justify-center gap-5">
+      <div className="fixed bottom-0 flex w-full items-center justify-center gap-5 flex-wrapy">
         <CallControls />
         <select
           value={layout}
