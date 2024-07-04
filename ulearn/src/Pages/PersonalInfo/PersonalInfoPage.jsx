@@ -66,28 +66,10 @@ const PersonalInfoPage = () => {
               })
                 .then(() => {
                   console.log('Profile picture uploaded successfully');
-                  if (user) {
-
-                    const clerkId = user.id;
-                    const email = String(user.primaryEmailAddress);
-                    const name = user.fullName;
-                    const image = user.imageUrl;
-                    axios.post(`http://localhost:3001/login`, { email })
-                      .then(response => {
-                        if (response.data === "found") {
-                          console.log(clerkId);
-                          axios.post(`http://localhost:3001/update`, { clerkId, email, name, image })
-                            .then(response => {
-                              console.log(response.data);
-                            });
-                        }
-                      });
-                  }
                 })
                 .catch((error) => {
                   console.error('Failed to upload profile picture:', error);
                 });
-                
             };
             reader.readAsDataURL(file);
           }
@@ -110,11 +92,13 @@ const PersonalInfoPage = () => {
             let languages = selectedLanguages.map(lang => lang.value)
             const university = selectedUniversity.value;
             const year = selectedYear.value;
+            const image = user.imageUrl;
+
             axios.post(`http://localhost:3001/login`, { email })
                       .then(response => {
                         if (response.data === "found") {
                           console.log(clerkId);
-                          axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, university, year, languages })
+                          axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, university, year, languages, image })
                             .then(response => {
                               window.location.href = "/whoAreYou"
                             });
