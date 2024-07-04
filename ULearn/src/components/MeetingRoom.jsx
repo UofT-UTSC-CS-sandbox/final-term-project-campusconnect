@@ -9,7 +9,7 @@ import {
 } from "@stream-io/video-react-sdk";
 import { useState } from "react";
 import { Grid2X2, Users } from "lucide-react";
-import EndCallButton from "../components/endCallButton";
+import EndCallButton from "./endCallButton";
 import { useNavigate } from "react-router-dom";
 
 const MeetingRoom = () => {
