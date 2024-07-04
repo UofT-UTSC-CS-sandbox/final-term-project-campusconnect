@@ -115,18 +115,26 @@ const PersonalInfoPage = () => {
             let languages = selectedLanguages.map(lang => lang.value)
             const university = selectedUniversity.value;
             const year = selectedYear.value;
+            let finishedSignUp = false;
             axios.post(`http://localhost:3001/login`, { email })
                         .then(response => {
-                        if (response.data === "found") {
-                            axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, university, year, languages })
-                            .then(response => {
-                                if (selectedRole.value === 'Tutor') { 
+                        if (response.data !== "not found") {
+                            if (selectedRole.value === 'Tutor') {
+                                axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, university, year, languages, finishedSignUp})
+                                .then(() => {
                                     window.location.href = "/tutorInfo"
-                                }
-                                else {
+                                });  
+                            }
+                            else {
+                                finishedSignUp = true;
+                                axios.post(`http://localhost:3001/updatePersonalInfo`, { clerkId, email, name, university, year, languages, finishedSignUp})
+                                .then(() => {
                                     window.location.href = "/homePage"
-                                }
-                            });
+                                }); 
+                                
+                            }
+
+                            
                         }
                         });
         }
@@ -135,7 +143,7 @@ const PersonalInfoPage = () => {
         }
     }
     return (
-        <div>
+        <div className='pip-body'>
             <div className='pip-background-overlay'></div>
             <h2 className='pip-title'>Register Account</h2>
             <div className='pip-wrapper'>

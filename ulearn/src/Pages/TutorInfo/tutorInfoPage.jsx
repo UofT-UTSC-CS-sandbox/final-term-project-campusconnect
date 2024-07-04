@@ -70,7 +70,7 @@ function TutorPage() {
     let transcript = pdfToText(file).then(text => {return text}).catch(error => console.error("Failed to extract text from pdf"));
     let textoftranscript = await transcript;
     let pass = VerifyTutor(courses, textoftranscript);
-    // let signUpFinished = True;
+    let finishedSignUp = false;
     if (isNaN(rate)){
       toast.error("Please enter a valid rate (numbers only)")
       pass = 0;
@@ -81,16 +81,14 @@ function TutorPage() {
         verifiedCourses: courses,
         rate: rate,
         description: description,
-        // signUpFinished: signUpFinished
-     };  
+     };
      axios.post(`http://localhost:3001/tutors`, dataToSend)
-       .then(response => {
-         console.log(response.data)
-       })
        .catch(error => {
          console.error('Failed to send data:', error);
        });
        toast.success("Your account has been created!")
+       finishedSignUp = true;
+       axios.post(`http://localhost:3001/updatePersonalInfo`, {email, finishedSignUp})
        window.location.href = "/homePage"
     }
     else{
@@ -99,7 +97,7 @@ function TutorPage() {
   };
 
   return (
-    <div>
+    <div className="tip-body">
     <div className="tip-background-overlay"></div>
     <h2 className="tip-title">Tutor Info</h2>
     <div className="tip-wrapper">
