@@ -17,7 +17,7 @@ function TutorProfile() {
         axios.get('http://localhost:3001/getUserByEmail', { params: { email: email } })
             .then(response => {
                 const userData = response.data;
-                navigate(`/chatRoom`, {state: {clerkid: userData.clerkId}})
+                navigate(`/chatRoom`, {state: {clerkid: userData.clerkId, tutorname: userData.name, tutorimage: userData.image}})
             })
             .catch(error => {
                 console.error("Error fetching user languages:", error);

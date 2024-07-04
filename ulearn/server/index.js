@@ -105,7 +105,7 @@ app.post('/getVideoToken', (req, res) => {
   res.send(token);
 });
 
-app.post('/getChatroomToken', (req, res) => {
+app.post('/getChatToken', (req, res) => {
   const user = req.body;
   if (!user){
     throw new Error("User not found");
@@ -114,10 +114,7 @@ app.post('/getChatroomToken', (req, res) => {
     throw new Error("Missing API Key");
   }
   const client = new StreamClient(STREAM_VIDEO_API_KEY, STREAM_VIDEO_SECRET_KEY);
-  const date = new Date().getTime();
-  const exp = Math.round(date / 1000) + 60 * 60;
-  const issued = Math.floor(date / 1000) - 60;
-  const token = (client.createToken(user.id, exp, issued));
+  const token = (client.createToken(user.id));
   res.send(token);
 })
 
