@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { UserButton, useUser } from '@clerk/clerk-react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
 import './homePage.css'; // Import your CSS file
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

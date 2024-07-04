@@ -69,8 +69,8 @@ const ChatRoom = () => {
         axios.post('http://localhost:3001/getChatToken', tutorData).then(response => {      
           const tokentutor = response.data;
           const tutorclient = StreamChat.getInstance(apiKey);
-          if (!tutorclient.userID) {
-            tutorclient.connectUser(
+          if (!tutorclient.userID) { //if there's no tutor in the stream api
+            tutorclient.connectUser( //connect them
               {
                 //this is the tutor
                 id: tutorclient.id,
@@ -79,16 +79,21 @@ const ChatRoom = () => {
               },
               tokentutor
             ).then(() => {
+              //creates a messaging channel between user and tutor
+              const channel = client.channel('messaging', {
+                members: [user.id, clerkid],
+              });
+              channel.create();
             }).catch(error => {
               console.error("Failed to connect user:", error);
             });
+          } else { // if there already is a tutor in stream api
+            //creates a messaging channel between user and tutor
+            const channel = client.channel('messaging', {
+              members: [user.id, clerkid],
+            });
+            channel.create();
           }
-          console.log("and are here")
-          //creates a messaging channel between user and tutor
-          const channel = client.channel('messaging', {
-            members: [user.id, clerkid],
-          });
-          channel.create();
         }).catch(error => {
           console.error("Failed to get tutor token:", error);
         });

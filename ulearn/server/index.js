@@ -6,8 +6,6 @@ const cors = require('cors');
 const TutorModel = require('./models/Tutor');
 const { StreamClient } = require("@stream-io/node-sdk");
 require('dotenv').config({path: '../.env.local'}); 
-const { StreamClient } = require("@stream-io/node-sdk");
-require('dotenv').config({path: '../.env.local'}); 
 
 const app = express();
 app.use(express.json());
