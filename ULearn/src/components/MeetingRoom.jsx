@@ -1,3 +1,8 @@
+
+/**
+ * MeetingRoom component represents the page where the video call takes place.
+ * It includes the video call layout, call controls, participants list, and other related functionalities.
+ */
 import {
   CallControls,
   CallParticipantsList,
@@ -19,12 +24,15 @@ const MeetingRoom = () => {
   const callingState = useCallCallingState();
   const navigate = useNavigate();
 
+  //Redirect user to homepage upon hanging up
   if (callingState === CallingState.LEFT) {
     navigate("/homePage");
   }
 
+  //Display loading message if user is not in call after clicking join button
   if (callingState !== CallingState.JOINED) return <h1>Joining...</h1>;
 
+  //Display the call layout based on the selected layout
   const CallLayout = () => {
     if (layout === "speaker-right") {
         return <SpeakerLayout participantsBarPosition="left" />;

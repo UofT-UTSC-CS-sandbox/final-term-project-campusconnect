@@ -1,3 +1,9 @@
+
+/**
+ * Custom hook to get a call by its ID.
+ * @param {string} id - The ID of the call.
+ * @returns {Object} - An object containing the call and a boolean indicating if the call is loading.
+ */
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react"
 

@@ -1,3 +1,8 @@
+/**
+ * @file createCallButton.jsx
+ * @desc This file contains the CreateCallButton component, which is responsible for creating a call/meeting.
+ */
+
 import { useUser } from '@clerk/clerk-react';
 import { useStreamVideoClient } from '@stream-io/video-react-sdk';
 import { Phone } from 'lucide-react';
@@ -6,6 +11,12 @@ import { useNavigate } from 'react-router-dom';
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+/**
+ * CreateCallButton component.
+ * This component is responsible for creating a call/meeting.
+ *
+ * @returns {JSX.Element} The CreateCallButton component.
+ */
 const CreateCallButton = () => {
     let navigate = useNavigate();
     const { user } = useUser();
@@ -22,14 +33,14 @@ const CreateCallButton = () => {
             return;
         }
         
+        // Create a new call with the user as host
         try {
             const id = crypto.randomUUID();
-            const call = client.call('default', id);
+            const call = client.call('default', id); 
             if (!call) throw new Error('Failed to create call')
-
-            const startsAt = new Date(Date.now()).toISOString();
+            const startsAt = new Date(Date.now()).toISOString(); // Start the call immediately
             const description = values.description || 'No description';
-            await call.getOrCreate({
+            await call.getOrCreate({ // Create the call
                 data: {
                 starts_at: startsAt,
                 custom: {

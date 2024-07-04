@@ -1,29 +1,39 @@
-import { useCall, useCallStateHooks } from '@stream-io/video-react-sdk';
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+/**
+ * Represents the local participant in the video call.
+ * @type {Object}
+ */
+
+import { useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const EndCallButton = () => {
-    const call = useCall();
-    const navigate = useNavigate();
-    const { useLocalParticipant } = useCallStateHooks();
-    const localParticipant = useLocalParticipant();
+  const call = useCall();
+  const navigate = useNavigate();
+  const { useLocalParticipant } = useCallStateHooks();
 
-    const isMeetingOwner = localParticipant &&
-        call?.state.createdBy && localParticipant.userId === call.state.createdBy.id;
+  const localParticipant = useLocalParticipant();
 
-    if (!isMeetingOwner) {
-        return null;
-    };
+  const isMeetingOwner =
+    localParticipant &&
+    call?.state.createdBy &&
+    localParticipant.userId === call.state.createdBy.id;
 
-    return (
-        <button
-            className="px-3 py-2 rounded-lg bg-red-500"
-            onClick={async () => {
-                await call.endCall()
-                navigate('/homePage')
-            }
-            }>End Call for Everyone</button>
-    )
-}
+  if (!isMeetingOwner) {
+    return null;
+  }
+
+  return (
+    <button
+      className="px-3 py-2 rounded-lg bg-red-500"
+      onClick={async () => {
+        await call.endCall();
+        navigate("/homePage");
+      }}
+    >
+      End Call for Everyone
+    </button>
+  );
+};
 
 export default EndCallButton;

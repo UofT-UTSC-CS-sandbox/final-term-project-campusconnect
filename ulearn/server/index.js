@@ -80,6 +80,11 @@ app.post('/register', (req, res) => {
 const STREAM_VIDEO_API_KEY = process.env.VITE_STREAM_VIDEO_API_KEY;
 const STREAM_VIDEO_SECRET_KEY = process.env.STREAM_VIDEO_SECRET_KEY;
 
+/**
+   * Stream client for video streaming.
+   * @type {StreamClient}
+   */
+  
 app.post('/getVideoToken', (req, res) => {
   const user = req.body;
   if (!user) {
@@ -88,6 +93,7 @@ app.post('/getVideoToken', (req, res) => {
   if (!STREAM_VIDEO_API_KEY || !STREAM_VIDEO_SECRET_KEY) {
     throw new Error("Missing API Key");
   }
+  
   const client = new StreamClient(STREAM_VIDEO_API_KEY, STREAM_VIDEO_SECRET_KEY);
   const date = new Date().getTime();
   const exp = Math.round(date / 1000) + 60 * 60;

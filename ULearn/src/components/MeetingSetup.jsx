@@ -1,7 +1,20 @@
+
+
+/**
+ * @file MeetingSetup.jsx
+ * @desc A component for setting up a meeting with video and audio options.
+ */
+
 import { DeviceSettings, VideoPreview, useCall } from "@stream-io/video-react-sdk";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * MeetingSetup component.
+ * @param {Object} props - The component props.
+ * @param {Function} props.setIsSetupComplete - A function to set the setup completion status.
+ * @returns {JSX.Element} - The rendered MeetingSetup component.
+ */
 const MeetingSetup = ({ setIsSetupComplete }) => {
     const [isMicCamEnabled, setIsMicCamEnabled] = useState(false);
     const call = useCall();
@@ -11,6 +24,9 @@ const MeetingSetup = ({ setIsSetupComplete }) => {
         throw new Error("usecall must be used within StreamCall component");
     }
 
+    /**
+     * Disable camera and microphone if checkbox is ticked. Otherwise, attempt to turn them on.
+     */
     useEffect(() => {
         if (isMicCamEnabled) {
             call?.camera.disable();
