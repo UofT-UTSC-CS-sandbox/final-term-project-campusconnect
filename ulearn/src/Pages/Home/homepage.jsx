@@ -126,7 +126,9 @@ function HomePage() {
     return (
 
         <div className="homepage">
-            <Navbar></Navbar>
+            <div>
+                <Navbar></Navbar>
+            </div>
             <div className="header-userbutton">
                 <UserButton />
             </div>

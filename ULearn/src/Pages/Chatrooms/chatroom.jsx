@@ -15,6 +15,7 @@ import 'stream-chat-react/dist/css/v2/index.css';
 import { useUser } from "@clerk/clerk-react";
 import axios from 'axios';
 import { useLocation } from 'react-router';
+import Navbar from '../../components/Navbar/Navbar';
 
 const ChatRoom = () => {
   const {state} = useLocation();
@@ -109,17 +110,18 @@ const sort = { last_message_at: -1 };
   if (!client) return <div>Loading...</div>;
 
   return (
-    <Chat client={client}>
-      <ChannelList  filters={filters} options={options} sort={sort} />
-      <Channel>
-        <Window>
-          <ChannelHeader />
-          <MessageList />
-          <MessageInput />
-        </Window>
-        <Thread />
-      </Channel>
-    </Chat>
+    <Chat client={client} classname='left-100'>
+      <Navbar></Navbar>
+        <ChannelList  filters={filters} options={options} sort={sort} />
+        <Channel>
+          <Window>
+            <ChannelHeader />
+            <MessageList />
+            <MessageInput />
+          </Window>
+          <Thread />
+        </Channel>
+      </Chat>
   );
 };
 
