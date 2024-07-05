@@ -101,7 +101,7 @@ function HomePage() {
 
                                 // update tutor array with the tutor data
                                 // only add tutor if not already in the array
-                                setTutors(prevTutors => {
+                                setAllTutors(prevTutors => {
                                     if (!prevTutors.some(t => t.email === tutorData.email) && tutorData.languages.some(lang => userLanguages.includes(lang))) {
                                         return [...prevTutors, tutorData];
                                     } else {
@@ -132,19 +132,19 @@ function HomePage() {
         navigate(`/tutor/${tutorName}`, { state: { email: email } });
     };
 
-    // const handleCourseSearch = (selectedCourse) => {
-    //     setSelectedCourse(selectedCourse ? selectedCourse.value : null);
-    //     if (selectedCourse && selectedCourse.value === 'All courses') {
-    //         setTutors(allTutors);
-    //     } else if (selectedCourse) {
-    //         const filteredTutors = allTutors.filter(tutor => 
-    //             tutor.courses.includes(selectedCourse.value)
-    //         );
-    //         setTutors(filteredTutors);
-    //     } else {
-    //         setTutors(allTutors);
-    //     }
-    // };
+    const handleCourseSearch = (selectedCourse) => {
+        setSelectedCourse(selectedCourse ? selectedCourse.value : null);
+        if (selectedCourse && selectedCourse.value === 'All courses') {
+            setTutors(allTutors);
+        } else if (selectedCourse) {
+            const filteredTutors = allTutors.filter(tutor => 
+                tutor.courses.includes(selectedCourse.value)
+            );
+            setTutors(filteredTutors);
+        } else {
+            setTutors(allTutors);
+        }
+    };
 
     return (
         <div className="homepage-wrapper">
@@ -155,14 +155,14 @@ function HomePage() {
             <h1 className='homepage-header-main'> Find Your Tutor!</h1>
             <button className="homepage-tabs-button">Tabs</button>
             <div className="homepage-search-bar">
-                {/* <Select 
+                <Select 
                     placeholder="Search for a course"
                     required={true}
                     options={courses}
                     value={courses.find(course => course.value === selectedCourse)}
                     onChange={handleCourseSearch}
                     styles={homepageCustomStyles}
-                /> */}
+                />
             </div>
             <button className="homepage-filter-button">Filter</button>
             <div className="homepage-tutors-container">
