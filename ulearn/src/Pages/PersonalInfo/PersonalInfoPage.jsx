@@ -5,7 +5,6 @@ import './PersonalInfoPage.css'
 import { universities, years, languages } from './constants.jsx';
 import axios from 'axios';
 
-
 const pipCustomStyles = {
     control: (provided, state) => ({
         ...provided,

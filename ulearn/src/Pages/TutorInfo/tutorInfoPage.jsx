@@ -5,22 +5,14 @@ import VerifyTutor from './tutorVerification.jsx';
 import pdfToText from "react-pdftotext";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from 'axios';
+import { useUser } from "@clerk/clerk-react";
+import { courses } from "./constants.jsx";
 let file = null;
 
 function getFile(event) {
   file = event.target.files[0]
 }
-import axios from 'axios';
-import { useUser } from "@clerk/clerk-react";
-
-const options = [
-  {value: 'CSCA08', label: 'CSCA08'}, 
-  {value: 'CSCA48', label: 'CSCA48'}, 
-  {value: 'CSCA67', label: 'CSCA67'}, 
-  {value: 'MATA22', label: 'MATA22'}, 
-  {value: 'MATA31', label: 'MATA31'}, 
-  {value: 'MATA37', label: 'MATA37'}, 
-];
 
 const tipCustomStyles = {
   control: (provided, state) => ({
@@ -105,7 +97,7 @@ function TutorPage() {
       <form onSubmit={handleSubmit} >
          <Select required={true}
           placeholder="Please select courses"
-           options={options}
+           options={courses}
            value={selectedOptions}
            onChange={handleChange}
            isMulti={true}

@@ -1,18 +1,47 @@
-
 import React, { useEffect, useState } from 'react';
 import { UserButton, useUser } from '@clerk/clerk-react';
 import './homePage.css'; // Import your CSS file
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import Select from 'react-select';
+import TutorCard from '../../components/TutorCard/tutorCard';
+import { courses } from './constants';
 
 function HomePage() {
 
+    const homepageCustomStyles = {
+        control: (provided, state) => ({
+            ...provided,
+            border: '2px solid black',
+            borderRadius: '20px',
+            padding: '1px',
+            margin: '20px 0px',
+            boxShadow: state.isFocused ? '0 0 0 1px black' : null,
+            '&:hover': {
+                borderColor: 'black',
+            },
+           height: "30px"
+           
+        }),
+        menu: (provided) => ({
+            ...provided,
+            borderRadius: '8px',
+        }),
+        option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isSelected ? 'rgb(22, 86, 166)' : 'white',
+            '&:hover': {
+                backgroundColor: 'rgb(22, 86, 166)',
+            },
+        }),
+    };
+
     const navigate = useNavigate();
     const { user } = useUser(); // can be used to fetch user specific data
-
     const [tutors, setTutors] = useState([]);
+    const [allTutors, setAllTutors] = useState([]);
     const [userLanguages, setUserLanguages] = useState([]);
+    const [selectedCourse, setSelectedCourse] = useState(null);
 
     useEffect(() => {
         if (user && user.primaryEmailAddress) {
@@ -23,11 +52,8 @@ function HomePage() {
 
     useEffect(() => {
         console.log("User languages updated:", userLanguages);
-        // Additional logic dependent on userLanguages
         populateTutors();
-
     }, [userLanguages]);
-
 
     const getUserLanguages = () => {
         const email = user.primaryEmailAddress;
@@ -43,7 +69,6 @@ function HomePage() {
             });
     };
 
-    // for testing purposes, placeholder for now  
     const populateTutors = () => {
 
         // fetch all tutors from the database
@@ -79,12 +104,10 @@ function HomePage() {
                                     languages: userResponse.data.languages || [],
 
                                 };
-                                // log complete tutor data
-                                console.log('Tutor data:', tutorData);
 
                                 // update tutor array with the tutor data
                                 // only add tutor if not already in the array
-                                setTutors(prevTutors => {
+                                setAllTutors(prevTutors => {
                                     if (!prevTutors.some(t => t.email === tutorData.email) && tutorData.languages.some(lang => userLanguages.includes(lang))) {
                                         return [...prevTutors, tutorData];
                                     } else {
@@ -105,57 +128,56 @@ function HomePage() {
             });
     };
 
-    // formating courses for view such that it displays the first two courses, seperated by a comma, and then adds '...' if there are more
     const formatCourses = (courses) => {
         if (!courses) return '';
         if (courses.length <= 2) return courses.join(', ');
         return `${courses.slice(0, 2).join(', ')}, ...`;
     };
 
-    // Function to handle click and redirect to tutor's page
     const handleTutorClick = (tutorName, email) => {
-        navigate(`/tutor/${tutorName}`, { state: {email: email}});
+        navigate(`/tutor/${tutorName}`, { state: { email: email } });
     };
 
-    // placeholder for search 
-    const handleSearch = () => {
-        console.log("Search bar clicked");
-    }
+    const handleCourseSearch = (selectedCourse) => {
+        setSelectedCourse(selectedCourse ? selectedCourse.value : null);
+        if (selectedCourse && selectedCourse.value === 'All courses') {
+            setTutors(allTutors);
+        } else if (selectedCourse) {
+            const filteredTutors = allTutors.filter(tutor => 
+                tutor.courses.includes(selectedCourse.value)
+            );
+            setTutors(filteredTutors);
+        } else {
+            setTutors(allTutors);
+        }
+    };
 
     return (
-
-        <div className="homepage">
+        <div className="homepage-wrapper">
             <div className="header-userbutton">
                 <UserButton />
             </div>
-            <div className="header-home">
-                <h1> Find Your Tutor!</h1>
+            <h1 className='homepage-header-main'> Find Your Tutor!</h1>
+            <button className="homepage-tabs-button">Tabs</button>
+            <div className="homepage-search-bar">
+                <Select 
+                    placeholder="Search for a course"
+                    required={true}
+                    options={courses}
+                    value={courses.find(course => course.value === selectedCourse)}
+                    onChange={handleCourseSearch}
+                    styles={homepageCustomStyles}
+                />
             </div>
-            <button className="setting-button">Tabs</button>
-            <div className="search-bar">
-                <input type="text" placeholder="Search" onClick={handleSearch} />
-                <button className="filter-button">Filter</button>
-            </div>
-            <div className="header2-home">
-                <h2> Top Tutors</h2>
-            </div>
-            <div className="tutors-container">
+            <button className="homepage-filter-button">Filter</button>
+            <div className="homepage-tutors-container">
                 {tutors.map(tutor => (
-                    <div
-                        key={tutor.name}
-                        className="tutor-card"
-                        onClick={() => handleTutorClick(tutor.name, tutor.email)}
-                    >
-                        <img src={tutor.image} alt={tutor.name} className="tutor-image" />
-                        <div className="tutor-info">
-                            <p className="tutor-name">{tutor.name}</p>
-                            <div className="tutor-rating">
-                                {'★'.repeat(tutor.rating)}{'☆'.repeat(5 - tutor.rating)}
-                            </div>
-                            <p> Price: ${tutor.price}/hr</p>
-                            <p>{formatCourses(tutor.courses)}</p>
-                        </div>
-                    </div>
+                    <TutorCard
+                        key={tutor.email}
+                        tutor={tutor}
+                        handleTutorClick={handleTutorClick}
+                        formatCourses={formatCourses}
+                    />
                 ))}
             </div>
         </div>

@@ -33,13 +33,6 @@ function App() {
         });
     }
   }, [isSignedIn, user]);
-  
-
-  // useEffect(() => {
-  //   if (isSignedIn) {
-  //     navigate("/personalInfo"); }
-  // }, [isSignedIn]);
-
   return (
     <div>
       <SignedOut>
