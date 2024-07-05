@@ -30,6 +30,19 @@ app.post(('/login'), (req, res) => {
     })
 });
 
+app.post(('/findTutor'), (req, res) => {
+    const {email} = req.body;
+    TutorModel.findOne({email: email})
+    .then(tutor => {
+        if(tutor) {
+            res.json("found");
+        }
+        else {
+            res.json("not found");
+        }
+    })
+});
+
 // update user info
 app.post(('/updatePersonalInfo'), (req, res) => {
     const { clerkId, email, name, university, year, languages, image } = req.body;

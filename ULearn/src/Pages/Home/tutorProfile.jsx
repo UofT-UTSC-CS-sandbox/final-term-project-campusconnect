@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { UserButton, useUser } from '@clerk/clerk-react';
-import { Link, useParams } from 'react-router-dom';
 import './homePage.css'; // Import your CSS file
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -26,9 +24,6 @@ function TutorProfile() {
 
     return (
         <div>
-            <h1>
-
-            </h1>
             <button 
                 onClick={() => handleMessageClick(email)}>
                 Message
