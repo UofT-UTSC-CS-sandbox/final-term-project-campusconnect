@@ -18,7 +18,6 @@ import { useLocation } from 'react-router';
 
 const ChatRoom = () => {
   const {state} = useLocation();
-  const {clerkid, tutorname, tutorimage} = state;
   const apiKey = 'g8evherw6njt';
   const [client, setClient] = useState(null);
   const {user, isLoaded} = useUser(null);
@@ -37,13 +36,6 @@ const ChatRoom = () => {
       console.error("Missing API Key");
       return;
     }
-
-    if (state != null){      
-      const tutorData = {
-        clerkid: clerkid,
-        name: tutorname,
-        image: tutorimage,
-     };
       axios.post('http://localhost:3001/getChatToken', user).then(response => {      
         const token = response.data;
         const client = StreamChat.getInstance(apiKey);
@@ -66,6 +58,13 @@ const ChatRoom = () => {
           // If the client is already connected, just update the state
           setClient(client);
         }
+        if (state != null){
+          const {clerkid, tutorname, tutorimage} = state;    
+        const tutorData = {
+            clerkid: clerkid,
+            name: tutorname,
+            image: tutorimage,
+        };
         axios.post('http://localhost:3001/getChatToken', tutorData).then(response => {      
           const tokentutor = response.data;
           const tutorclient = StreamChat.getInstance(apiKey);
@@ -97,11 +96,10 @@ const ChatRoom = () => {
         }).catch(error => {
           console.error("Failed to get tutor token:", error);
         });
+        }
       }).catch(error => {
         console.error("Failed to get user token:", error);
       });
-    }
-  
 }, [user, isLoaded]);
 
 const filters = user ? { members: { $in: [user.id] }, type: 'messaging' } : {};

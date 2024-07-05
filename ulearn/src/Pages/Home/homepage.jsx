@@ -4,6 +4,7 @@ import { UserButton, useUser } from '@clerk/clerk-react';
 import './homePage.css'; // Import your CSS file
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../../components/Navbar/Navbar';
 
 
 function HomePage() {
@@ -125,6 +126,7 @@ function HomePage() {
     return (
 
         <div className="homepage">
+            <Navbar></Navbar>
             <div className="header-userbutton">
                 <UserButton />
             </div>
