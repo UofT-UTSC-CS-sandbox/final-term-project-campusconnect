@@ -16,6 +16,7 @@ import { useUser } from "@clerk/clerk-react";
 import axios from 'axios';
 import { useLocation } from 'react-router';
 import Navbar from '../../components/Navbar/Navbar';
+import CreateCallButton from '../../components/createCallButton';
 
 const ChatRoom = () => {
   const {state} = useLocation();
@@ -115,6 +116,7 @@ const sort = { last_message_at: -1 };
         <ChannelList  filters={filters} options={options} sort={sort} />
         <Channel>
           <Window>
+            <CreateCallButton />
             <ChannelHeader />
             <MessageList />
             <MessageInput />
