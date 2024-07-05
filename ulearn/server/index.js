@@ -22,7 +22,7 @@ app.post(('/login'), (req, res) => {
     UserModel.findOne({email: email})
     .then(user => {
         if(user) {
-            res.json("found");
+            res.json(user);
         }
         else {
             res.json("not found");
@@ -45,11 +45,11 @@ app.post(('/findTutor'), (req, res) => {
 
 // update user info
 app.post(('/updatePersonalInfo'), (req, res) => {
-    const { clerkId, email, name, university, year, languages, image } = req.body;
+    const { clerkId, email, name, university, year, languages, image, finishedSignUp } = req.body;
 
     UserModel.findOneAndUpdate(
       { email: email },
-      { clerkId, name, university, year, languages, image},
+      { clerkId, name, university, year, languages, image, finishedSignUp},
       { new: true, upsert: true } // upsert: true will create a new document if no document matches the query
     )
       .then(user => res.json(user), console.log("User found successfully"))

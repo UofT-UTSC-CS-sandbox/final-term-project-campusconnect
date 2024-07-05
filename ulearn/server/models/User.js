@@ -29,6 +29,9 @@ const UserSchema = new mongoose.Schema({
             type: String
         }],
     },
+    finishedSignUp: {
+        type: Boolean
+    }
 });
 
 const UserModel = mongoose.model('User', UserSchema);
