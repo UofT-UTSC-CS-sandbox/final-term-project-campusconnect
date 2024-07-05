@@ -20,7 +20,7 @@ function TutorProfile() {
                 navigate(`/chatRoom`, {state: {clerkid: userData.clerkId, tutorname: userData.name, tutorimage: userData.image}})
             })
             .catch(error => {
-                console.error("Error fetching user languages:", error);
+                console.error("Error fetching tutor by email:", error);
             });
     }
 
