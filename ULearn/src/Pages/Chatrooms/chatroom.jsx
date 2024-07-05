@@ -15,7 +15,7 @@ import 'stream-chat-react/dist/css/v2/index.css';
 import { useUser } from "@clerk/clerk-react";
 import axios from 'axios';
 import { useLocation } from 'react-router';
-import Navbar from '../../components/Navbar/Navbar';
+import Nav from '../../components/Nav/Nav.jsx';
 import CreateCallButton from '../../components/createCallButton';
 
 const ChatRoom = () => {
@@ -111,9 +111,10 @@ const sort = { last_message_at: -1 };
   if (!client) return <div>Loading...</div>;
 
   return (
-     <div className="chatroom">
+    <div>
+    <Nav/>
+    <div className="chatroom">
     <Chat client={client} classname='left-100'>
-      <Navbar></Navbar>
         <ChannelList  filters={filters} options={options} sort={sort} />
         <Channel>
           <Window>
@@ -125,7 +126,8 @@ const sort = { last_message_at: -1 };
           <Thread />
         </Channel>
       </Chat>
-       </div>
+    </div>
+    </div>
   );
 };
 
