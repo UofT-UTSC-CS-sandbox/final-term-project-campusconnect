@@ -1,3 +1,8 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 .homepage-wrapper {
   padding: 20px;
   background-color: white;
@@ -7,7 +12,7 @@
   display: flex;
   justify-content: center;
   font-size: 30px;
-  margin-bottom: 20px;
+
 }
 
 .homepage-tabs-button {
@@ -27,6 +32,8 @@
   width: 600px;
   margin-left: 390px;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .homepage-filter-button {
@@ -65,4 +72,28 @@
   max-width: 1200px;
   margin-left: 80px;
   margin-right: 80px;
+}
+
+.course-search-input {
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 10px;
+  width: calc(100% - 40px); /* Adjust width to leave space for the icon */
+  margin: 20px 0px;
+  box-shadow: 0 0 0 1px black;
+  height: 40px;
+}
+
+.course-search-input:focus {
+  outline: none;
+  border-color: black;
+  box-shadow: 0 0 0 1px black;
+}
+
+.filter-icon {
+  position: absolute;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }

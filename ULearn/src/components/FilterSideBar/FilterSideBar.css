@@ -1,0 +1,37 @@
+.filter-sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Start off screen */
+    height: 100%;
+    width: 270px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: right 0.6s ease-in-out;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.filter-sidebar.open {
+    right: 0; /* Slide in when open */
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close-button {
+    align-self: flex-end;
+}
+
+.filter-option {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    width: 180px;
+    margin-left: 30px;
+}
+.filter-option-title {
+    align-self: flex-start;
+}
