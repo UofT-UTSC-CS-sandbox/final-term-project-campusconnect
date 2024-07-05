@@ -15,10 +15,10 @@ import 'stream-chat-react/dist/css/v2/index.css';
 import { useUser } from "@clerk/clerk-react";
 import axios from 'axios';
 import { useLocation } from 'react-router';
+import Navbar from '../../components/Navbar/Navbar';
 
 const ChatRoom = () => {
   const {state} = useLocation();
-  const {clerkid, tutorname, tutorimage} = state;
   const apiKey = 'g8evherw6njt';
   const [client, setClient] = useState(null);
   const {user, isLoaded} = useUser(null);
@@ -37,13 +37,6 @@ const ChatRoom = () => {
       console.error("Missing API Key");
       return;
     }
-
-    if (state != null){      
-      const tutorData = {
-        clerkid: clerkid,
-        name: tutorname,
-        image: tutorimage,
-     };
       axios.post('http://localhost:3001/getChatToken', user).then(response => {      
         const token = response.data;
         const client = StreamChat.getInstance(apiKey);
@@ -66,6 +59,13 @@ const ChatRoom = () => {
           // If the client is already connected, just update the state
           setClient(client);
         }
+        if (state != null){
+          const {clerkid, tutorname, tutorimage} = state;    
+        const tutorData = {
+            clerkid: clerkid,
+            name: tutorname,
+            image: tutorimage,
+        };
         axios.post('http://localhost:3001/getChatToken', tutorData).then(response => {      
           const tokentutor = response.data;
           const tutorclient = StreamChat.getInstance(apiKey);
@@ -97,11 +97,10 @@ const ChatRoom = () => {
         }).catch(error => {
           console.error("Failed to get tutor token:", error);
         });
+        }
       }).catch(error => {
         console.error("Failed to get user token:", error);
       });
-    }
-  
 }, [user, isLoaded]);
 
 const filters = user ? { members: { $in: [user.id] }, type: 'messaging' } : {};
@@ -111,17 +110,18 @@ const sort = { last_message_at: -1 };
   if (!client) return <div>Loading...</div>;
 
   return (
-    <Chat client={client}>
-      <ChannelList  filters={filters} options={options} sort={sort} />
-      <Channel>
-        <Window>
-          <ChannelHeader />
-          <MessageList />
-          <MessageInput />
-        </Window>
-        <Thread />
-      </Channel>
-    </Chat>
+    <Chat client={client} classname='left-100'>
+      <Navbar></Navbar>
+        <ChannelList  filters={filters} options={options} sort={sort} />
+        <Channel>
+          <Window>
+            <ChannelHeader />
+            <MessageList />
+            <MessageInput />
+          </Window>
+          <Thread />
+        </Channel>
+      </Chat>
   );
 };
 
