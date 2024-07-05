@@ -19,19 +19,18 @@ function App() {
             console.log(clerkId);
             axios.post(`http://localhost:3001/register`, { clerkId, email, name })
               .then(response => {
-                console.log(response.data);
+                navigate("/personalInfo");
               });
-          } 
+          } else {
+            if (response.data.finishedSignUp) {
+              navigate("/homePage")
+            } else {
+              navigate("/personalInfo")
+            }
+          }
         });
     }
   }, [isSignedIn, user]);
-  
-
-  useEffect(() => {
-    if (isSignedIn) {
-      navigate("/personalInfo"); }
-  }, [isSignedIn]);
-
   return (
     <div>
       <SignedOut>
