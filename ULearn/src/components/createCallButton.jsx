@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useChatContext } from 'stream-chat-react';
 import "react-toastify/dist/ReactToastify.css";
+import './creatCallButton.css'
 
 /**
  * CreateCallButton component.
@@ -71,14 +72,12 @@ const CreateCallButton = () => {
       setCallDetails(call);
 
       if (!values.description) {
-        console.log(channel);
         const message = await channel.sendMessage({
-          text: `Call created, [click here to join](http://localhost/5173/meeting/${call.id})`,
+          text: `Call created, [click here to join](http://localhost:5173/meeting/${call.id})`,
         });
         navigate(`/meeting/${call.id}`);
       }
     } catch (error) {
-      console.log(error);
       toast.error("Error: Failed to create meeting");
     }
   };
@@ -87,7 +86,7 @@ const CreateCallButton = () => {
     return;
   }
   return (
-    <div>
+    <div className="call-button-wrapper">
       <Phone
         color="black"
         className="cursor-pointer"

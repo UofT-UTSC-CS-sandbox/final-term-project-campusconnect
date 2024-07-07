@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UserButton, useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/clerk-react';
 import './homePage.css'; // Import your CSS file
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,6 @@ import TutorCard from '../../components/TutorCard/tutorCard';
 import { IoFilter } from "react-icons/io5";
 import Nav from '../../components/Nav/Nav.jsx'
 import FilterSideBar from '../../components/FilterSideBar/FilterSideBar.jsx'
-import Recommended from '../../components/RecommendedTutors/Recommended.jsx';
 
 function HomePage() {
     const navigate = useNavigate();
