@@ -221,3 +221,4 @@ To ensure that the team is always on the same page, after each standup, Arina wi
 ### 3.4 Sprint Retrospective
 
 Once this Sprint is complete, our team will meet to go over all aspects of the sprint and discuss what went well, what could be improved and what didn’t go well for the sprint. This will help us improve for the upcoming sprints.
+<img width="696" alt="image" src="https://github.com/UofT-UTSC-CS-sandbox/final-term-project-campusconnect/assets/88069395/2ffe629e-1783-43c4-ab85-a5547236423f">
