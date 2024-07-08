@@ -16,14 +16,11 @@ function App() {
       axios.post(`http://localhost:3001/login`, { email })
         .then(response => {
           if (response.data === "not found") {
-            console.log(clerkId);
             axios.post(`http://localhost:3001/register`, { clerkId, email, name })
               .then(response => {
-                console.log(response.data);
                 navigate("/personalInfo");
               });
           } else {
-            console.log(response.data)
             if (response.data.finishedSignUp) {
               navigate("/homePage")
             } else {
@@ -33,13 +30,6 @@ function App() {
         });
     }
   }, [isSignedIn, user]);
-  
-
-  // useEffect(() => {
-  //   if (isSignedIn) {
-  //     navigate("/personalInfo"); }
-  // }, [isSignedIn]);
-
   return (
     <div>
       <SignedOut>

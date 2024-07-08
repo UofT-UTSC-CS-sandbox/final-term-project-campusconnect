@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { UserButton, useUser } from '@clerk/clerk-react';
-import { Link, useParams } from 'react-router-dom';
 import './homePage.css'; // Import your CSS file
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -20,15 +18,12 @@ function TutorProfile() {
                 navigate(`/chatRoom`, {state: {clerkid: userData.clerkId, tutorname: userData.name, tutorimage: userData.image}})
             })
             .catch(error => {
-                console.error("Error fetching user languages:", error);
+                console.error("Error fetching user:", error);
             });
     }
 
     return (
         <div>
-            <h1>
-
-            </h1>
             <button 
                 onClick={() => handleMessageClick(email)}>
                 Message

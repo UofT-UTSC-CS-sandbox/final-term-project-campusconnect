@@ -1,37 +1,38 @@
-
 import React, { useEffect, useState } from 'react';
-import { UserButton, useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/clerk-react';
 import './homePage.css'; // Import your CSS file
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import TutorCard from '../../components/TutorCard/tutorCard';
+import { IoFilter } from "react-icons/io5";
+import Nav from '../../components/Nav/Nav.jsx'
+import FilterSideBar from '../../components/FilterSideBar/FilterSideBar.jsx'
 
 function HomePage() {
-
     const navigate = useNavigate();
-    const { user } = useUser(); // can be used to fetch user specific data
-
+    const { user } = useUser();
     const [tutors, setTutors] = useState([]);
+    const [allTutors, setAllTutors] = useState([]);
     const [userLanguages, setUserLanguages] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false); // State to manage FilterSidebar visibility
 
     useEffect(() => {
         if (user && user.primaryEmailAddress) {
-            console.log("Component mounted, fetching tutors");
             getUserLanguages();
         }
     }, [user]);
 
     useEffect(() => {
-        console.log("User languages updated:", userLanguages);
-        // Additional logic dependent on userLanguages
         populateTutors();
-
     }, [userLanguages]);
 
+    useEffect(() => {
+        filterTutors();
+    }, [searchTerm, allTutors]);
 
     const getUserLanguages = () => {
         const email = user.primaryEmailAddress;
-        console.log("Fetching user data for email:", email);
         // Fetch the user's languages
         axios.get('http://localhost:3001/getUserByEmail', { params: { email: email } })
             .then(response => {
@@ -43,13 +44,10 @@ function HomePage() {
             });
     };
 
-    // for testing purposes, placeholder for now  
     const populateTutors = () => {
-
         // fetch all tutors from the database
         axios.get(`http://localhost:3001/gettutors`)
             .then(tutorsResponse => {
-                console.log("tutors fetched");
                 // store tutors in tutorsData
                 const tutorsData = tutorsResponse.data;
 
@@ -59,16 +57,12 @@ function HomePage() {
                     const email = tutor.email;
                     const courses = tutor.verifiedCourses;
                     const price = tutor.rate;
-                    console.log('Fetching data for email:', email);
 
                     // in the future, need to fetch rating as well
-
                     // fetch the user data of the tutor, using email 
                     axios.get('http://localhost:3001/getUserByEmail', { params: { email: email } })
                         .then(userResponse => {
                             if (userResponse.data) {
-                                console.log('User data:', userResponse.data);
-                                
                                 const tutorData = {
                                     name: userResponse.data.name,
                                     email: userResponse.data.email,
@@ -77,14 +71,11 @@ function HomePage() {
                                     price: price,
                                     rating: 5, // Assuming a default rating of 5 if not provided (placeholder for now)
                                     languages: userResponse.data.languages || [],
-
                                 };
-                                // log complete tutor data
-                                console.log('Tutor data:', tutorData);
 
                                 // update tutor array with the tutor data
                                 // only add tutor if not already in the array
-                                setTutors(prevTutors => {
+                                setAllTutors(prevTutors => {
                                     if (!prevTutors.some(t => t.email === tutorData.email) && tutorData.languages.some(lang => userLanguages.includes(lang))) {
                                         return [...prevTutors, tutorData];
                                     } else {
@@ -105,57 +96,60 @@ function HomePage() {
             });
     };
 
-    // formating courses for view such that it displays the first two courses, seperated by a comma, and then adds '...' if there are more
     const formatCourses = (courses) => {
         if (!courses) return '';
         if (courses.length <= 2) return courses.join(', ');
         return `${courses.slice(0, 2).join(', ')}, ...`;
     };
 
-    // Function to handle click and redirect to tutor's page
     const handleTutorClick = (tutorName, email) => {
-        navigate(`/tutor/${tutorName}`, { state: {email: email}});
+        navigate(`/tutor/${tutorName}`, { state: { email: email } });
     };
 
-    // placeholder for search 
-    const handleSearch = () => {
-        console.log("Search bar clicked");
-    }
+    const handleCourseSearch = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    //populate tutors based on the course in the search bar
+    const filterTutors = () => {
+        if (searchTerm === '') {
+            setTutors(allTutors);
+        } else {
+            const filteredTutors = allTutors.filter(tutor => 
+                tutor.courses.some(course => course.toUpperCase().includes(searchTerm.toUpperCase()))
+            );
+            setTutors(filteredTutors);
+        }
+    };
+
+    const toggleFilterSidebar = () => {
+        setIsFilterSidebarOpen(!isFilterSidebarOpen); // Toggle the sidebar visibility
+    };
 
     return (
-
-        <div className="homepage">
-            <div className="header-userbutton">
-                <UserButton />
+        <div className="homepage-wrapper">
+            <Nav/>
+            <h1 className='homepage-header-main'> Find Your Tutor!</h1>
+            <div className="homepage-search-bar">
+                <input 
+                    type="text" 
+                    placeholder="Search for a course" 
+                    value={searchTerm}
+                    onChange={handleCourseSearch}
+                    className="course-search-input"
+                />
+                <IoFilter className="filter-icon" onClick={toggleFilterSidebar}/>
             </div>
-            <div className="header-home">
-                <h1> Find Your Tutor!</h1>
-            </div>
-            <button className="setting-button">Tabs</button>
-            <div className="search-bar">
-                <input type="text" placeholder="Search" onClick={handleSearch} />
-                <button className="filter-button">Filter</button>
-            </div>
-            <div className="header2-home">
-                <h2> Top Tutors</h2>
-            </div>
-            <div className="tutors-container">
+            <FilterSideBar isOpen={isFilterSidebarOpen} onClose={toggleFilterSidebar} />
+            <div className="homepage-tutors-container">
                 {tutors.map(tutor => (
-                    <div
-                        key={tutor.name}
-                        className="tutor-card"
-                        onClick={() => handleTutorClick(tutor.name, tutor.email)}
-                    >
-                        <img src={tutor.image} alt={tutor.name} className="tutor-image" />
-                        <div className="tutor-info">
-                            <p className="tutor-name">{tutor.name}</p>
-                            <div className="tutor-rating">
-                                {'★'.repeat(tutor.rating)}{'☆'.repeat(5 - tutor.rating)}
-                            </div>
-                            <p> Price: ${tutor.price}/hr</p>
-                            <p>{formatCourses(tutor.courses)}</p>
-                        </div>
-                    </div>
+                    <TutorCard
+                        key={tutor.email}
+                        email={tutor.email}
+                        tutor={tutor}
+                        handleTutorClick={handleTutorClick}
+                        formatCourses={formatCourses}
+                    />
                 ))}
             </div>
         </div>

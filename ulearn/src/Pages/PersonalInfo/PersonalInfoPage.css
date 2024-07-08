@@ -12,7 +12,7 @@
 }
 .pip-title {
     font-size: 40px;
-    margin-left: 30px;
+    margin-left: 20px;
 }
 .pip-background-overlay {
     position: absolute;
@@ -33,6 +33,7 @@
     border-radius: 20px;
     padding: 10px;
     backdrop-filter: blur(30px);
+    justify-content: center;
 }
 .pip-upload-button {
     border: 1px solid black;
