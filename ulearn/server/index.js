@@ -54,9 +54,9 @@ app.post(('/findTutor'), (req, res) => {
 });
 
 /**
- * @route GET /getUserByEmail
+ * @route GET /getTutorByEmail
  * @access Public
- * @description Get a user by their email address
+ * @description Get a tutor by their email address
  */
 app.get('/getTutorByEmail', async (req, res) => {
   const { email } = req.query; // Use req.query to extract email from query parameters
@@ -65,31 +65,12 @@ app.get('/getTutorByEmail', async (req, res) => {
     if (tutor) {
       res.json(tutor);
     } else {
-      res.status(404).json({ message: 'User not found' });
+      res.status(404).json({ message: 'Tutor not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching user or not found' });
+    res.status(500).json({ message: 'Error fetching tutor or not found' });
   }
 });
-
-// /**
-//  * @route POST /getTutor
-//  * @access Public
-//  * @description Gets a tutor and their tutor information by their email address
-//  */
-// app.post(('/getTutor'), async (req, res) => {
-//   const {email} = req.body;
-//   try {
-//     const tutor = await UserModel.findOne({ email: email });
-//     if (tutor) {
-//       res.json(tutor);
-//     } else {
-//       res.status(404).json({ message: 'Tutor not found' });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error fetching tutor or not found' });
-//   }
-// });
 
 /**
  * @route POST /updatePersonalInfo

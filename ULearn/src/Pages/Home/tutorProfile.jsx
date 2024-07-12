@@ -3,6 +3,8 @@ import './homePage.css'; // Import your CSS file
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
+import Nav from '../../components/Nav/Nav';
+import { Tab, Tabs } from '../../components/tabs';
 
 const TutorProfile = () => {
     //getting the tutor email from homepage
@@ -26,10 +28,9 @@ const TutorProfile = () => {
         loadTutorInfo();
     }, [user, isLoaded, email]); // Added email dependency
 
-    async function loadTutorInfo() {
+    async function loadTutorInfo() { //gets tutor information from database
         try {
             const tutorResponse = await axios.get('http://localhost:3001/getTutorByEmail', { params: { email } });
-            console.log(tutorResponse.data)
             const userResponse = await axios.get('http://localhost:3001/getUserByEmail', { params: { email } });
             if (userResponse.data && tutorResponse.data) {
                 const fullTutorData = {
@@ -43,7 +44,6 @@ const TutorProfile = () => {
                     languages: userResponse.data.languages || []
                 };
                 setTutor(fullTutorData);
-                console.log(fullTutorData)
             } else {
                 console.log('User not found for email:', email);
             }
@@ -64,24 +64,106 @@ const TutorProfile = () => {
             });
     }
 
+    const displayCourses = (courses) => {
+        if (!courses) return '';
+        let newcourses = [' • ']
+        newcourses = newcourses+courses.slice().join(' • ');
+        return newcourses;
+    };
+
+    const displayLanguages = (lang) => {
+        if (!lang) return '';
+        let newlang = [' • ']
+        newlang = newlang+lang.slice().join(' • ');
+        return newlang;
+    };
+
     return (
-        <div className='bg-slate-400 h-full w-full'> 
-            <div className='bg-white'>
-                <div>
-                    <header>
-                        {tutor && tutor.name}
-                    </header>
-                    <header>
-                        {tutor && tutor.description}
-                    </header>
-                </div>
-                
-                <button 
-                    onClick={() => handleMessageClick(email)}>
-                    Message
-                </button>
+        
+        <div className='bg-slate-100 w-full h-min-screen w-min-screen '> 
+            <div className='border-gray-300 border-b-2 bg-white w-screen shadow-lg'>
+                <Nav></Nav>
             </div>
-            
+            <div className='flex justify-center items-center'>
+                <div className='w-5/6 h-screen grid grid-cols-4 gap-4 mt-10 grid-rows-2'>
+                    <div className='col-start-1 row-span-3 bg-slate-50 grid grid-rows-2 border-r-2 border-gray-500'>
+                        <div className='row-start-1 row-span-1 size-11/12 justify-self-center mt-5 border-b-2 border-gray-300 space-y-2'>
+                            <img src={tutor && tutor.image} className='rounded-3xl aspect-square object-cover'>
+                            </img>
+                            <p className='size-fit text-amber-400 text-2xl'>
+                                {tutor && '★'.repeat(tutor.rating)}{tutor && '☆'.repeat(5 - tutor.rating)}
+                            </p>
+                            {/* note: add the total number of ratings to othe right of the stars*/}
+                        </div>
+                        <div className='grid row-start-2 justify-items-center'>
+                            <div className='border-b-2 border-gray-300 w-11/12'>
+                                {/*<header className='border-b-2 border-gray-300'>
+                                    Rate: ${tutor && tutor.price}/hr
+                                </header>*/}
+                                <header className=''>
+                                    Courses
+                                </header>
+                                <p className='text-gray-400'>
+                                    {tutor && displayCourses(tutor.courses)}
+                                </p>
+                            </div>
+                            <div className='border-b-2 border-gray-300 w-11/12'>
+                                <header>
+                                    Languages
+                                </header>
+                                <p className='text-gray-400'>
+                                    {tutor && displayLanguages(tutor.languages)}
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div className='col-start-2 col-span-2 row-start-1 mt-5'>
+                        <div className=''>
+                                <header className='text-5xl w-full' >
+                                    {tutor && tutor.name + '     '}
+                                    <span className='size-fit text-amber-400 text-4xl mb-4'>
+                                        {tutor && '★'.repeat(tutor.rating)}{tutor && '☆'.repeat(5 - tutor.rating)}
+                                    </span>
+                                </header>
+                        </div>       
+                    </div>
+                    <div className='col-start-2 col-span-3 row-start-2 bg-slate-50 h-full w-full'>
+                        <Tabs>
+                            <Tab label="About">
+                                <div className="py-4">
+                                    <p className="text-gray-700">
+                                    {tutor && tutor.description}
+                                    </p>
+                                </div>
+                            </Tab>
+                            <Tab label="Schedule">
+                                <div className="py-4">
+                                    <p className="text-gray-700">
+                                        Placeholder content for schedule
+                                    </p>
+                                </div>
+                            </Tab>
+                            <Tab label="Reviews">
+                                <div className="py-4">
+                                    <p className="text-gray-700">
+                                        Placeholder content for Reviews
+                                    </p>
+                                </div>
+                            </Tab>
+                        </Tabs>
+                    </div>
+                    <div className='flex col-start-4 justify-end mt-5 gap-4'>
+                        <div className='mt-2'>
+                            Rate: ${tutor && tutor.price}/hr
+                        </div>
+                        <button className='bg-blue-500 h-10 w-40 rounded-lg'
+                            onClick={() => handleMessageClick(email)}>
+                            Message
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
         
     )
