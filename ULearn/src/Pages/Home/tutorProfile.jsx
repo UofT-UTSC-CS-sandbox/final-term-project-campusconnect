@@ -130,6 +130,7 @@ const TutorProfile = () => {
                                 chartW='800px'
                                 barSpace='50'
                                 barThick='15'
+                                barColour='#fbbf24'
                                 data={[ //temp values, to be replaced by star counts later
                                     { name: '5 star', value: 20 },
                                     { name: '4 star', value: 40 },
