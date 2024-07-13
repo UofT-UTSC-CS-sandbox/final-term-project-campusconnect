@@ -54,6 +54,25 @@ app.post(('/findTutor'), (req, res) => {
 });
 
 /**
+ * @route GET /getTutorByEmail
+ * @access Public
+ * @description Get a tutor by their email address
+ */
+app.get('/getTutorByEmail', async (req, res) => {
+  const { email } = req.query; // Use req.query to extract email from query parameters
+  try {
+    const tutor = await TutorModel.findOne({ email: email });
+    if (tutor) {
+      res.json(tutor);
+    } else {
+      res.status(404).json({ message: 'Tutor not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching tutor or not found' });
+  }
+});
+
+/**
  * @route POST /updatePersonalInfo
  * @access Public
  * @description Update personal information for a user or create a new user if not found
