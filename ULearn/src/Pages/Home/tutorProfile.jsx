@@ -169,7 +169,7 @@ const TutorProfile = () => {
                         <div className='mt-2'>
                             Rate: ${tutor && tutor.price}/hr
                         </div>
-                        <button className='bg-blue-500 h-10 w-40 rounded-lg'
+                        <button className='bg-blue-500 h-10 w-40 rounded-lg text-white '
                             onClick={() => handleMessageClick(email)}>
                             Message
                         </button>
