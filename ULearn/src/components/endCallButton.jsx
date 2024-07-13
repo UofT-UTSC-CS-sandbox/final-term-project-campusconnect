@@ -28,7 +28,7 @@ const EndCallButton = () => {
       className="px-3 py-2 rounded-lg bg-red-500"
       onClick={async () => {
         await call.endCall();
-        navigate("/homePage");
+        navigate("/Feedback");
       }}
     >
       End Call for Everyone

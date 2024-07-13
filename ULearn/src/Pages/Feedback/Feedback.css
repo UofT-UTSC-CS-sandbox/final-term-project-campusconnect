@@ -1,0 +1,56 @@
+.feedback-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.feedback-header {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.star-rating button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    padding: 0 5px;
+}
+
+.star-rating .on .star {
+    color: gold;
+}
+
+.star-rating .off .star {
+    color: lightgray;
+}
+
+.feedback-textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.submit-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}

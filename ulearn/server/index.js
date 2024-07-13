@@ -6,6 +6,7 @@ const cors = require('cors');
 const TutorModel = require('./models/Tutor');
 const { StreamClient } = require("@stream-io/node-sdk");
 require('dotenv').config({path: '../.env.local'}); 
+const ReviewModel = require('./models/Review');
 
 const app = express();
 app.use(express.json());
@@ -34,6 +35,7 @@ app.post(('/login'), (req, res) => {
         }
     })
 });
+
 
 /**
  * @route POST /findTutor
@@ -174,6 +176,58 @@ app.post('/getChatToken', (req, res) => {
   res.send(token);
 })
 
+/**
+ * @route POST /reviews
+ * @access Public
+ * @description add a review of a tutor
+ */
+app.post('/reviews', async (req, res) => {
+  const { tutorEmail, studentEmail, rate, description } = req.body;
+
+  try {
+    // Extract the actual email address if studentEmail is an object
+    const email = typeof studentEmail === 'object' ? studentEmail.emailAddress : studentEmail;
+
+    // Check if the user trying to post a review exists
+    const user = await UserModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const newReview = {
+      studentEmail: email,
+      user: user._id,  // Using user._id to reference the user
+      rate,
+      description,
+    };
+
+    // Find the tutor and update the review and starCountArray
+    const tutor = await ReviewModel.findOne({ tutorEmail: tutorEmail });
+
+    if (tutor) {
+      // Tutor exists, update the reviews and starCountArray
+      tutor.reviews.push(newReview);
+      tutor.starCountArray[rate - 1] = (tutor.starCountArray[rate - 1] || 0) + 1;
+      await tutor.save();
+      res.json(tutor);
+    } else {
+      // Tutor does not exist, create a new document with the review and starCountArray
+      const newTutor = new ReviewModel({
+        tutorEmail: tutorEmail,
+        starCountArray: Array(5).fill(0), // Initialize with zeros
+        reviews: [newReview]
+      });
+      newTutor.starCountArray[rate - 1] = 1;
+      await newTutor.save();
+      res.json(newTutor);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.listen("3001", () => {
     console.log(`Server started on port 3001`);
 });
+
