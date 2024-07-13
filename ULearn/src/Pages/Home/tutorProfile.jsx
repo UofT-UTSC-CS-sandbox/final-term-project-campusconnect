@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import Nav from '../../components/Nav/Nav';
 import { Tab, Tabs } from '../../components/tabs';
+import { BarChart } from '../../components/BarChart/barChart';
+//import { BarChart } from 'lucide-react';
 
 const TutorProfile = () => {
     //getting the tutor email from homepage
@@ -86,20 +88,13 @@ const TutorProfile = () => {
             </div>
             <div className='flex justify-center items-center'>
                 <div className='w-5/6 h-screen grid grid-cols-4 gap-4 mt-10 grid-rows-2'>
-                    <div className='col-start-1 row-span-3 bg-slate-50 grid grid-rows-2 border-r-2 border-gray-500'>
-                        <div className='row-start-1 row-span-1 size-11/12 justify-self-center mt-5 border-b-2 border-gray-300 space-y-2'>
+                    <div className='col-start-1 row-span-3 bg-slate-50 grid grid-rows-2 border-r-2 border-gray-300 shadow-xl'>
+                        <div className='row-start-1 row-span-1 size-11/12 justify-self-center mt-3 border-b-2 border-gray-300 space-y-2'>
                             <img src={tutor && tutor.image} className='rounded-3xl aspect-square object-cover'>
                             </img>
-                            <p className='size-fit text-amber-400 text-2xl'>
-                                {tutor && '★'.repeat(tutor.rating)}{tutor && '☆'.repeat(5 - tutor.rating)}
-                            </p>
-                            {/* note: add the total number of ratings to othe right of the stars*/}
                         </div>
                         <div className='grid row-start-2 justify-items-center'>
                             <div className='border-b-2 border-gray-300 w-11/12'>
-                                {/*<header className='border-b-2 border-gray-300'>
-                                    Rate: ${tutor && tutor.price}/hr
-                                </header>*/}
                                 <header className=''>
                                     Courses
                                 </header>
@@ -115,18 +110,35 @@ const TutorProfile = () => {
                                     {tutor && displayLanguages(tutor.languages)}
                                 </p>
                             </div>
-                            
                         </div>
                     </div>
-                    <div className='col-start-2 col-span-2 row-start-1 mt-5'>
-                        <div className=''>
-                                <header className='text-5xl w-full' >
-                                    {tutor && tutor.name + '     '}
-                                    <span className='size-fit text-amber-400 text-4xl mb-4'>
-                                        {tutor && '★'.repeat(tutor.rating)}{tutor && '☆'.repeat(5 - tutor.rating)}
-                                    </span>
-                                </header>
-                        </div>       
+                    <div className='col-start-2 col-span-2 row-start-1 mt-3'>
+                        <header className='text-5xl w-full' >
+                            {tutor && tutor.name + '     '}
+                            <span className='size-fit text-amber-400 text-4xl mb-4 align-middle space-x-4'>
+                                <span>
+                                    {tutor && '★'.repeat(tutor.rating)}{tutor && '☆'.repeat(5 - tutor.rating)} 
+                                </span>
+                                <span className='text-sm text-gray-500 align-middle'>
+                                    (34) {/* note: add the total number of ratings*/}
+                                </span>
+                            </span> 
+                        </header>
+                        <div className='mt-5'>
+                            <BarChart 
+                                chartH='250px'
+                                chartW='800px'
+                                barSpace='50'
+                                barThick='15'
+                                data={[ //temp values, to be replaced by star counts later
+                                    { name: '5 star', value: 20 },
+                                    { name: '4 star', value: 40 },
+                                    { name: '3 star', value: 35 },
+                                    { name: '2 star', value: 50 },
+                                    { name: '1 star', value: 55 },
+                                  ]}
+                            ></BarChart>
+                        </div>
                     </div>
                     <div className='col-start-2 col-span-3 row-start-2 bg-slate-50 h-full w-full'>
                         <Tabs>

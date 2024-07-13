@@ -16,7 +16,7 @@ import { useUser } from "@clerk/clerk-react";
 import axios from 'axios';
 import { useLocation } from 'react-router';
 import Nav from '../../components/Nav/Nav.jsx';
-import CreateCallButton from '../../components/createCallButton';
+import CreateCallButton from '../../components/createCallButton.jsx';
 
 const ChatRoom = () => {
   const {state} = useLocation();
