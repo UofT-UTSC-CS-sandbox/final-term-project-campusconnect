@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import './Feedback.css'; // Assuming you have a CSS file for styling
 import axios from 'axios';
 import { useUser } from '@clerk/clerk-react';
+import { useLocation } from 'react-router-dom'; // Import useLocation hook
 
 
 function Feedback() {
     const [rating, setRating] = useState(0);
     const [feedback, setFeedback] = useState('');
     const { user } = useUser();
+    const location = useLocation(); // Use useLocation hook
+    const tutorEmail = location.state?.tutorEmail; // Retrieve tutorEmail from state
+
+    console.log("Received tutorEmail in Feedback:", tutorEmail);
+
 
     const handleRating = (rate) => {
         setRating(rate);
@@ -16,9 +22,8 @@ function Feedback() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const reviewData = {
-            tutorEmail: 'arina.azmi@mail.utoronto.ca', // Replace with the actual tutor email
-            studentEmail: 'arina.azmi@mail.utoronto.ca',
-            //user.primaryEmailAddress, // Replace with the actual student email
+            tutorEmail: tutorEmail, // Replace with the actual tutor email
+            studentEmail: String(user.primaryEmailAddress.emailAddress), // Replace with the actual student email
             rate: rating,
             description: feedback
         };
