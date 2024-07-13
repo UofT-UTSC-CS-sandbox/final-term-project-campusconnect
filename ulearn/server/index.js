@@ -227,6 +227,24 @@ app.post('/reviews', async (req, res) => {
   }
 });
 
+/**
+ * @route GET /reviews/:tutorEmail
+ * @access Public
+ * @description get all reviews for a tutor
+ */
+
+app.get('/reviews/:tutorEmail', async (req, res) => {
+  const { tutorEmail } = req.params;
+  try {
+      const reviews = await ReviewModel.find({ tutorEmail }).populate('reviews.user');
+      res.json(reviews);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 app.listen("3001", () => {
     console.log(`Server started on port 3001`);
 });

@@ -10,21 +10,6 @@ const ReviewSchema = new mongoose.Schema({
         type: [Number],
         required: true,
     },
-    // Star1Count: {
-    //     type: Number,
-    // },
-    // Star2Count: {
-    //     type: Number,
-    // },
-    // Star3Count: {
-    //     type: Number,
-    // },
-    // Star4Count: {
-    //     type: Number,
-    // },
-    // Star5Count: {
-    //     type: Number,
-    // },
     reviews: [
         {
             studentEmail: {
