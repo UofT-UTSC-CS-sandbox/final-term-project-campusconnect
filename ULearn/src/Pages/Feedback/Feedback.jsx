@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import './Feedback.css'; // Assuming you have a CSS file for styling
 import axios from 'axios';
 import { useUser } from '@clerk/clerk-react';
-import { useLocation } from 'react-router-dom'; // Import useLocation hook
-
+import { useLocation, useNavigate } from 'react-router-dom'; // Import useLocation and useNavigate hooks
 
 function Feedback() {
     const [rating, setRating] = useState(0);
     const [feedback, setFeedback] = useState('');
     const { user } = useUser();
     const location = useLocation(); // Use useLocation hook
+    const navigate = useNavigate(); // Use useNavigate hook
     const tutorEmail = location.state?.tutorEmail; // Retrieve tutorEmail from state
 
     console.log("Received tutorEmail in Feedback:", tutorEmail);
-
 
     const handleRating = (rate) => {
         setRating(rate);
@@ -21,9 +20,17 @@ function Feedback() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (rating === 0 && feedback !== '') {
+            alert('Rating is required for to write a description.');
+            return;
+        } else if (rating === 0) {
+            navigate('/homePage'); // Navigate back to homepage if no rating is placed
+            return;
+        }
+
         const reviewData = {
-            tutorEmail: tutorEmail, // Replace with the actual tutor email
-            studentEmail: String(user.primaryEmailAddress.emailAddress), // Replace with the actual student email
+            tutorEmail: tutorEmail, //  tutor email
+            studentEmail: String(user.primaryEmailAddress.emailAddress), // student/user email
             rate: rating,
             description: feedback
         };
@@ -31,15 +38,20 @@ function Feedback() {
         try {
             console.log(reviewData);
             const response = await axios.post('http://localhost:3001/reviews', reviewData);
-            //console.log(tutorEmail, studentEmail, rate, description);
             console.log('Review submitted:', response.data);
+            navigate('/homePage'); // Navigate back to homepage after submission
         } catch (error) {
             console.error('Error submitting review:', error);
         }
     };
 
+    const handleClose = () => {
+        navigate('/homePage'); // Navigate back to homepage
+    };
+
     return (
         <div className="feedback-wrapper">
+            <button className="feedback-close-button" onClick={handleClose}>X</button> {/* Add X button */}
             <h1 className="feedback-header">Add your feedback</h1>
             <form onSubmit={handleSubmit} className="feedback-form">
                 <div className="star-rating">
@@ -63,7 +75,7 @@ function Feedback() {
                     value={feedback}
                     onChange={(e) => setFeedback(e.target.value)}
                 />
-                <button type="submit" className="submit-button">Submit</button>
+                <button type="submit" className="feedback-submit-button">Submit</button>
             </form>
         </div>
     );
