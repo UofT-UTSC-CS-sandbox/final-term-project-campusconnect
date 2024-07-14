@@ -26,7 +26,7 @@ const ReviewPosts = ({ email }) => {
                 reviews.map(review => (
                     <div key={review._id} className="review-post">
                         <div className="review-header">
-                            <img src={review.user.image || 'default_user_image_url'} alt={review.user.name} className="review-user-image" />
+                            <img src={review.user.image || 'default_user_image_url'} alt={review.user.name} className="review-user-image aspect-circle object-cover" />
                             <div className="review-user-info">
                                 <span className="review-user-name">{review.user.name}</span>
                                 <span className="review-date">{new Date(review.createdAt).toLocaleDateString()}</span>

@@ -96,14 +96,13 @@ const TutorProfile = () => {
     };
 
     return (
-        
-        <div className='bg-slate-100 w-full h-min-screen w-min-screen '> 
-            <div className='border-gray-300 border-b-2 bg-white w-screen shadow-lg'>
+        <div className='bg-white w-full h-fit min-h-full min-w-screen '> 
+            <div className='border-gray-300 border-b-2 bg-white w-screen shadow-lg min-w-full'>
                 <Nav></Nav>
             </div>
             <div className='flex justify-center items-center'>
                 <div className='w-5/6 h-screen grid grid-cols-4 gap-4 mt-10 grid-rows-2'>
-                    <div className='col-start-1 row-span-3 bg-slate-50 grid grid-rows-2 border-r-2 border-gray-300 shadow-xl'>
+                    <div className='col-start-1 row-span-3 bg-white grid grid-rows-2 border-r-2 border-gray-200 shadow-2xl'>
                         <div className='row-start-1 row-span-1 size-11/12 justify-self-center mt-3 border-b-2 border-gray-300 space-y-2'>
                             <img src={tutor && tutor.image} className='rounded-3xl aspect-square object-cover'>
                             </img>
@@ -117,7 +116,7 @@ const TutorProfile = () => {
                                     {tutor && displayCourses(tutor.courses)}
                                 </p>
                             </div>
-                            <div className='border-b-2 border-gray-300 w-11/12'>
+                            <div className=' border-gray-300 w-11/12'>
                                 <header>
                                     Languages
                                 </header>
@@ -127,7 +126,7 @@ const TutorProfile = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='col-start-2 col-span-2 row-start-1 mt-3'>
+                    <div className=' col-start-2 col-span-2 row-start-1 mt-3' id='tutormidsection'>
                         <header className='text-5xl w-full' >
                             {tutor && tutor.name + '     '}
                             <span className='size-fit text-amber-400 text-4xl mb-4 align-middle space-x-4'>
@@ -148,8 +147,9 @@ const TutorProfile = () => {
                             {tutor && tutor.starCountArray && tutor.starCountArray.length > 0 ? (
                                 <BarChart
                                     chartH='250px'
-                                    chartW='800px'
+                                    chartW= {document.getElementById('tutormidsection').offsetWidth || '800'}
                                     barSpace='50'
+                                    barColour='#fbbf24'
                                     barThick='15'
                                     data={[
                                         { name: '5 star', value: tutor.starCountArray[4] || 0 },
@@ -164,7 +164,7 @@ const TutorProfile = () => {
                             )}
                         </div>
                     </div>
-                    <div className='col-start-2 col-span-3 row-start-2 bg-slate-50 h-full w-full'>
+                    <div className='col-start-2 col-span-3 row-start-2 bg-white shadow-2xl border-t-2 border-gray-100 h-fit min-h-full max-h-100 w-full'>
                         <Tabs>
                             <Tab label="About">
                                 <div className="py-4">
@@ -181,7 +181,9 @@ const TutorProfile = () => {
                                 </div>
                             </Tab>
                             <Tab label="Reviews">
-                                <ReviewPosts email={email} />
+                                <div className='overflow-y-scroll max-h-screen'>
+                                    <ReviewPosts style='scroll-behaviour:smooth' email={email} />
+                                </div>
                             </Tab>
                         </Tabs>
                     </div>
@@ -197,6 +199,7 @@ const TutorProfile = () => {
                 </div>
             </div>
         </div>
+        
 
     )
 }

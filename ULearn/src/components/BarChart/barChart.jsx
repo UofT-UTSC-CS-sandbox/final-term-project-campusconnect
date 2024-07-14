@@ -14,7 +14,7 @@ const BarChart = ( props ) => {
     }
   }
   
-  let chartwidth = props.chartW.slice(0, -2); //removes px from the number
+  let chartwidth = props.chartW
 
   return( 
     <div>
