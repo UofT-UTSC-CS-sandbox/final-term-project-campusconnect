@@ -6,13 +6,13 @@ import { useUser } from '@clerk/clerk-react';
 import Nav from '../../components/Nav/Nav';
 import { Tab, Tabs } from '../../components/tabs';
 import { BarChart } from '../../components/BarChart/barChart';
-//import { BarChart } from 'lucide-react';
+import ReviewPosts from './reviewPosts';
 
 const TutorProfile = () => {
     //getting the tutor email from homepage
     const {state} = useLocation();
     const {email} = state;
-    //tutor.email = email;
+
     const [tutor, setTutor] = useState();
     
     const navigate = useNavigate();
@@ -34,6 +34,18 @@ const TutorProfile = () => {
         try {
             const tutorResponse = await axios.get('http://localhost:3001/getTutorByEmail', { params: { email } });
             const userResponse = await axios.get('http://localhost:3001/getUserByEmail', { params: { email } });
+            const reviewsResponse = await axios.get(`http://localhost:3001/reviews/${email}`); // Fetch reviews
+            var rating; // Calculate average rating from reviews
+            var totalReviews = 0;
+
+            console.log("review response:", reviewsResponse.data[0]);
+            if (reviewsResponse.data[0]) {
+                const starCountArray = reviewsResponse.data[0].starCountArray;
+                const totalStars = starCountArray.reduce((sum, count, index) => sum + (count * (index + 1)), 0);
+                totalReviews = starCountArray.reduce((sum, count) => sum + count, 0);
+                rating = totalReviews > 0 ? Math.floor((totalStars / totalReviews)) : 0;
+            }
+
             if (userResponse.data && tutorResponse.data) {
                 const fullTutorData = {
                     name: userResponse.data.name,
@@ -42,10 +54,13 @@ const TutorProfile = () => {
                     courses: tutorResponse.data.verifiedCourses,
                     price: tutorResponse.data.rate,
                     description: tutorResponse.data.description,
-                    rating: 5,
-                    languages: userResponse.data.languages || []
+                    rating: rating || 0,
+                    languages: userResponse.data.languages || [],
+                    starCountArray: reviewsResponse.data[0] ? reviewsResponse.data[0].starCountArray : [],
+                    totalReviews: totalReviews, // Add total reviews
                 };
                 setTutor(fullTutorData);
+                console.log('Tutor info:', fullTutorData);
             } else {
                 console.log('User not found for email:', email);
             }
@@ -59,7 +74,7 @@ const TutorProfile = () => {
         axios.get('http://localhost:3001/getUserByEmail', { params: { email: email } })
             .then(response => {
                 const userData = response.data;
-                navigate(`/chatRoom`, {state: {clerkid: userData.clerkId, tutorname: userData.name, tutorimage: userData.image}})
+                navigate(`/chatRoom`, { state: { clerkid: userData.clerkId, tutorname: userData.name, tutorimage: userData.image } })
             })
             .catch(error => {
                 console.error("Error fetching user:", error);
@@ -117,28 +132,36 @@ const TutorProfile = () => {
                             {tutor && tutor.name + '     '}
                             <span className='size-fit text-amber-400 text-4xl mb-4 align-middle space-x-4'>
                                 <span>
-                                    {tutor && '★'.repeat(tutor.rating)}{tutor && '☆'.repeat(5 - tutor.rating)} 
+                                    {tutor && '★'.repeat(tutor.rating)}{tutor && '☆'.repeat(5 - tutor.rating)}
                                 </span>
                                 <span className='text-sm text-gray-500 align-middle'>
-                                    (34) {/* note: add the total number of ratings*/}
+                                    {tutor && tutor.starCountArray && tutor.starCountArray.length > 0 ? (
+                                        `(${tutor.totalReviews})` /* note: add the total number of ratings*/
+                                    ) : (
+                                        '(0)'
+                                    )}
+
                                 </span>
-                            </span> 
+                            </span>
                         </header>
                         <div className='mt-5'>
-                            <BarChart 
-                                chartH='250px'
-                                chartW='800px'
-                                barSpace='50'
-                                barThick='15'
-                                barColour='#fbbf24'
-                                data={[ //temp values, to be replaced by star counts later
-                                    { name: '5 star', value: 20 },
-                                    { name: '4 star', value: 40 },
-                                    { name: '3 star', value: 35 },
-                                    { name: '2 star', value: 50 },
-                                    { name: '1 star', value: 55 },
-                                  ]}
-                            ></BarChart>
+                            {tutor && tutor.starCountArray && tutor.starCountArray.length > 0 ? (
+                                <BarChart
+                                    chartH='250px'
+                                    chartW='800px'
+                                    barSpace='50'
+                                    barThick='15'
+                                    data={[
+                                        { name: '5 star', value: tutor.starCountArray[4] || 0 },
+                                        { name: '4 star', value: tutor.starCountArray[3] || 0 },
+                                        { name: '3 star', value: tutor.starCountArray[2] || 0 },
+                                        { name: '2 star', value: tutor.starCountArray[1] || 0 },
+                                        { name: '1 star', value: tutor.starCountArray[0] || 0 },
+                                    ]}
+                                />
+                            ) : (
+                                <p>No reviews</p>
+                            )}
                         </div>
                     </div>
                     <div className='col-start-2 col-span-3 row-start-2 bg-slate-50 h-full w-full'>
@@ -146,7 +169,7 @@ const TutorProfile = () => {
                             <Tab label="About">
                                 <div className="py-4">
                                     <p className="text-gray-700">
-                                    {tutor && tutor.description}
+                                        {tutor && tutor.description}
                                     </p>
                                 </div>
                             </Tab>
@@ -158,11 +181,7 @@ const TutorProfile = () => {
                                 </div>
                             </Tab>
                             <Tab label="Reviews">
-                                <div className="py-4">
-                                    <p className="text-gray-700">
-                                        Placeholder content for Reviews
-                                    </p>
-                                </div>
+                                <ReviewPosts email={email} />
                             </Tab>
                         </Tabs>
                     </div>
@@ -178,7 +197,7 @@ const TutorProfile = () => {
                 </div>
             </div>
         </div>
-        
+
     )
 }
 

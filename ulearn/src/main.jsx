@@ -12,6 +12,7 @@ import ChatRoom from './Pages/Chatrooms/chatroom.jsx'
 import TutorProfile from './Pages/Home/tutorProfile.jsx'
 import StreamVideoCallProvider from './Pages/StreamVideoCallProvider.jsx'
 import Meeting from './Pages/Meeting/Meeting.jsx'
+import Feedback from './Pages/Feedback/Feedback.jsx'
 
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/tutor/:name" element={<TutorProfile />} />
           <Route path="/chatRoom" element={<ChatRoom />} />
           <Route path="/meeting/:id" element={<Meeting />} />
+          <Route path="/Feedback" element={<Feedback />} />
         </Routes>
       </BrowserRouter>
     </StreamVideoCallProvider>

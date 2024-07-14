@@ -15,7 +15,8 @@ import {
 import { useState } from "react";
 import { Grid2X2, Users } from "lucide-react";
 import EndCallButton from "./endCallButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useUser } from '@clerk/clerk-react';
 
 const MeetingRoom = () => {
   const [layout, setLayout] = useState("speaker-right");
@@ -23,10 +24,25 @@ const MeetingRoom = () => {
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
   const navigate = useNavigate();
+  //const { state } = useLocation(); // Get state from location
+  //const tutorEmail = state?.tutorEmail; // Retrieve tutorEmail from state
+  const { user } = useUser();
+  const { search } = useLocation();
+    const tutorEmail = new URLSearchParams(search).get("tutorEmail"); // Get tutorEmail from URL parameters
 
-  //Redirect user to homepage upon hanging up
+    console.log("Received tutorEmail in MeetingRoom:", tutorEmail);
+
+
+  //Redirect user to feedback page upon hanging up
   if (callingState === CallingState.LEFT) {
-    navigate("/homePage");
+    console.log("tutoremail in meeting room", tutorEmail);
+    console.log("user email in meeting room", user.primaryEmailAddress.emailAddress);
+    if (String(user.primaryEmailAddress.emailAddress) === tutorEmail) {
+      navigate("/homePage"); // Redirect to home page if tutor ends call
+    } else {
+      navigate("/Feedback", { state: { tutorEmail } }); // Redirect to feedback page 
+    }
+   
   }
 
   //Display loading message if user is not in call after clicking join button
@@ -71,7 +87,7 @@ const MeetingRoom = () => {
             <Users size={20} className="text-white" />
           </div>
         </button>
-        <EndCallButton />
+        <EndCallButton tutorEmail={tutorEmail}/>
       </div>
     </section>
   );
