@@ -263,6 +263,40 @@ app.get('/reviews/:tutorEmail', async (req, res) => {
   }
 });
 
+// 
+app.get('/aggregatedTutors', async (req, res) => {
+  try {
+      // Fetch all tutors
+      const tutors = await TutorModel.find();
+
+      // Fetch user details and reviews for each tutor
+      const aggregatedTutors = await Promise.all(tutors.map(async (tutor) => {
+          const user = await UserModel.findOne({ email: tutor.email });
+          const review = await ReviewModel.findOne({ tutorEmail: tutor.email });
+          const starCountArray = review ? review.starCountArray : [];
+          const totalStars = starCountArray.reduce((sum, count, index) => sum + (count * (index + 1)), 0);
+          const totalReviews = starCountArray.reduce((sum, count) => sum + count, 0);
+          const rating = totalReviews > 0 ? Math.floor((totalStars / totalReviews)) : 0;
+
+          return {
+              name: user.name,
+              email: user.email,
+              image: user.image,
+              courses: tutor.verifiedCourses,
+              price: tutor.rate,
+              rating: rating,
+              languages: user.languages || []
+          };
+      }));
+
+      res.json(aggregatedTutors);
+  } catch (error) {
+      console.error('Error aggregating tutor data:', error);
+      res.status(500).send('Server error');
+  }
+});
+
+
 
 app.listen("3001", () => {
     console.log(`Server started on port 3001`);

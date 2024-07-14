@@ -21,7 +21,7 @@ function Feedback() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (rating === 0 && feedback !== '') {
-            alert('Rating is required for to write a description.');
+            alert('Rating is required to write a description.');
             return;
         } else if (rating === 0) {
             navigate('/homePage'); // Navigate back to homepage if no rating is placed
@@ -29,8 +29,10 @@ function Feedback() {
         }
 
         const reviewData = {
-            tutorEmail: tutorEmail, //  tutor email
+            tutorEmail: tutorEmail, // tutor email
+            //tutorEmail: 'ulearn.cc@gmail.com', 
             studentEmail: String(user.primaryEmailAddress.emailAddress), // student/user email
+            //studentEmail: 'aarushidoshi23@gmail.com',
             rate: rating,
             description: feedback
         };
@@ -46,6 +48,11 @@ function Feedback() {
     };
 
     const handleClose = () => {
+        navigate('/homePage'); // Navigate back to homepage
+    };
+
+    //place holder for now
+    const handleRemindMeLater = () => {
         navigate('/homePage'); // Navigate back to homepage
     };
 
@@ -75,7 +82,10 @@ function Feedback() {
                     value={feedback}
                     onChange={(e) => setFeedback(e.target.value)}
                 />
-                <button type="submit" className="feedback-submit-button">Submit</button>
+                <div className="feedback-buttons">
+                    <button type="submit" className="feedback-submit-button">Submit</button>
+                    <button type="button" className="feedback-remind-button" onClick={handleRemindMeLater}>Remind Me Later</button>
+                </div>
             </form>
         </div>
     );

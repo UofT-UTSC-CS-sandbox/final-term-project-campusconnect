@@ -72,9 +72,15 @@
     font-size: 18px;
 }
 
-.submit-button {
+.feedback-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.feedback-submit-button,
+.feedback-remind-button {
     padding: 12px 24px;
-    background-color: #007bff;
     border: none;
     border-radius: 5px;
     color: #fff;
@@ -82,6 +88,18 @@
     cursor: pointer;
 }
 
-.submit-button:hover {
+.feedback-submit-button {
+    background-color: #007bff;
+}
+
+.feedback-submit-button:hover {
     background-color: #0056b3;
+}
+
+.feedback-remind-button {
+    background-color: #6c757d;
+}
+
+.feedback-remind-button:hover {
+    background-color: #5a6268;
 }
