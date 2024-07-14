@@ -35,8 +35,6 @@ const Meeting = () => {
   const { user, isLoaded } = useUser();
   const [isSetupComplete, setIsSetupComplete] = useState(false);
   const { call, isCallLoading } = useGetCallById(id);
-  //const { state } = useLocation(); // Get state from location
-  //const tutorEmail = state?.tutorEmail; // Retrieve tutorEmail from state
   const queryParams = new URLSearchParams(location.search);
   const tutorEmail = queryParams.get('tutorEmail'); // Retrieve tutorEmail from URL parameters
   /*

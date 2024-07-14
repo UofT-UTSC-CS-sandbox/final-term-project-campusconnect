@@ -29,10 +29,8 @@ function Feedback() {
         }
 
         const reviewData = {
-            tutorEmail: tutorEmail, // tutor email
-            //tutorEmail: 'ulearn.cc@gmail.com', 
+            tutorEmail: tutorEmail, // tutor email 
             studentEmail: String(user.primaryEmailAddress.emailAddress), // student/user email
-            //studentEmail: 'aarushidoshi23@gmail.com',
             rate: rating,
             description: feedback
         };
@@ -51,8 +49,14 @@ function Feedback() {
         navigate('/homePage'); // Navigate back to homepage
     };
 
-    //place holder for now
-    const handleRemindMeLater = () => {
+    // Placeholder for now
+    const handleRemindMeLater = async () => {
+        // Fetch the channel where you want to send the reminder
+        // You should implement how to get the `channel` variable, which represents the chat channel
+        // Here we assume `channel` is already defined and represents the correct chat channel
+        const message = await channel.sendMessage({
+            text: `write Feedback, [click here to join](http://localhost:5173/Feedback/?tutorEmail=${encodeURIComponent(tutorEmail)})`,
+        });
         navigate('/homePage'); // Navigate back to homepage
     };
 

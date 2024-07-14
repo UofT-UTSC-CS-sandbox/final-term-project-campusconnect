@@ -11,8 +11,6 @@ const EndCallButton = () => {
   const call = useCall();
   const navigate = useNavigate();
   const { useLocalParticipant } = useCallStateHooks();
-  //const { state } = useLocation(); // Get state from location
-  //const tutorEmail = state?.tutorEmail; // Retrieve tutorEmail from state
 
 
   const localParticipant = useLocalParticipant();

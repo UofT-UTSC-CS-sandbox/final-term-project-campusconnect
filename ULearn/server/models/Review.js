@@ -27,10 +27,15 @@ const ReviewSchema = new mongoose.Schema({
             },
             description: {
                 type: String,
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now,
+                required: true,
             }
         }
     ]
-});
+}, { timestamps: true });
 
 const ReviewModel = mongoose.model('Review', ReviewSchema);
 
