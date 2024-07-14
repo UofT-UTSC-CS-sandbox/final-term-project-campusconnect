@@ -58,6 +58,8 @@ function Feedback() {
             text: `write Feedback, [click here to join](http://localhost:5173/Feedback/?tutorEmail=${encodeURIComponent(tutorEmail)})`,
         });
         navigate('/homePage'); // Navigate back to homepage
+        // <button type="button" className="feedback-remind-button" onClick={handleRemindMeLater}>Remind Me Later</button>
+
     };
 
     return (
@@ -88,7 +90,6 @@ function Feedback() {
                 />
                 <div className="feedback-buttons">
                     <button type="submit" className="feedback-submit-button">Submit</button>
-                    <button type="button" className="feedback-remind-button" onClick={handleRemindMeLater}>Remind Me Later</button>
                 </div>
             </form>
         </div>
