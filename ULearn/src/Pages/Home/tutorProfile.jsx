@@ -97,7 +97,7 @@ const TutorProfile = () => {
 
     return (
         <div className='bg-white w-full h-fit min-h-full min-w-screen '> 
-            <div className='border-gray-300 border-b-2 bg-white w-screen shadow-lg min-w-full'>
+            <div className='border-gray-300 border-b-2 bg-white w-screen shadow-lg min-w-full sticky top-0'>
                 <Nav></Nav>
             </div>
             <div className='flex justify-center items-center'>
