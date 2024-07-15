@@ -26,6 +26,7 @@ const CreateCallButton = () => {
   const { user } = useUser();
   const client = useStreamVideoClient();
   const [isTutor, setIsTutor] = useState(false);
+  const [tutorEmail, setTutorEmail] = useState("");
   const [values, setValues] = useState({
     dateTime: new Date(),
     description: "",
@@ -34,12 +35,13 @@ const CreateCallButton = () => {
   const [callDetails, setCallDetails] = useState(null);
 
   useEffect(() => {
-    const email = String(user.primaryEmailAddress);
+    const email = String(user.primaryEmailAddress.emailAddress);
     axios
       .post("http://localhost:3001/findTutor", { email })
       .then((response) => {
         if (response.data === "found") {
           setIsTutor(true);
+          setTutorEmail(email);
         }
       })
       .catch((error) => {
@@ -73,9 +75,10 @@ const CreateCallButton = () => {
 
       if (!values.description) {
         const message = await channel.sendMessage({
-          text: `Call created, [click here to join](http://localhost:5173/meeting/${call.id})`,
+          text: `Call created, [click here to join](http://localhost:5173/meeting/${call.id}?tutorEmail=${encodeURIComponent(tutorEmail)})`,
         });
-        navigate(`/meeting/${call.id}`);
+        //console.log(tutorEmail);
+        navigate(`/meeting/${call.id}?tutorEmail=${encodeURIComponent(tutorEmail)}`); // Pass tutorEmail as URL parameter
       }
     } catch (error) {
       toast.error("Error: Failed to create meeting");
