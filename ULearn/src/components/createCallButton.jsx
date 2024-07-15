@@ -10,7 +10,7 @@ import { Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useChatContext } from 'stream-chat-react';
+import { useChannelStateContext, useChatContext } from 'stream-chat-react';
 import "react-toastify/dist/ReactToastify.css";
 import './creatCallButton.css'
 
@@ -23,6 +23,7 @@ import './creatCallButton.css'
 const CreateCallButton = () => {
   let navigate = useNavigate();
   const { channel } = useChatContext();
+  const { members } = useChannelStateContext();
   const { user } = useUser();
   const client = useStreamVideoClient();
   const [isTutor, setIsTutor] = useState(false);
@@ -59,6 +60,8 @@ const CreateCallButton = () => {
       if (!call) throw new Error("Failed to create call");
       const startsAt = new Date(Date.now()).toISOString(); // Start the call immediately
       const description = values.description || "No description";
+      const membersArray = Object.values(members).map(member => ({ user_id: member.user_id }));
+      console.log(membersArray);
       await call.getOrCreate({
         // Create the call
         data: {
@@ -66,6 +69,7 @@ const CreateCallButton = () => {
           custom: {
             description,
           },
+          members: membersArray,
         },
       });
 
