@@ -24,8 +24,6 @@ const MeetingRoom = () => {
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
   const navigate = useNavigate();
-  //const { state } = useLocation(); // Get state from location
-  //const tutorEmail = state?.tutorEmail; // Retrieve tutorEmail from state
   const { user } = useUser();
   const { search } = useLocation();
     const tutorEmail = new URLSearchParams(search).get("tutorEmail"); // Get tutorEmail from URL parameters
