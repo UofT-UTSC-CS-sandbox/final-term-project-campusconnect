@@ -29,3 +29,8 @@
     font-size: 1.2em;
   }
   
+  .no-reviews {
+    font-size: 14px; /* smaller font size */
+    color: black; /* black color */
+    font-style: italic; /* optional: make the text italic */
+}
