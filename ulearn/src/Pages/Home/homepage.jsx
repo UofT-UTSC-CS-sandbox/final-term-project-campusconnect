@@ -44,55 +44,17 @@ function HomePage() {
             });
     };
 
+
     const populateTutors = () => {
-        // fetch all tutors from the database
-        axios.get(`http://localhost:3001/gettutors`)
-            .then(tutorsResponse => {
-                // store tutors in tutorsData
-                const tutorsData = tutorsResponse.data;
-
-                // for each tutor in tutorsData, 
-                tutorsData.forEach(tutor => {
-                    // fetch the email, verified courses of the tutor
-                    const email = tutor.email;
-                    const courses = tutor.verifiedCourses;
-                    const price = tutor.rate;
-
-                    // in the future, need to fetch rating as well
-                    // fetch the user data of the tutor, using email 
-                    axios.get('http://localhost:3001/getUserByEmail', { params: { email: email } })
-                        .then(userResponse => {
-                            if (userResponse.data) {
-                                const tutorData = {
-                                    name: userResponse.data.name,
-                                    email: userResponse.data.email,
-                                    image: userResponse.data.image,
-                                    courses: courses,
-                                    price: price,
-                                    rating: 5, // Assuming a default rating of 5 if not provided (placeholder for now)
-                                    languages: userResponse.data.languages || [],
-                                };
-
-                                // update tutor array with the tutor data
-                                // only add tutor if not already in the array
-                                setAllTutors(prevTutors => {
-                                    if (!prevTutors.some(t => t.email === tutorData.email) && tutorData.languages.some(lang => userLanguages.includes(lang))) {
-                                        return [...prevTutors, tutorData];
-                                    } else {
-                                        return prevTutors;
-                                    }
-                                });
-                            } else {
-                                console.log('User not found for email:', email);
-                            }
-                        })
-                        .catch(userError => {
-                            console.error('Error fetching user by email:', email, userError);
-                        });
-                });
+        axios.get('http://localhost:3001/aggregatedTutors')
+            .then(response => {
+                const tutorsData = response.data;
+                const filteredTutors = tutorsData.filter(tutor => tutor.languages.some(lang => userLanguages.includes(lang)));
+                setAllTutors(filteredTutors);
+                setTutors(filteredTutors);
             })
-            .catch(tutorsError => {
-                console.error('Error fetching tutors:', tutorsError);
+            .catch(error => {
+                console.error('Error fetching aggregated tutors:', error);
             });
     };
 
