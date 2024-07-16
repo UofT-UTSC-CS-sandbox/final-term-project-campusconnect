@@ -1,6 +1,6 @@
 import './Nav.css'
 import React from 'react'
-import { IoMdChatbubbles } from "react-icons/io";
+import { IoMdChatbubbles, IoMdRadioButtonOn  } from "react-icons/io";
 import { MdPerson, MdHomeFilled } from "react-icons/md";
 import { UserButton, useUser } from '@clerk/clerk-react'; 
 
@@ -14,6 +14,9 @@ const Nav = () => {
             </a>
             <a href="/chatRoom">
                 <IoMdChatbubbles className='nav-icons'/>
+            </a>
+            <a href="/recordings">
+                <IoMdRadioButtonOn className='nav-icons'/>
             </a>
             <a href="#">
                 <MdPerson className='nav-icons'/>
