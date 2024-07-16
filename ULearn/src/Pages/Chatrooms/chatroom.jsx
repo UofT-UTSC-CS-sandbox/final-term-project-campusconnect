@@ -118,8 +118,10 @@ const sort = { last_message_at: -1 };
         <ChannelList  filters={filters} options={options} sort={sort} />
         <Channel>
           <Window>
-            <CreateCallButton />
+            <div className="flex justify-between items-center">
             <ChannelHeader />
+            <CreateCallButton />
+            </div>
               <MessageList />
             <MessageInput />
           </Window>
