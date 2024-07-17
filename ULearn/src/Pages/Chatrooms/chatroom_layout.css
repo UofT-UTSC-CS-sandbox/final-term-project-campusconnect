@@ -2,11 +2,35 @@
 .chatroom {
   margin: 0;
   padding: 0;
-  height: 100vh;
+  height: 92vh;
   width: 100vw;
   display: flex;
+  overflow-x: hidden;
 } 
 
+@media screen and (max-height: 768px) {
+  .chatroom {
+    height: 90vh;
+  }
+}
+
+@media screen and (max-height: 612px) {
+  .chatroom {
+    height: 88vh;
+  }
+}
+
+@media screen and (max-height: 496px) {
+  .chatroom {
+    height: 86vh;
+  }
+}
+
+@media screen and (max-height: 382px) {
+  .chatroom {
+    height: 84vh;
+  }
+}
 .chatroom {
   .str-chat-channel-list {
     position: fixed;
