@@ -89,32 +89,34 @@ function HomePage() {
     };
 
     return (
-        <div className="homepage-wrapper">
+        <>
             <Nav/>
-            <h1 className='homepage-header-main'> Find Your Tutor!</h1>
-            <div className="homepage-search-bar">
-                <input 
-                    type="text" 
-                    placeholder="Search for a course" 
-                    value={searchTerm}
-                    onChange={handleCourseSearch}
-                    className="course-search-input"
-                />
-                <IoFilter className="filter-icon" onClick={toggleFilterSidebar}/>
-            </div>
-            <FilterSideBar isOpen={isFilterSidebarOpen} onClose={toggleFilterSidebar} />
-            <div className="homepage-tutors-container">
-                {tutors.map(tutor => (
-                    <TutorCard
-                        key={tutor.email}
-                        email={tutor.email}
-                        tutor={tutor}
-                        handleTutorClick={handleTutorClick}
-                        formatCourses={formatCourses}
+            <div className="homepage-wrapper">
+                <h1 className='homepage-header-main'> Find Your Tutor!</h1>
+                <div className="homepage-search-bar">
+                    <input 
+                        type="text" 
+                        placeholder="Search for a course" 
+                        value={searchTerm}
+                        onChange={handleCourseSearch}
+                        className="course-search-input"
                     />
-                ))}
+                    <IoFilter className="filter-icon" onClick={toggleFilterSidebar}/>
+                </div>
+                <FilterSideBar isOpen={isFilterSidebarOpen} onClose={toggleFilterSidebar} />
+                <div className="homepage-tutors-container">
+                    {tutors.map(tutor => (
+                        <TutorCard
+                            key={tutor.email}
+                            email={tutor.email}
+                            tutor={tutor}
+                            handleTutorClick={handleTutorClick}
+                            formatCourses={formatCourses}
+                        />
+                    ))}
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
