@@ -58,19 +58,20 @@ const MeetingRoom = () => {
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white ">
       <div className="relative flex size-full items-center justify-center">
-        <div className="flex size-9/12 p-2 items-center">
+        <div className="flex size-10/12 items-center">
           <CallLayout />
         </div>
         <div
-          className={` text-black rounded-xl m-2 border-2 border-black p-4 h-[calc(100vh-86px)] ml-2 ${
+          className={` text-slate-500 rounded-xl m-2 border-2 border-black p-4 h-[calc(100vh-286px)]  ${
             showParticipants ? "block" : "hidden"
           }`}
         >
           <CallParticipantsList onClose={() => setShowParticipants(false)} />
         </div>
       </div>
-      <div className="fixed bottom-0 flex w-full items-center justify-center gap-5 flex-wrapy">
+      <div className="fixed bottom-0 flex w-full items-center justify-center gap-x-5 flex-wrap">
         <CallControls />
+        <CallStatsButton />
         <select
           value={layout}
           onChange={(e) => setLayout(e.target.value)}
@@ -79,7 +80,6 @@ const MeetingRoom = () => {
           <option value="speaker-left">Speaker Left</option>
           <option value="speaker-right">Speaker Right</option>
         </select>
-        <CallStatsButton />
         <button onClick={() => setShowParticipants((prev) => !prev)}>
           <div className="cursor-pointer rounded-md bg-black px-5 py-2 hover:bg-[#323b44]">
             <Users size={20} className="text-white" />

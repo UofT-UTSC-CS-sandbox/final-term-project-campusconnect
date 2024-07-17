@@ -119,12 +119,14 @@ const sort = { last_message_at: -1 };
     <Chat client={client} classname='left-100'>
         <ChannelList  filters={filters} options={options} sort={sort} />
         <Channel>
-            <Window>
-              <CreateCallButton />
-              <ChannelHeader />
-                <MessageList />
-              <MessageInput />
-            </Window>
+          <Window>
+            <div className="flex justify-between items-center">
+            <ChannelHeader />
+            <CreateCallButton />
+            </div>
+              <MessageList />
+            <MessageInput />
+          </Window>
           <Thread />
         </Channel>
       </Chat>

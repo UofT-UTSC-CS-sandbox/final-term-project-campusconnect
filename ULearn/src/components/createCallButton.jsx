@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useChannelStateContext, useChatContext } from 'stream-chat-react';
 import "react-toastify/dist/ReactToastify.css";
-import './creatCallButton.css'
 
 /**
  * CreateCallButton component.
@@ -93,11 +92,11 @@ const CreateCallButton = () => {
     return;
   }
   return (
-    <div className="call-button-wrapper">
+    <div className="mr-12">
       <Phone
         color="black"
         className="cursor-pointer"
-        size={20}
+        size={24}
         onClick={handleCreate}
       />
     </div>
