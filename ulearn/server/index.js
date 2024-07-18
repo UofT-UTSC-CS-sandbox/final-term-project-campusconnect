@@ -95,6 +95,26 @@ app.post(('/updatePersonalInfo'), (req, res) => {
 });
 
 /**
+ * @route POST /updateTutorInfo
+ * @access Public
+ * @description Update tutor-specific information when editing a tutor profile
+ */
+app.post('/updateTutorInfo', (req, res) => {
+  const { email, description, rate, verifiedCourses } = req.body;
+  TutorModel.findOneAndUpdate(
+    { email: email },
+    { description: description, rate: rate, verifiedCourses: verifiedCourses },
+    { new: true }, 
+    { returnOriginal: false }
+  )
+    .then(tutor => res.json(tutor))
+    .catch(err => {
+      console.error("Tutor not updated:", err);
+      res.status(500).json({ error: "Internal server error" });
+    });
+});
+
+/**
  * @route POST /tutor
  * @access Public
  * @description Register a new tutor and save their info to MongoDB
