@@ -111,15 +111,19 @@ const sort = { last_message_at: -1 };
   if (!client) return <div>Loading...</div>;
 
   return (
-    <div>
+    <>
+    <div className="sticky top-0 z-20 bg-white">
     <Nav/>
+    </div>
     <div className="chatroom">
     <Chat client={client} classname='left-100'>
         <ChannelList  filters={filters} options={options} sort={sort} />
         <Channel>
           <Window>
-            <CreateCallButton />
+            <div className="flex justify-between items-center">
             <ChannelHeader />
+            <CreateCallButton />
+            </div>
               <MessageList />
             <MessageInput />
           </Window>
@@ -127,7 +131,7 @@ const sort = { last_message_at: -1 };
         </Channel>
       </Chat>
     </div>
-    </div>
+    </>
   );
 };
 
