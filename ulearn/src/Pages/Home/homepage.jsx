@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import './homePage.css'; // Import your CSS file
+import './homePage.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import TutorCard from '../../components/TutorCard/tutorCard';
@@ -15,7 +15,9 @@ function HomePage() {
     const [allTutors, setAllTutors] = useState([]);
     const [userLanguages, setUserLanguages] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false); // State to manage FilterSidebar visibility
+    const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
+    const [priceFilter, setPriceFilter] = useState(40);
+    const [ratingFilter, setRatingFilter] = useState([0,5]);
 
     useEffect(() => {
         if (user && user.primaryEmailAddress) {
@@ -29,7 +31,7 @@ function HomePage() {
 
     useEffect(() => {
         filterTutors();
-    }, [searchTerm, allTutors]);
+    }, [searchTerm, allTutors, priceFilter, ratingFilter]);
 
     const getUserLanguages = () => {
         const email = user.primaryEmailAddress;
@@ -71,21 +73,46 @@ function HomePage() {
     const handleCourseSearch = (event) => {
         setSearchTerm(event.target.value);
     };
+    const filterTutors = async () => {
+        let filteredTutors = allTutors;
 
-    //populate tutors based on the course in the search bar
-    const filterTutors = () => {
-        if (searchTerm === '') {
-            setTutors(allTutors);
-        } else {
-            const filteredTutors = allTutors.filter(tutor => 
+        if (searchTerm !== '') {
+            filteredTutors = filteredTutors.filter(tutor =>
                 tutor.courses.some(course => course.toUpperCase().includes(searchTerm.toUpperCase()))
             );
-            setTutors(filteredTutors);
         }
+
+        filteredTutors = filteredTutors.filter(tutor =>
+            tutor.price <= priceFilter // Only upper bound is checked for price
+        );
+
+        // Fetch reviews and filter tutors based on rating
+        const tutorPromises = filteredTutors.map(async tutor => {
+            const reviewsResponse = await axios.get(`http://localhost:3001/reviews/${tutor.email}`);
+            const reviewsData = reviewsResponse.data[0];
+            let rating = 0;
+            let totalReviews = 0;
+
+            if (reviewsData) {
+                const starCountArray = reviewsData.starCountArray;
+                const totalStars = starCountArray.reduce((sum, count, index) => sum + (count * (index + 1)), 0);
+                totalReviews = starCountArray.reduce((sum, count) => sum + count, 0);
+                rating = totalReviews > 0 ? Math.floor((totalStars / totalReviews)) : 0;
+            }
+
+            if (rating >= ratingFilter[0] && rating <= ratingFilter[1]) {
+                return tutor;
+            }
+            return null;
+        });
+
+        const filteredTutorsWithRating = (await Promise.all(tutorPromises)).filter(tutor => tutor !== null);
+
+        setTutors(filteredTutorsWithRating);
     };
 
     const toggleFilterSidebar = () => {
-        setIsFilterSidebarOpen(!isFilterSidebarOpen); // Toggle the sidebar visibility
+        setIsFilterSidebarOpen(!isFilterSidebarOpen);
     };
 
     return (
@@ -103,7 +130,14 @@ function HomePage() {
                     />
                     <IoFilter className="filter-icon" onClick={toggleFilterSidebar}/>
                 </div>
-                <FilterSideBar isOpen={isFilterSidebarOpen} onClose={toggleFilterSidebar} />
+                <FilterSideBar 
+                    isOpen={isFilterSidebarOpen}
+                    onClose={toggleFilterSidebar}
+                    priceFilter={priceFilter} 
+                    ratingFilter={ratingFilter}
+                    setPriceFilter={setPriceFilter}
+                    setRatingFilter={setRatingFilter}
+                />
                 <div className="homepage-tutors-container">
                     {tutors.map(tutor => (
                         <TutorCard
