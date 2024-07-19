@@ -23,7 +23,7 @@ const BarChart = ( props ) => {
             {props.data.map((d, i) => <g key={i} transform={`translate(20, ${i * props.barSpace})`}>
                 <g className="bar-group h-full w-full">
                   <text className="name-label border-r-2 border-black fill-gray-700" x="-10" y={props.barSpace * 0.5} alignmentBaseline="middle">{d.name}</text>                 
-                  <rect className='h-5' y={props.barThick} fill={props.barColour} width={calculateBarThickness(chartwidth, d.value, max) + 'px'} x={d.name.length * 10}  />
+                  <rect className='h-5' y={props.barSpace * 0.25} fill={props.barColour} width={calculateBarThickness(chartwidth, d.value, max) + 'px'} x={d.name.length * 10}  />
                   <text className="value-label text-end fill-gray-500" 
                         x={d.name.length * 10 + calculateBarThickness(chartwidth, d.value, max) + 10} 
                         y={props.barSpace * 0.5} 
@@ -32,7 +32,7 @@ const BarChart = ( props ) => {
                   </text>
                 </g>
               </g>)}
-              <line x1={props.data[0].name.length*10 + 10} y1="10" x2={props.data[0].name.length*10 + 10} y2={props.chartH.slice(0, -2) - 10} stroke="#9ca3af" />
+              <line x1={props.data[0].name.length*10 + 10} y1="10" x2={props.data[0].name.length*10 + 10} y2={props.chartH - 1.75*props.barSpace} stroke="#9ca3af" />
           </g>
         </svg>
     </div>

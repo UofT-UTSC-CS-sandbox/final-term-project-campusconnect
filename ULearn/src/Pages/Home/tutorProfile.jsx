@@ -143,14 +143,13 @@ const TutorProfile = () => {
                                 </span>
                             </span>
                         </header>
-                        <div className='mt-5'>
+                        <div className='mt-5' id='starchart'>
                             {tutor && tutor.starCountArray && tutor.starCountArray.length > 0 ? (
                                 <BarChart
-                                    chartH='250px'
+                                    chartH= {document.getElementById('tutormidsection').offsetHeight || '250'}
                                     chartW= {document.getElementById('tutormidsection').offsetWidth || '800'}
-                                    barSpace='50'
+                                    barSpace= {document.getElementById('tutormidsection').offsetHeight*0.15 || '50'}
                                     barColour='#fbbf24'
-                                    barThick='15'
                                     data={[
                                         { name: '5 star', value: tutor.starCountArray[4] || 0 },
                                         { name: '4 star', value: tutor.starCountArray[3] || 0 },
