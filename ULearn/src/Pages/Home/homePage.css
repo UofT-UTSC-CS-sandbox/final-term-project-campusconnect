@@ -61,12 +61,12 @@
 
 .homepage-tutors-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
   justify-items: center;
   width: 80%;
   box-sizing: border-box;
   background-color: white;
-  gap: 50px;
+  gap: 32px;
 }
 
 .course-search-input {

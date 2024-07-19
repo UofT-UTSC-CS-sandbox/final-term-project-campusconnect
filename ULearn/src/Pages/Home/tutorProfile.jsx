@@ -38,7 +38,6 @@ const TutorProfile = () => {
             var rating; // Calculate average rating from reviews
             var totalReviews = 0;
 
-            console.log("review response:", reviewsResponse.data[0]);
             if (reviewsResponse.data[0]) {
                 const starCountArray = reviewsResponse.data[0].starCountArray;
                 const totalStars = starCountArray.reduce((sum, count, index) => sum + (count * (index + 1)), 0);
@@ -60,7 +59,6 @@ const TutorProfile = () => {
                     totalReviews: totalReviews, // Add total reviews
                 };
                 setTutor(fullTutorData);
-                console.log('Tutor info:', fullTutorData);
             } else {
                 console.log('User not found for email:', email);
             }
