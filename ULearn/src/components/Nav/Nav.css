@@ -1,0 +1,33 @@
+.nav-wrapper {
+    display: flex;
+    border-bottom: 2px solid #f3f3f3;
+    justify-content: space-between; /* Changed from space-around to space-between */
+    align-items: center;
+    padding: 20px;
+    z-index: 999;
+    margin-left: 2rem;
+    height: 60px;
+}
+
+.tutor-search-input {
+    border: 1px solid black;
+    padding: 12px 20px;
+    background: #f7f6f6;
+    outline: none;
+    margin-right: 20px;
+    border-radius: 5px;
+    position: relative;
+    width: 14rem;
+}
+
+.profile-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Added to push the container to the right */
+}
+
+.nav-icons {
+    width: 3rem;
+    height: 2rem;
+    margin-left: 1rem;
+}
