@@ -195,28 +195,6 @@ app.post('/getChatToken', (req, res) => {
   res.send(token);
 })
 
-// app.post('/sendChatReminder', async (req, res) => {
-//     const { userId, tutorId, tutorEmail } = req.body;
-
-//     try {
-//         const channel = serverClient.channel('messaging', {
-//             members: [userId, tutorId],
-//         });
-//         await channel.create();
-
-//         const message = `You have a pending feedback for the tutor. Click here to provide your feedback: http://localhost:3000/feedback?tutorEmail=${tutorEmail}`;
-
-//         await channel.sendMessage({
-//             text: message,
-//             user_id: userId,
-//         });
-
-//         res.status(200).send('Reminder sent to chat.');
-//     } catch (error) {
-//         console.error('Error sending chat reminder:', error);
-//         res.status(500).send('Failed to send chat reminder');
-//     }
-// });
 /**
  * @route POST /reviews
  * @access Public
@@ -286,7 +264,11 @@ app.get('/reviews/:tutorEmail', async (req, res) => {
   }
 });
 
-// 
+/**
+ * @route GET /aggregatedTutors
+ * @access Public
+ * @description Get all aggregated tutor data, including user details and reviews.
+ */
 app.get('/aggregatedTutors', async (req, res) => {
   try {
       // Fetch all tutors
