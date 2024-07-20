@@ -10,9 +10,8 @@ import { Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useChatContext } from 'stream-chat-react';
+import { useChannelStateContext, useChatContext } from 'stream-chat-react';
 import "react-toastify/dist/ReactToastify.css";
-import './creatCallButton.css'
 
 /**
  * CreateCallButton component.
@@ -23,9 +22,11 @@ import './creatCallButton.css'
 const CreateCallButton = () => {
   let navigate = useNavigate();
   const { channel } = useChatContext();
+  const { members } = useChannelStateContext();
   const { user } = useUser();
   const client = useStreamVideoClient();
   const [isTutor, setIsTutor] = useState(false);
+  const [tutorEmail, setTutorEmail] = useState("");
   const [values, setValues] = useState({
     dateTime: new Date(),
     description: "",
@@ -34,12 +35,13 @@ const CreateCallButton = () => {
   const [callDetails, setCallDetails] = useState(null);
 
   useEffect(() => {
-    const email = String(user.primaryEmailAddress);
+    const email = String(user.primaryEmailAddress.emailAddress);
     axios
       .post("http://localhost:3001/findTutor", { email })
       .then((response) => {
         if (response.data === "found") {
           setIsTutor(true);
+          setTutorEmail(email);
         }
       })
       .catch((error) => {
@@ -59,6 +61,8 @@ const CreateCallButton = () => {
       if (!call) throw new Error("Failed to create call");
       const startsAt = new Date(Date.now()).toISOString(); // Start the call immediately
       const description = values.description || "No description";
+      const membersArray = Object.values(members).map(member => ({ user_id: member.user_id }));
+      console.log(membersArray);
       await call.getOrCreate({
         // Create the call
         data: {
@@ -66,6 +70,7 @@ const CreateCallButton = () => {
           custom: {
             description,
           },
+          members: membersArray,
         },
       });
 
@@ -73,9 +78,10 @@ const CreateCallButton = () => {
 
       if (!values.description) {
         const message = await channel.sendMessage({
-          text: `Call created, [click here to join](http://localhost:5173/meeting/${call.id})`,
+          text: `Call created, [click here to join](http://localhost:5173/meeting/${call.id}?tutorEmail=${encodeURIComponent(tutorEmail)})`,
         });
-        navigate(`/meeting/${call.id}`);
+        //console.log(tutorEmail);
+        navigate(`/meeting/${call.id}?tutorEmail=${encodeURIComponent(tutorEmail)}`); // Pass tutorEmail as URL parameter
       }
     } catch (error) {
       toast.error("Error: Failed to create meeting");
@@ -86,11 +92,11 @@ const CreateCallButton = () => {
     return;
   }
   return (
-    <div className="call-button-wrapper">
+    <div className="mr-12">
       <Phone
         color="black"
         className="cursor-pointer"
-        size={20}
+        size={24}
         onClick={handleCreate}
       />
     </div>

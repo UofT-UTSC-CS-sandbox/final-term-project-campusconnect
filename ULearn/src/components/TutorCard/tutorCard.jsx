@@ -1,7 +1,7 @@
 import React from 'react';
 import './tutorCard.css';
 
-const TutorCard = ({email, tutor, handleTutorClick, formatCourses }) => {
+const TutorCard = ({ email, tutor, handleTutorClick, formatCourses }) => {
     return (
         <div
             key={tutor.name}
@@ -12,9 +12,12 @@ const TutorCard = ({email, tutor, handleTutorClick, formatCourses }) => {
             <div className="tutor-card-tutor-info">
                 <p className="tutor-card-tutor-name">{tutor.name}</p>
                 <div className="tutor-card-tutor-rating">
-                    {'★'.repeat(tutor.rating)}{'☆'.repeat(5 - tutor.rating)}
+                    {tutor.rating === 0 
+                        ? <span className="no-reviews">No reviews</span> 
+                        : '★'.repeat(Math.round(tutor.rating)) + '☆'.repeat(5 - Math.round(tutor.rating))
+                    }
                 </div>
-                <p> Price: ${tutor.price}/hr</p>
+                <p>Price: ${tutor.price}/hr</p>
                 <p>{formatCourses(tutor.courses)}</p>
             </div>
         </div>

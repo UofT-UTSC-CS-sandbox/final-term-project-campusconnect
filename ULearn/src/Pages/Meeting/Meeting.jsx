@@ -16,6 +16,7 @@ import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
 import MeetingSetup from "../../components/MeetingSetup.jsx";
 import MeetingRoom from "../../components/MeetingRoom.jsx";
 import { useGetCallById } from "../../hooks/useGetCallById.js";
+import { useLocation } from "react-router-dom";
 
 /**
  * Represents a Meeting component.
@@ -34,7 +35,8 @@ const Meeting = () => {
   const { user, isLoaded } = useUser();
   const [isSetupComplete, setIsSetupComplete] = useState(false);
   const { call, isCallLoading } = useGetCallById(id);
-
+  const queryParams = new URLSearchParams(location.search);
+  const tutorEmail = queryParams.get('tutorEmail'); // Retrieve tutorEmail from URL parameters
   /*
    * If the user is not loaded or the call is loading, display a loading message
    */
@@ -53,7 +55,7 @@ const Meeting = () => {
         {!isSetupComplete ? (
           <MeetingSetup setIsSetupComplete={setIsSetupComplete} />
         ) : (
-          <MeetingRoom />
+          <MeetingRoom tutorEmail={tutorEmail}/>
         )}
       </StreamTheme>
     </StreamCall>
