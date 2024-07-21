@@ -22,19 +22,11 @@ const etpCustomStyles = {
     border: "2px solid black",
     borderRadius: "20px",
     padding: "1px",
-    margin: "20px 0px",
     boxShadow: state.isFocused ? "0 0 0 1px black" : null,
     "&:hover": {
       borderColor: "black",
     },
-    minHeight: "auto", // Set the minimum height of the control
-    height: "auto",
-    maxHeight: "auto",
-    width: "auto", // Allows the width to be dynamic
-    minWidth: "400px", // Minimum width of the control
-    maxWidth: "auto",
-    marginTop: "10px",
-    marginBottom: "0px",
+    minWidth: "600px", // Minimum width of the control
   }),
   menu: (provided) => ({
     ...provided,
@@ -216,7 +208,10 @@ const EditTutorProfile = () => {
         <div>
           <ToastContainer></ToastContainer>
         </div>
-        <div className="flex justify-between items-center" style={{ height: 'calc(100vh - 58px)' }}>
+        <div
+          className="flex justify-between items-center"
+          style={{ height: "calc(100vh - 58px)" }}
+        >
           <div className="w-1/3 flex flex-col items-center">
             <h1 className="text-5xl text-center">Edit Your Profile</h1>
             <br></br>
@@ -230,10 +225,10 @@ const EditTutorProfile = () => {
               style={{ marginTop: "10px" }}
             />
           </div>
-          <div className="etp-form-wrapper flex justify-center">
-            <form onSubmit={handleSubmit} className="flex flex-col">
-              <div className="etp-form-group">
-                <h2 className="etp-courses-text">Courses:</h2>
+          <div className="w-2/3 flex justify-center">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-7">
+              <div className="flex justify-between items-center">
+                <h2 className="max-w-36">Courses:</h2>
                 <Select
                   required={true}
                   defaultValue={array}
@@ -246,8 +241,8 @@ const EditTutorProfile = () => {
                 />
               </div>
 
-              <div className="etp-form-group">
-                <h2 className="etp-rate-text">Hourly rate:</h2>
+              <div className="flex justify-between items-center">
+                <h2 className="max-w-36">Hourly rate:</h2>
                 <input
                   ref={rateInputRef}
                   name="rate"
@@ -256,10 +251,8 @@ const EditTutorProfile = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="etp-form-group">
-                <h2 className="etp-description-text">
-                  Additional information:
-                </h2>
+              <div className="flex justify-between items-center">
+                <h2 className="max-w-36">Additional information:</h2>
                 <input
                   ref={descriptionInputRef}
                   name="description"
@@ -269,10 +262,8 @@ const EditTutorProfile = () => {
                 />
               </div>
 
-              <div className="etp-form-group">
-                <h2 className="etp-transcript-text">
-                  Upload your latest transcript:
-                </h2>
+              <div className="flex justify-between items-center">
+                <h2 className="max-w-36">Upload your latest transcript:</h2>
                 <input
                   id="transcript"
                   type="file"
@@ -281,7 +272,7 @@ const EditTutorProfile = () => {
                   onChange={getFile}
                 />
               </div>
-              <div className="etp-form-group">
+              <div className="flex justify-between items-center">
                 <button type="submit" className="etp-submit-button">
                   Save Changes
                 </button>

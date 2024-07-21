@@ -1,79 +1,48 @@
-.etp-form-wrapper{
-    width: 66%;
-  }
-
-.etp-form-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  
-}
-  
-.etp-form-group h2 {
-  margin-right: 10px;
-  max-width: 9rem;
-}
 .etp-submit-button {
-    border: 1px solid black;
-    border-radius: 20px;
-    padding: 1px;
-    box-shadow: 0 0 0 1px black;
-    height: 50px;
-    min-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: rgba(46, 102, 185, 0.644);
-    cursor: pointer;
-    margin-top: 25px;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 1px;
+  box-shadow: 0 0 0 1px black;
+  height: 50px;
+  min-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgba(46, 102, 185, 0.644);
+  cursor: pointer;
+  margin-top: 3rem;
 }
 .etp-submit-button:hover {
-    background-color:rgba(21, 88, 189, 0.644); 
+  background-color: rgba(21, 88, 189, 0.644);
 }
 
-  .etp-input {
-    border: 1px solid black;
-    border-radius: 20px;
-    padding: 10px;
-    font-size: 16px;
-    box-shadow: 0 0 0 1px black;
-    height: 70px;
-    width: auto;
-    min-width: 400px;
-    max-width: auto;
-    background-color: white;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  
-  .etp-input {
-    border-color: black;
-  }
-  .etp-upload-transcript-button {
-    border: 1px solid black;
-    border-radius: 20px;
-    padding: 10px;
-    padding-top: 10px;
-    box-shadow: 0 0 0 1px black;
-    height: 50px;
-    width: auto;
-    min-width: 400px;
-    max-width: auto;
-    background-color: white;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-bottom: 15px;
-    font-size: 16px;
-  }
-  
-  .etp-upload-transcript-button:hover {
-    border-color: black;
-  }
-  .etp-vertical-line {
-    position: absolute;
-    top: 58px; 
-    left: 33%; 
-    width: 2px; 
-    height: 100%; 
-    background-color: rgb(215, 212, 212);
-  }
+.etp-input {
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 0 0 0 1px black;
+  height: 70px;
+  min-width: 600px;
+  background-color: white;
+  cursor: pointer;
+}
+.etp-upload-transcript-button {
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 0 0 0 1px black;
+  height: 50px;
+  min-width: 600px;
+  cursor: pointer;
+}
+
+.etp-upload-transcript-button:hover {
+  border-color: black;
+}
+.etp-vertical-line {
+  position: absolute;
+  top: 58px;
+  left: 33%;
+  width: 2px;
+  height: 100%;
+  background-color: rgb(215, 212, 212);
+}
