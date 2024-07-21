@@ -26,7 +26,7 @@ const etpCustomStyles = {
     "&:hover": {
       borderColor: "black",
     },
-    minWidth: "600px", // Minimum width of the control
+    width: "400px",
   }),
   menu: (provided) => ({
     ...provided,
@@ -209,23 +209,20 @@ const EditTutorProfile = () => {
           <ToastContainer></ToastContainer>
         </div>
         <div
-          className="flex justify-between items-center"
+          className=" flex flex-col items-center lg:flex-row"
           style={{ height: "calc(100vh - 58px)" }}
         >
-          <div className="w-1/3 flex flex-col items-center">
-            <h1 className="text-5xl text-center">Edit Your Profile</h1>
-            <br></br>
-            <br></br>
+          <div className="w-2/3 lg:w-1/3 flex flex-col items-center">
+            <h1 className="text-4xl text-center lg:text-5xl">Edit Your Profile</h1>
             {/* print out name and image */}
-            <h2 style={{ fontSize: "25px" }}>{name}</h2>
+            <h2 className="text-3xl mt-6">{name}</h2>
             <img
               src={image}
-              width="300px"
-              height="300px"
-              style={{ marginTop: "10px" }}
+              width="184px"
+              className="mt-3 lg:w-80"
             />
           </div>
-          <div className="w-2/3 flex justify-center">
+          <div className="mt-10 lg:mt-0 w-2/3 flex justify-center">
             <form onSubmit={handleSubmit} className="flex flex-col gap-7">
               <div className="flex justify-between items-center">
                 <h2 className="max-w-36">Courses:</h2>

@@ -21,7 +21,7 @@
   padding: 10px;
   box-shadow: 0 0 0 1px black;
   height: 70px;
-  min-width: 600px;
+  width: 400px;
   background-color: white;
   cursor: pointer;
 }
@@ -31,18 +31,21 @@
   padding: 10px;
   box-shadow: 0 0 0 1px black;
   height: 50px;
-  min-width: 600px;
+  width: 400px;
   cursor: pointer;
 }
 
 .etp-upload-transcript-button:hover {
   border-color: black;
 }
-.etp-vertical-line {
-  position: absolute;
-  top: 58px;
-  left: 33%;
-  width: 2px;
-  height: 100%;
-  background-color: rgb(215, 212, 212);
+
+@media screen and (min-width: 1024px) {
+  .etp-vertical-line {
+    position: absolute;
+    top: 58px;
+    left: 33%;
+    width: 2px;
+    height: 100%;
+    background-color: rgb(215, 212, 212);
+  }
 }
