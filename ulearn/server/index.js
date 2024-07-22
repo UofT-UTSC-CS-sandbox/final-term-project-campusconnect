@@ -241,6 +241,7 @@ app.post('/reviews', async (req, res) => {
       createdAt: new Date(),
     };
 
+
     // Find the tutor and update the review and starCountArray
     const tutor = await ReviewModel.findOne({ tutorEmail: tutorEmail });
 
@@ -248,17 +249,44 @@ app.post('/reviews', async (req, res) => {
       // Tutor exists, update the reviews and starCountArray
       tutor.reviews.push(newReview);
       tutor.starCountArray[rate - 1] = (tutor.starCountArray[rate - 1] || 0) + 1;
+
+      // Update average rating
+      //const tutorSchema = await TutorModel.findOne({ tutorEmail: tutorEmail });
+      
+      const totalReviews = tutor.reviews.length;
+      const totalStars = tutor.starCountArray.reduce((sum, count, index) => sum + (count * (index + 1)), 0);
+      //tutorSchema.averageRating = totalReviews > 0 ? totalStars / totalReviews : 0;
+      
+      
+      // Find the tutor and update the review reference
+      const tutorSchema = await TutorModel.findOneAndUpdate(
+        { email: tutorEmail },
+        { $set: { starCountArray: tutor.starCountArray } }, // Update or add the reference field
+        { new: true, upsert: true } // Return the updated document, create if not exists
+      );
       await tutor.save();
+      
+      await tutorSchema.save();
       res.json(tutor);
     } else {
       // Tutor does not exist, create a new document with the review and starCountArray
       const newTutor = new ReviewModel({
         tutorEmail: tutorEmail,
         starCountArray: Array(5).fill(0), // Initialize with zeros
-        reviews: [newReview]
+        reviews: [newReview],
       });
       newTutor.starCountArray[rate - 1] = 1;
+
+      // Find the tutor and update the review reference
+      const tutorSchema = await TutorModel.findOneAndUpdate(
+        { email: tutorEmail },
+        { $set: { starCountArray: newTutor.starCountArray } }, // Update or add the reference field
+        { new: true, upsert: true } // Return the updated document, create if not exists
+      );
+
       await newTutor.save();
+      await tutorSchema.save();
+
       res.json(newTutor);
     }
   } catch (err) {
@@ -266,6 +294,7 @@ app.post('/reviews', async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 /**
  * @route GET /reviews/:tutorEmail
@@ -297,8 +326,15 @@ app.get('/aggregatedTutors', async (req, res) => {
       // Fetch user details and reviews for each tutor
       const aggregatedTutors = await Promise.all(tutors.map(async (tutor) => {
           const user = await UserModel.findOne({ email: tutor.email });
-          const review = await ReviewModel.findOne({ tutorEmail: tutor.email });
-          const starCountArray = review ? review.starCountArray : [];
+          //const review = await ReviewModel.findOne({ tutorEmail: tutor.email });
+          // Ensure starCountArray is defined and initialized
+          let starCountArray = tutor.starCountArray ?? [];
+          
+          // If starCountArray is still empty, initialize it with 0s
+          if (starCountArray.length === 0) {
+            starCountArray = Array(5).fill(0);
+          }
+
           const totalStars = starCountArray.reduce((sum, count, index) => sum + (count * (index + 1)), 0);
           const totalReviews = starCountArray.reduce((sum, count) => sum + count, 0);
           const rating = totalReviews > 0 ? Math.floor((totalStars / totalReviews)) : 0; // if tutors have no reviews, set rating to 0, else take the average and round it down to the nearest integer
@@ -309,7 +345,7 @@ app.get('/aggregatedTutors', async (req, res) => {
               image: user.image,
               courses: tutor.verifiedCourses,
               price: tutor.rate,
-              rating: rating,
+              rating: rating || 0,
               languages: user.languages || []
           };
       }));
