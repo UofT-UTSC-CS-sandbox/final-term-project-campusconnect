@@ -19,7 +19,11 @@ const TutorSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true,
-    }
+    },
+    starCountArray: {
+        type: [Number],
+        required: true,
+    },
 
     // Add any other fields you need
 });
