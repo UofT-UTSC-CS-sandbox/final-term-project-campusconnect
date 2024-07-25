@@ -357,7 +357,37 @@ app.get('/aggregatedTutors', async (req, res) => {
   }
 });
 
+/**
+ * @route POST /createAppointment
+ * @access Public
+ * @description Creates an appointment, including start/end time, descriptions, and other user.
+ */
+//NOTE: Michael you create this :)
 
+/**
+ * @route GET /getUserAppointments
+ * @access Public
+ * @description Gets all the appointments including all information for the specified user.
+ */
+
+/**
+ * @route PATCH /updateAppointmentInfo
+ * @access Public
+ * @description Updates an appointments information about topic/description.
+ */
+
+/**
+ * @route PATCH /updateAppointmentStatus
+ * @access Public
+ * @description Updates an appointment's status.
+ */
+//NOTE: Anusha you create this :)
+
+/**
+ * @route DELETE /updateAppointmentInfo
+ * @access Public
+ * @description Deletes an appointment.
+ */
 
 app.listen("3001", () => {
     console.log(`Server started on port 3001`);
