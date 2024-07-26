@@ -7,17 +7,19 @@ import Nav from '../../components/Nav/Nav';
 import { Tab, Tabs } from '../../components/tabs';
 import { BarChart } from '../../components/BarChart/barChart';
 import ReviewPosts from './reviewPosts';
+import { Link } from 'react-router-dom';
+
 
 const TutorProfile = () => {
     //getting the tutor email from homepage
-    const {state} = useLocation();
-    const {email} = state;
+    const { state } = useLocation();
+    const { email } = state;
 
     const [tutor, setTutor] = useState();
-    
+
     const navigate = useNavigate();
 
-    const {user, isLoaded} = useUser(null);
+    const { user, isLoaded } = useUser(null);
     useEffect(() => {
         if (!isLoaded) {
             console.log("User not loaded");
@@ -82,19 +84,23 @@ const TutorProfile = () => {
     const displayCourses = (courses) => {
         if (!courses) return '';
         let newcourses = [' • ']
-        newcourses = newcourses+courses.slice().join(' • ');
+        newcourses = newcourses + courses.slice().join(' • ');
         return newcourses;
     };
 
     const displayLanguages = (lang) => {
         if (!lang) return '';
         let newlang = [' • ']
-        newlang = newlang+lang.slice().join(' • ');
+        newlang = newlang + lang.slice().join(' • ');
         return newlang;
     };
 
+    const handleNavigation = () => {
+        navigate('/calendar', { state: { email: email } });
+    };
+
     return (
-        <div className='bg-white w-full h-fit min-h-full min-w-screen '> 
+        <div className='bg-white w-full h-fit min-h-full min-w-screen '>
             <div className='border-gray-300 border-b-2 bg-white w-screen shadow-lg min-w-full sticky top-0'>
                 <Nav></Nav>
             </div>
@@ -174,8 +180,13 @@ const TutorProfile = () => {
                             <Tab label="Schedule">
                                 <div className="py-4">
                                     <p className="text-gray-700">
-                                        Placeholder content for schedule
                                     </p>
+                                    <button
+                                        onClick={handleNavigation}
+                                        className="text-blue-500 hover:underline"
+                                    >
+                                        View Availability
+                                    </button>
                                 </div>
                             </Tab>
                             <Tab label="Reviews">
