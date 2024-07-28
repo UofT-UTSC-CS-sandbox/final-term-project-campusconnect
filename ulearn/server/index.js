@@ -7,6 +7,7 @@ const TutorModel = require('./models/Tutor');
 const { StreamClient } = require("@stream-io/node-sdk");
 require('dotenv').config({path: '../.env.local'}); 
 const ReviewModel = require('./models/Review');
+const AvailabilityModel = require('./models/Availability');
 
 const app = express();
 app.use(express.json());
@@ -357,6 +358,122 @@ app.get('/aggregatedTutors', async (req, res) => {
   }
 });
 
+
+/**
+ * @route POST /availability
+ * @access Public
+ * @description Add availability for a tutor
+ */
+app.post('/availability', async (req, res) => {
+  const { tutorEmail, eventID, startTime, endTime } = req.body;
+
+  const newAvailability = {
+      eventID: eventID,
+      startTime: startTime,
+      endTime: endTime,
+  };
+
+  try {
+      // Find the tutor and update the availability
+      const tutor = await AvailabilityModel.findOne({ tutorEmail: tutorEmail });
+
+      if (tutor) {
+          // Tutor exists, update the availability
+          tutor.availableTimes.push(newAvailability);
+
+          await tutor.save();
+          res.json(tutor);
+      } else {
+          // Tutor does not exist, create a new document with the availability
+          const newTutor = new AvailabilityModel({
+              tutorEmail,
+              availableTimes: [newAvailability],
+          });
+
+          await newTutor.save();
+          res.json(newTutor);
+      }
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/**
+ * @route GET /availability/:tutorEmail
+ * @access Public
+ * @description gets all the availabilities for a given tutor
+ */
+app.get('/availability/:tutorEmail', async (req, res) => {
+  const { tutorEmail } = req.params;
+
+  try {
+      const tutor = await AvailabilityModel.findOne({ tutorEmail });
+
+      if (!tutor) {
+          return res.status(404).json({ message: 'Tutor not found' });
+      }
+
+      res.json(tutor.availableTimes);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/**
+ * @route DELETE /availability/:tutorEmail/:eventID
+ * @access Public
+ * @description deletes a given event for a selected tutor
+ */
+app.delete('/availability/:tutorEmail/:eventID', async (req, res) => {
+  const { tutorEmail, eventID } = req.params;
+
+  try {
+      const tutor = await AvailabilityModel.findOneAndUpdate(
+          { tutorEmail: tutorEmail },
+          { $pull: { availableTimes: { eventID: eventID } } },
+          { new: true }
+      );
+
+      if (!tutor) {
+          return res.status(404).json({ message: 'Tutor or event not found' });
+      }
+
+      res.json({ message: 'Event deleted successfully' });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+/**
+ * @route PUT /availability/:tutorEmail/:eventID
+ * @access Public
+ * @description updates a given event for a selected tutor
+ */
+app.put('/availability/:tutorEmail/:eventID', async (req, res) => {
+  const { tutorEmail, eventID } = req.params;
+  const { newStart, newEnd } = req.body;
+
+  try {
+      const tutor = await AvailabilityModel.findOneAndUpdate(
+          { tutorEmail: tutorEmail, 'availableTimes.eventID': eventID },
+          { $set: { 'availableTimes.$.startTime': newStart, 'availableTimes.$.endTime': newEnd } },
+          { new: true }
+      );
+
+      if (!tutor) {
+          return res.status(404).json({ message: 'Tutor or event not found' });
+      }
+
+      res.json({ message: 'Event updated successfully', updatedEvent: tutor });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 
 app.listen("3001", () => {

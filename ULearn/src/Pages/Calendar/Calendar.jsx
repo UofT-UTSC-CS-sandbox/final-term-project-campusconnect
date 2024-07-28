@@ -5,6 +5,7 @@ import "./Calendar.css";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { green } from '@mui/material/colors';
+import axios from 'axios';
  
 
 const Calendar = () => {
@@ -41,24 +42,54 @@ const Calendar = () => {
         //console.log("User email in Calendar:", user.primaryEmailAddress.emailAddress);
     }
 
-    // here we can populate events from database to show on the calendar
-    // sample data for now 
+
     useEffect(() => {
-        const fetchEvents = async () => {
-            // Simulate fetching events from an API
-            const sampleEvents = [
-                { id: 1, text: "Event 1", start: "2024-07-22T10:30:00", end: "2024-07-22T13:00:00", backColor: "#FF0000" },
-                { id: 2, text: "Event 2", start: "2024-07-23T09:30:00", end: "2024-07-23T11:30:00" },
-                { id: 3, text: "Event 3", start: "2024-07-24T12:00:00", end: "2024-07-24T14:00:00" }
-            ];
-            // Remove texts
-            const eventsWithoutText = sampleEvents.map(event => ({ ...event, text: '' }));
-            setEvents(eventsWithoutText);
-            const dp = calendarRef.current.control;
-            dp.update({ events: eventsWithoutText });
-        };
         fetchEvents();
     }, []);
+
+    const fetchEvents = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/availability/${tutorEmail}`);
+            const availableTimes = response.data;
+
+            console.log("Available Times fetched:", availableTimes);
+            // Add color to the events
+            const eventsWithColour = availableTimes.map(event => ({
+                id: event.eventID,
+                start: formatDateForDayPilot(event.startTime),
+                end: formatDateForDayPilot(event.endTime),
+                backColor: '#50C878'
+            }));
+
+            setEvents(eventsWithColour);
+            console.log("Events fetched:", eventsWithColour);
+
+            const dp = calendarRef.current.control;
+            console.log("dp", dp);
+            dp.update({ events: eventsWithColour });
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    };
+
+    const formatDateForDayPilot = (date) => {
+        const d = new Date(date);
+        const pad = (num) => (num < 10 ? '0' + num : num);
+    
+        return (
+            d.getFullYear() +
+            '-' +
+            pad(d.getMonth() + 1) +
+            '-' +
+            pad(d.getDate()) +
+            'T' +
+            pad(d.getHours()) +
+            ':' +
+            pad(d.getMinutes()) +
+            ':' +
+            pad(d.getSeconds())
+        );
+    };
 
     
     const [config, setConfig] = useState({
@@ -70,16 +101,35 @@ const Calendar = () => {
         eventClickHandling: "Update",
         eventMoveHandling: "Update",
         eventResizeHandling: "Update",
+        
         // this function handles resizing an event
         onEventResized: async (args) => {
             if (!isTutor) return; // Prevent non-tutors from moving events
-            const dp = calendarRef.current.control;
             const updatedEvent = { ...args.e.data, start: args.newStart, end: args.newEnd };
-            setEvents(prevEvents => {
-                const updatedEvents = prevEvents.map(event => event.id === args.e.id() ? updatedEvent : event);
-                dp.update({ events: updatedEvents }); // Update the calendar with updated events
-                return updatedEvents;
-            });
+
+            try {
+                // Send a request to the backend to update the event
+                const response = await axios.put(`http://localhost:3001/availability/${tutorEmail}/${args.e.id()}`, {
+                    newStart: args.newStart.value,
+                    newEnd: args.newEnd.value
+                });
+        
+                if (response.status === 200) {
+                    setEvents(prevEvents => {
+                        const updatedEvents = prevEvents.map(event => event.id === args.e.id() ? updatedEvent : event);
+                        const dp = calendarRef.current.control;
+                        dp.update({ events: updatedEvents }); // Update the calendar with updated events
+                        console.log("Event resized:", updatedEvent);
+                        return updatedEvents;
+                    });
+                } else {
+                    console.error('Error updating event:', response.data);
+                }
+            } catch (error) {
+                console.error('Error updating event:', error);
+            }
+
+            
             console.log("Event Resized:", updatedEvent);
         },
         
@@ -87,26 +137,44 @@ const Calendar = () => {
         // this function handles moving an event to a different time
         onEventMoved: async (args) => {
             if (!isTutor) return; // Prevent non-tutors from moving events
-            const dp = calendarRef.current.control;
+            
             const updatedEvent = { ...args.e.data, start: args.newStart, end: args.newEnd };
-            setEvents(prevEvents => {
-                const updatedEvents = prevEvents.map(event => event.id === args.e.id() ? updatedEvent : event);
-                dp.update({ events: updatedEvents }); // Update the calendar with updated events
-                return updatedEvents;
-            });
+
+            try {
+                // Send a request to the backend to update the event
+                const response = await axios.put(`http://localhost:3001/availability/${tutorEmail}/${args.e.id()}`, {
+                    newStart: args.newStart.value,
+                    newEnd: args.newEnd.value
+                });
+        
+                if (response.status === 200) {
+                    setEvents(prevEvents => {
+                        const updatedEvents = prevEvents.map(event => event.id === args.e.id() ? updatedEvent : event);
+                        const dp = calendarRef.current.control;
+                        dp.update({ events: updatedEvents }); // Update the calendar with updated events
+                        console.log("Event Moved:", updatedEvent);
+                        return updatedEvents;
+                    });
+                } else {
+                    console.error('Error updating event:', response.data);
+                }
+            } catch (error) {
+                console.error('Error updating event:', error);
+            }
+
+            
             console.log("Event Moved:", updatedEvent);
         },
 
-        // this function handles selecting a time range to create an event
-        onTimeRangeSelected: (args) => {
+        // this function handles adding a time range to create an event
+        onTimeRangeSelected: async (args) => {
             if (!isTutor) return; // Prevent non-tutors from moving events
             const dp = calendarRef.current.control;
             dp.clearSelection();
             const newEvent = {
                 id: DayPilot.guid(),
-                text: '',
-                start: args.start,
-                end: args.end,
+                start: args.start.value,
+                end: args.end.value,
                 backColor: '#50C878' // colour used for the event
             };
             setEvents(prevEvents => {
@@ -115,13 +183,60 @@ const Calendar = () => {
                 return updatedEvents;
             });
             // console logs the event that was added
-            console.log("Event Added:", newEvent);
+            //console.log("Event Added:", newEvent);
+            console.log("Event Added:", {
+                id: newEvent.id,
+                text: newEvent.text,
+                start: newEvent.start.toString(), // convert to string for better readability in console
+                end: newEvent.end.toString(), // convert to string for better readability in console
+                
+            })
+
+            const newEventAdded = {
+                tutorEmail: tutorEmail, // tutor email 
+                eventID: newEvent.id,
+                startTime: formatDateForDayPilot(args.start.value), // convert to string for better readability in console
+                endTime: formatDateForDayPilot(args.end.value), // convert to string for better readability in console
+
+            };
+
+            try {
+                console.log(newEventAdded);
+                const response = await axios.post('http://localhost:3001/availability', newEventAdded);
+                console.log('Availability submitted:', response.data);
+            } catch (error) {
+                console.error('Error submitting Availability:', error);
+            }
+
+                const start = new Date(newEvent.start);
+                console.log(start); // Outputs: Thu Jul 25 2024 11:00:00 GMT+0000 (Coordinated Universal Time)
+
         },
         // this function handles clicking on an event that was already created to edit it
         
-        onEventDelete: (args) => {
+        onEventDelete: async (args) => {
             if (!isTutor) return; // Prevent non-tutors from moving events
             if (!window.confirm("Do you really want to delete this event?")) { return; }
+            try {
+                // Send a request to the backend to delete the event
+                const response = await axios.delete(`http://localhost:3001/availability/${tutorEmail}/${args.e.id()}`);
+        
+                if (response.status === 200) {
+                    setEvents(prevEvents => {
+                        const updatedEvents = prevEvents.filter(event => event.id !== args.e.id());
+                        const dp = calendarRef.current.control;
+                        dp.events.remove(args.e);
+                        dp.update({ events: updatedEvents });
+                        console.log("Event Deleted:", args.e.data);
+                        return updatedEvents;
+                    });
+                } else {
+                    console.error('Error deleting event:', response.data);
+                }
+            } catch (error) {
+                console.error('Error deleting event:', error);
+            }
+
             setEvents(prevEvents => {
                 const updatedEvents = prevEvents.filter(event => event.id !== args.e.id());
                 const dp = calendarRef.current.control;
@@ -132,13 +247,6 @@ const Calendar = () => {
             });
         }
     });
-
-
-
-    useEffect(() => {
-        const startDate = "2024-07-22";
-        calendarRef.current.control.update({ startDate, events });
-    }, [events]);
 
     return (
         <div style={{ display: "flex" }}>
