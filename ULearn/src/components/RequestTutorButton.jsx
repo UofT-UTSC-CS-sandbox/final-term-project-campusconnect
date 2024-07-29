@@ -1,7 +1,7 @@
 import { useState } from "react";
 import RequestTutorCard from "./RequestTutorCard";
 
-const RequestTutorButton = () => {
+const RequestTutorButton = ({tutorname}) => {
   const [display, setDisplay] = useState(false);
 
   const toggleDisplay = () => {
@@ -13,7 +13,7 @@ const RequestTutorButton = () => {
       <button className="block border-2" onClick={toggleDisplay}>
         Request
       </button>
-      {display ? <RequestTutorCard toggle={toggleDisplay} /> : null}
+      {display ? <RequestTutorCard toggle={toggleDisplay} tutorname={tutorname} /> : null}
     </>
   );
 };

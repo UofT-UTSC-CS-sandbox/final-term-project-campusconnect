@@ -176,8 +176,8 @@ const TutorProfile = () => {
                                 <div className="py-4">
                                     <p className="text-gray-700">
                                         Placeholder content for schedule
-                                        <RequestTutorButton />
                                     </p>
+                                    {tutor ? <RequestTutorButton tutorname={tutor.name}/>: null}
                                 </div>
                             </Tab>
                             <Tab label="Reviews">
