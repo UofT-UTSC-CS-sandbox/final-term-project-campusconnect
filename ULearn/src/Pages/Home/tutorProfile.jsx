@@ -177,7 +177,7 @@ const TutorProfile = () => {
                                     <p className="text-gray-700">
                                         Placeholder content for schedule
                                     </p>
-                                    {tutor ? <RequestTutorButton tutorname={tutor.name}/>: null}
+                                    {tutor ? <RequestTutorButton tutorname={tutor.name} tutoremail={tutor.email}/>: null}
                                 </div>
                             </Tab>
                             <Tab label="Reviews">

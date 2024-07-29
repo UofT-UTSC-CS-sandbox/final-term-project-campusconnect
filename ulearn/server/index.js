@@ -7,6 +7,7 @@ const TutorModel = require('./models/Tutor');
 const { StreamClient } = require("@stream-io/node-sdk");
 require('dotenv').config({path: '../.env.local'}); 
 const ReviewModel = require('./models/Review');
+const RequestModel = require('./models/Request');
 
 const app = express();
 app.use(express.json());
@@ -71,6 +72,32 @@ app.get('/getTutorByEmail', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: 'Error fetching tutor or not found' });
+  }
+});
+
+/**
+ * @route POST /request-tutor
+ * @access Public
+ * @description Creates a request object in the database. This object represents a request to book a tutoring session.
+ */
+app.post('/request-tutor', async (req, res) => {
+  const { tutorEmail, requests } = req.body;
+
+  try {
+    const existingRequest = await RequestModel.findOne({ tutorEmail });
+
+    if (existingRequest) {
+      existingRequest.requests.push(...requests);
+      await existingRequest.save();
+    } else {
+      const newRequest = new RequestModel({ tutorEmail, requests });
+      await newRequest.save();
+    }
+
+    res.status(200).json({ message: 'Request saved successfully' });
+  } catch (error) {
+    console.error('Error saving request:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
