@@ -1,14 +1,23 @@
 const mongoose = require('mongoose');
 
 const AppointmentSchema = new mongoose.Schema({
-    userEmail: {
+    userClerkId: {
        type: String,
        required: true,
        unique: true,
     },
+    userName: {
+        type: String,
+        required: true,
+        unique: true,
+     },
     appointments: [
         {
-            fromUserEmail: {
+            otherName: {
+                type: String,
+                required: true,
+            },
+            otherClerkId: {
                 type: String,
                 required: true,
             },

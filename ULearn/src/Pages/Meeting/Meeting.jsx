@@ -13,8 +13,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
-import MeetingSetup from "../../components/MeetingSetup.jsx";
-import MeetingRoom from "../../components/MeetingRoom.jsx";
+import MeetingSetup from "../../components/Meeting/MeetingSetup.jsx";
+import MeetingRoom from "../../components/Meeting/MeetingRoom.jsx";
 import { useGetCallById } from "../../hooks/useGetCallById.js";
 import { useLocation } from "react-router-dom";
 

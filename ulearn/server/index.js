@@ -7,6 +7,7 @@ const TutorModel = require('./models/Tutor');
 const { StreamClient } = require("@stream-io/node-sdk");
 require('dotenv').config({path: '../.env.local'}); 
 const ReviewModel = require('./models/Review');
+const AppointmentModel = require('./models/Appointment');
 
 const app = express();
 app.use(express.json());
@@ -363,18 +364,86 @@ app.get('/aggregatedTutors', async (req, res) => {
  * @description Creates an appointment, including start/end time, descriptions, and other user.
  */
 //NOTE: Michael you create this :)
+//sample for testing
+app.post('/appointments', async (req, res) => {
+  const { userClerkId, otherClerkId, topic, description, start, end} = req.body;
+  try {
+    // Check if the user trying to make an appointment exists
+    const user = await UserModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const newPendingAppt = { //appointment to put under the tutor's
+      userClerkId,
+      topic,
+      description,
+      status: "Pending",
+      startTime: new Date(),
+      endTime: new Date(),
+    };
+
+    // Find the tutor and update their appointments
+    const tutor = await AppointmentModel.findOne({ userClerkId: otherClerkId });
+
+    const newWaitingAppt = { //appointment under the student's
+      otherClerkId,
+      topic,
+      description,
+      status: "Waiting",
+      startTime: new Date(),
+      endTime: new Date(),
+    };
+  
+    if (tutor) {
+      // Tutor exists, update the appointments
+      tutor.appointments.push(newPendingAppt);
+      await tutor.save();
+      res.json(tutor);
+    } else {
+      // Tutor does not exist, create a new document with the new appointment
+      const newTutor = new AppointmentModel({
+        userClerkId: otherClerkId,
+        appointments: [newPendingAppt],
+      });
+      await newTutor.save();
+      res.json(newTutor);
+    }
+    //Add the waiting appointment to the student's appointments
+    const userAppt = await AppointmentModel.findOne({ userClerkId: userClerkId }); //Find the user
+    if (userAppt){ 
+      // User exists in the appointments
+      userAppt.appointments.push(newWaitingAppt);
+      await userAppt.save();
+      res.json(userAppt);
+    } else {
+      // User does not exist, create a new document with the new appointment
+      const newUser = new AppointmentModel({
+        userClerkId: userClerkId,
+        appointments: [newWaitingAppt],
+      });
+      await newUser.save();
+      res.json(newUser);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 /**
- * @route GET /getUserAppointments
+ * @route GET /appointments/:userClerkId
  * @access Public
  * @description Gets all the appointments including all information for the specified user.
  */
-
-/**
- * @route PATCH /updateAppointmentInfo
- * @access Public
- * @description Updates an appointments information about topic/description.
- */
+app.get('/appointments/:userClerkId', async (req, res) => {
+  try {
+      const appointments = await AppointmentModel.find({ userClerkId }).populate('appointments.user');
+      res.json(appointments);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 /**
  * @route PATCH /updateAppointmentStatus
@@ -384,7 +453,7 @@ app.get('/aggregatedTutors', async (req, res) => {
 //NOTE: Anusha you create this :)
 
 /**
- * @route DELETE /updateAppointmentInfo
+ * @route DELETE /deleteAppointment
  * @access Public
  * @description Deletes an appointment.
  */

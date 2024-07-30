@@ -4,6 +4,7 @@ import { IoMdChatbubbles, IoMdRadioButtonOn  } from "react-icons/io";
 import { MdPerson, MdHomeFilled } from "react-icons/md";
 import { UserButton, useUser } from '@clerk/clerk-react'; 
 import EditButtonNav from './EditButtonNav.jsx';
+import { PiCalendarCheckFill } from "react-icons/pi";
 
 const Nav = () => {
   return (
@@ -19,11 +20,14 @@ const Nav = () => {
             <a href="/recordings">
                 <IoMdRadioButtonOn className='nav-icons'/>
             </a>
+            <a href="/editTutorProfile">
+                <EditButtonNav className='nav-icons'/>
+            </a>
+            <a href="/myAppointments">
+                <PiCalendarCheckFill className='nav-icons' />
+            </a>
             <a href="#">
                 <MdPerson className='nav-icons'/>
-            </a>
-            <a href="/editTutorProfile">
-                <EditButtonNav />
             </a>
         </div>
     </nav>
