@@ -6,6 +6,7 @@ const cors = require('cors');
 const TutorModel = require('./models/Tutor');
 const { StreamClient } = require("@stream-io/node-sdk");
 require('dotenv').config({path: '../.env.local'}); 
+const ReviewModel = require('./models/Review');
 
 const app = express();
 app.use(express.json());
@@ -35,6 +36,7 @@ app.post(('/login'), (req, res) => {
     })
 });
 
+
 /**
  * @route POST /findTutor
  * @access Public
@@ -51,6 +53,25 @@ app.post(('/findTutor'), (req, res) => {
             res.json("not found");
         }
     })
+});
+
+/**
+ * @route GET /getTutorByEmail
+ * @access Public
+ * @description Get a tutor by their email address
+ */
+app.get('/getTutorByEmail', async (req, res) => {
+  const { email } = req.query; // Use req.query to extract email from query parameters
+  try {
+    const tutor = await TutorModel.findOne({ email: email });
+    if (tutor) {
+      res.json(tutor);
+    } else {
+      res.status(404).json({ message: 'Tutor not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching tutor or not found' });
+  }
 });
 
 /**
@@ -71,6 +92,26 @@ app.post(('/updatePersonalInfo'), (req, res) => {
         console.error("Error during registration:", err);
         res.status(500).json({ error: "Internal server error" });
       });
+});
+
+/**
+ * @route POST /updateTutorInfo
+ * @access Public
+ * @description Update tutor-specific information when editing a tutor profile
+ */
+app.post('/updateTutorInfo', (req, res) => {
+  const { email, description, rate, verifiedCourses } = req.body;
+  TutorModel.findOneAndUpdate(
+    { email: email },
+    { description: description, rate: rate, verifiedCourses: verifiedCourses },
+    { new: true }, 
+    { returnOriginal: false }
+  )
+    .then(tutor => res.json(tutor))
+    .catch(err => {
+      console.error("Tutor not updated:", err);
+      res.status(500).json({ error: "Internal server error" });
+    });
 });
 
 /**
@@ -174,6 +215,115 @@ app.post('/getChatToken', (req, res) => {
   res.send(token);
 })
 
+/**
+ * @route POST /reviews
+ * @access Public
+ * @description add a review of a tutor
+ */
+app.post('/reviews', async (req, res) => {
+  const { tutorEmail, studentEmail, rate, description } = req.body;
+
+  try {
+    // Extract the actual email address if studentEmail is an object
+    const email = typeof studentEmail === 'object' ? studentEmail.emailAddress : studentEmail;
+
+    // Check if the user trying to post a review exists
+    const user = await UserModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const newReview = {
+      studentEmail: email,
+      user: user._id,  // Using user._id to reference the user
+      rate,
+      description,
+      createdAt: new Date(),
+    };
+
+    // Find the tutor and update the review and starCountArray
+    const tutor = await ReviewModel.findOne({ tutorEmail: tutorEmail });
+
+    if (tutor) {
+      // Tutor exists, update the reviews and starCountArray
+      tutor.reviews.push(newReview);
+      tutor.starCountArray[rate - 1] = (tutor.starCountArray[rate - 1] || 0) + 1;
+      await tutor.save();
+      res.json(tutor);
+    } else {
+      // Tutor does not exist, create a new document with the review and starCountArray
+      const newTutor = new ReviewModel({
+        tutorEmail: tutorEmail,
+        starCountArray: Array(5).fill(0), // Initialize with zeros
+        reviews: [newReview]
+      });
+      newTutor.starCountArray[rate - 1] = 1;
+      await newTutor.save();
+      res.json(newTutor);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/**
+ * @route GET /reviews/:tutorEmail
+ * @access Public
+ * @description get all reviews for a tutor
+ */
+
+app.get('/reviews/:tutorEmail', async (req, res) => {
+  const { tutorEmail } = req.params;
+  try {
+      const reviews = await ReviewModel.find({ tutorEmail }).populate('reviews.user');
+      res.json(reviews);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/**
+ * @route GET /aggregatedTutors
+ * @access Public
+ * @description Get all aggregated tutor data, including user details and reviews.
+ */
+app.get('/aggregatedTutors', async (req, res) => {
+  try {
+      // Fetch all tutors
+      const tutors = await TutorModel.find();
+
+      // Fetch user details and reviews for each tutor
+      const aggregatedTutors = await Promise.all(tutors.map(async (tutor) => {
+          const user = await UserModel.findOne({ email: tutor.email });
+          const review = await ReviewModel.findOne({ tutorEmail: tutor.email });
+          const starCountArray = review ? review.starCountArray : [];
+          const totalStars = starCountArray.reduce((sum, count, index) => sum + (count * (index + 1)), 0);
+          const totalReviews = starCountArray.reduce((sum, count) => sum + count, 0);
+          const rating = totalReviews > 0 ? Math.floor((totalStars / totalReviews)) : 0; // if tutors have no reviews, set rating to 0, else take the average and round it down to the nearest integer
+
+          return {
+              name: user.name,
+              email: user.email,
+              image: user.image,
+              courses: tutor.verifiedCourses,
+              price: tutor.rate,
+              rating: rating,
+              languages: user.languages || []
+          };
+      }));
+
+      res.json(aggregatedTutors);
+  } catch (error) {
+      console.error('Error aggregating tutor data:', error);
+      res.status(500).send('Server error');
+  }
+});
+
+
+
 app.listen("3001", () => {
     console.log(`Server started on port 3001`);
 });
+
