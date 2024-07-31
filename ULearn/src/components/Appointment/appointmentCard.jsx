@@ -2,11 +2,13 @@ import React from 'react';
 import { GoCheckCircleFill } from "react-icons/go";
 import { GoXCircleFill } from "react-icons/go";
 import MessageButton from '../message';
-
+import { useNavigate } from 'react-router-dom';
 
 const AppointmentCard = ( props ) => {
+    const navigate = useNavigate();
+
     const handleMessageClick = () => {
-        navigate(`/chatRoom`, { state: { clerkId: props.appointment.clerkId, tutorname: props.appointment.name, tutorimage: props.appointment.image } })
+        navigate(`/chatRoom`, { state: { clerkid: props.appointment.clerkId, tutorname: props.appointment.name, tutorimage: props.appointment.image } })
     }
     return (
         <div className="bg-white h-full w-full flex justify-center">
