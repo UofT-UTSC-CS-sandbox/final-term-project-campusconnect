@@ -14,7 +14,7 @@ const AppointmentsPage = () => {
     useEffect(() => {
         const getAppointments = async () => {
             try {
-                //const response = await axios.get(`http://localhost:3001/appointments/${email}`);
+                //const response = await axios.get(`http://localhost:3001/appointments/${clerkId}`);
                 //const appointmentsData = response.data[0]?.appointments || [];
                 //appointmentsData.map(appt )
                 //const sortedAppointments = appointmentsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -22,6 +22,7 @@ const AppointmentsPage = () => {
                     const testappointments = [
                         {
                         _id: 1,
+                        clerkId: 124141521,
                         name: "Aarushi Doshi",
                         topic: "Sample topic",
                         description: "Hihihihi",
@@ -31,6 +32,7 @@ const AppointmentsPage = () => {
                         },
                         {
                             _id: 2,
+                            clerkId: 124141521,
                             name: user.fullName,
                             topic: "HELP ME",
                             description: "AHHHHHH",
@@ -40,6 +42,7 @@ const AppointmentsPage = () => {
                         },
                         {
                             _id: 3,
+                            clerkId: 124141521,
                             name: user.fullName,
                             topic: "Just testing",
                             description: ":)",
@@ -49,6 +52,7 @@ const AppointmentsPage = () => {
                         },
                         {
                             _id: 4,
+                            clerkId: 124141521,
                             name: user.fullName,
                             topic: "Mor",
                             description: "e",

@@ -17,6 +17,7 @@ const AppointmentList = ( props ) => {
                 props.appointments.map(appointment => (
                     <div key={appointment._id} className="h-1/12 max-h-30 w-full shadow-md my-2 border-t-2 border-gray-100" onClick={() => handleApptClick(appointment)}>
                         <Appointment
+                            clerkId = {appointment.clerkId}
                             name = {appointment.name} 
                             image = {appointment.image}
                             topic = {appointment.topic}

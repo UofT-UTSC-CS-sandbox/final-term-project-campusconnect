@@ -7,6 +7,7 @@ import Nav from '../../components/Nav/Nav';
 import { Tab, Tabs } from '../../components/tabs';
 import { BarChart } from '../../components/BarChart/barChart';
 import ReviewPosts from './reviewPosts';
+import MessageButton from '../../components/message';
 
 const TutorProfile = () => {
     //getting the tutor email from homepage
@@ -189,10 +190,10 @@ const TutorProfile = () => {
                         <div className='mt-2'>
                             Rate: ${tutor && tutor.price}/hr
                         </div>
-                        <button className='bg-blue-500 h-10 w-40 rounded-lg text-white '
-                            onClick={() => handleMessageClick(email)}>
-                            Message
-                        </button>
+                        <MessageButton 
+                            props={email}
+                            handleMessageClick={handleMessageClick}
+                        ></MessageButton>
                     </div>
                 </div>
             </div>
