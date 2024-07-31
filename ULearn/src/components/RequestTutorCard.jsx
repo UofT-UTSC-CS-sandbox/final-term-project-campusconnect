@@ -4,13 +4,12 @@ import axios from "axios";
 
 function RequestTutorCard({ toggle, tutorname, tutoremail }) {
   const { user } = useUser();
-  const studentEmail = String(user.primaryEmailAddress);
   const [visible, setVisible] = useState(false);
   const [formData, setFormData] = useState({
-    topic: '',
-    description: '',
-    start: '',
-    end: ''
+    topic: "",
+    description: "",
+    start: "",
+    end: "",
   });
 
   useEffect(() => {
@@ -29,38 +28,82 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const requestData = {
-      tutorEmail: tutoremail, // Replace with actual tutor email
-      requests: [
+    let tutorData = {};
+    try {
+      tutorData = await axios.get("http://localhost:3001/getUserByEmail", {
+        params: { email: tutoremail },
+      });
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+    console.log(tutorData);
+    const tutorStudentData = {
+      userClerkId: tutorData.data.clerkId,
+      userName: tutorData.data.name,
+      appointments: [
         {
-          studentEmail: studentEmail, // Replace with actual student email
+          otherClerkId: user.id,
+          otherName: user.fullName,
           startTime: formData.start,
           endTime: formData.end,
-          status: 'pending', // Initial status
+          status: "Pending",
           topic: formData.topic,
-          description: formData.description
-        }
-      ]
+          description: formData.description,
+        },
+      ],
     };
-
     try {
-      const response = await axios.post('http://localhost:3001/request-tutor', requestData);
+      const response = await axios.post(
+        "http://localhost:3001/bookAppointment",
+        tutorStudentData
+      );
       if (response.status === 200) {
         // Handle success
-        console.log('Request sent successfully');
+        console.log("Request sent successfully");
+      } else {
+        // Handle error
+        console.error("Failed to send request");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    const studentTutorData = {
+      userClerkId: user.id,
+      userName: user.fullName,
+      appointments: [
+        {
+          otherClerkId: tutorData.data.clerkId,
+          otherName: tutorData.data.name,
+          startTime: formData.start,
+          endTime: formData.end,
+          status: "Waiting",
+          topic: formData.topic,
+          description: formData.description,
+        },
+      ],
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/bookAppointment",
+        studentTutorData
+      );
+      if (response.status === 200) {
+        // Handle success
+        console.log("Request sent successfully");
         toggle();
       } else {
         // Handle error
-        console.error('Failed to send request');
+        console.error("Failed to send request");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 

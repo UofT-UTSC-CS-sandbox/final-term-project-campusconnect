@@ -7,7 +7,7 @@ const TutorModel = require('./models/Tutor');
 const { StreamClient } = require("@stream-io/node-sdk");
 require('dotenv').config({path: '../.env.local'}); 
 const ReviewModel = require('./models/Review');
-const RequestModel = require('./models/Request');
+const AppointmentModel = require('./models/Appointment');
 
 const app = express();
 app.use(express.json());
@@ -76,27 +76,25 @@ app.get('/getTutorByEmail', async (req, res) => {
 });
 
 /**
- * @route POST /request-tutor
+ * @route POST /bookAppointment
  * @access Public
- * @description Creates a request object in the database. This object represents a request to book a tutoring session.
+ * @description Creates an appointment in the database. This object represents a request to book a tutoring session.
  */
-app.post('/request-tutor', async (req, res) => {
-  const { tutorEmail, requests } = req.body;
-
+app.post('/bookAppointment', async (req, res) => {
+  const { userClerkId, userName, appointments } = req.body;
   try {
-    const existingRequest = await RequestModel.findOne({ tutorEmail });
-
-    if (existingRequest) {
-      existingRequest.requests.push(...requests);
-      await existingRequest.save();
+    const existingAppointment = await AppointmentModel.findOne({ userClerkId });
+    if (existingAppointment) {
+      existingAppointment.appointments.push(...appointments);
+      await existingAppointment.save();
     } else {
-      const newRequest = new RequestModel({ tutorEmail, requests });
-      await newRequest.save();
+      const newAppointment = new AppointmentModel({ userClerkId, userName, appointments });
+      await newAppointment.save();
     }
 
-    res.status(200).json({ message: 'Request saved successfully' });
+    res.status(200).json({ message: 'Appointment saved successfully' });
   } catch (error) {
-    console.error('Error saving request:', error);
+    console.error('Error saving appointment:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
