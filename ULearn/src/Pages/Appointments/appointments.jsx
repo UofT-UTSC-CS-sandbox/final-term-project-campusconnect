@@ -16,46 +16,49 @@ const AppointmentsPage = () => {
             try {
                 //const response = await axios.get(`http://localhost:3001/appointments/${email}`);
                 //const appointmentsData = response.data[0]?.appointments || [];
+                //appointmentsData.map(appt )
                 //const sortedAppointments = appointmentsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                const testappointments = [
-                    {
-                    _id: 1,
-                    name: user.fullName,
-                    topic: "Sample topic",
-                    description: "Hihihihi",
-                    image: user.imageUrl,
-                    starttime: new Date(),
-                    endtime: new Date()
-                    },
-                    {
-                        _id: 2,
+                if (user){
+                    const testappointments = [
+                        {
+                        _id: 1,
                         name: user.fullName,
-                        topic: "HELP ME",
-                        description: "AHHHHHH",
+                        topic: "Sample topic",
+                        description: "Hihihihi",
                         image: user.imageUrl,
                         starttime: new Date(),
                         endtime: new Date()
-                    },
-                    {
-                        _id: 3,
-                        name: user.fullName,
-                        topic: "Just testing",
-                        description: ":)",
-                        image: user.imageUrl,
-                        starttime: new Date(),
-                        endtime: new Date()
-                    },
-                    {
-                        _id: 4,
-                        name: user.fullName,
-                        topic: "Mor",
-                        description: "e",
-                        image: user.imageUrl,
-                        starttime: new Date(),
-                        endtime: new Date()
-                    }
-                ]
-                setAppointments(testappointments);
+                        },
+                        {
+                            _id: 2,
+                            name: user.fullName,
+                            topic: "HELP ME",
+                            description: "AHHHHHH",
+                            image: user.imageUrl,
+                            starttime: new Date(),
+                            endtime: new Date()
+                        },
+                        {
+                            _id: 3,
+                            name: user.fullName,
+                            topic: "Just testing",
+                            description: ":)",
+                            image: user.imageUrl,
+                            starttime: new Date(),
+                            endtime: new Date()
+                        },
+                        {
+                            _id: 4,
+                            name: user.fullName,
+                            topic: "Mor",
+                            description: "e",
+                            image: user.imageUrl,
+                            starttime: new Date(),
+                            endtime: new Date()
+                        }
+                    ]
+                    setAppointments(testappointments);
+                }
             } catch (error) {
                 console.error('Error fetching appointments:', error);
             }
@@ -69,7 +72,7 @@ const AppointmentsPage = () => {
                 <Nav></Nav>
             </div>
             <div className='flex justify-center items-center my-5 pt-5'>
-                <Tabs className='bg-gray-100'>
+                <Tabs className='bg-gray-200'>
                     <Tab label="Appointments">
                         <div className='overflow-y-scroll max-h-screen bg-gray-50 min-h-screen'>
                             <AppointmentList
@@ -80,12 +83,18 @@ const AppointmentsPage = () => {
                     </Tab>
                     <Tab label="Pending">
                         <div className='overflow-y-scroll max-h-screen bg-gray-50 min-h-screen'>
-                            Placeholder content for Pending Appointment Requests
+                            <AppointmentList
+                                appointments={pending}
+                            >
+                            </AppointmentList>
                         </div>
                     </Tab>
                     <Tab label="Archive">
                         <div className='overflow-y-scroll max-h-screen bg-gray-50 min-h-screen'>
-                            Placeholder content for Past Appointments
+                            <AppointmentList
+                                appointments={archive}
+                            >
+                            </AppointmentList>
                         </div>
                     </Tab>
                 </Tabs>
