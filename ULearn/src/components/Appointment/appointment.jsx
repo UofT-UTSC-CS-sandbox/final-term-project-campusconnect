@@ -29,7 +29,7 @@ const Appointment = ( props ) => {
         </div>
         
         <div className="text-gray-800 text-md flex flex-col"> 
-            <div className="italic">
+            <div className=" text-gray-500">
                 {new Date(props.starttime).toLocaleDateString() + " - " + new Date(props.endtime).toLocaleDateString()}
             </div>
             <div className='mb-2'>
