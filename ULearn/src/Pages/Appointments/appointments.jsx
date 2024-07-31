@@ -22,7 +22,7 @@ const AppointmentsPage = () => {
                     const testappointments = [
                         {
                         _id: 1,
-                        name: user.fullName,
+                        name: "Aarushi Doshi",
                         topic: "Sample topic",
                         description: "Hihihihi",
                         image: user.imageUrl,

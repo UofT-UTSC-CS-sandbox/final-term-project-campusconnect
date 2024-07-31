@@ -12,9 +12,9 @@ const AppointmentCard = ( props ) => {
                 <span className="text-lg text-bold">
                     {props.appointment.name}
                 </span>
-            <div className='col-start-3 col-span-1'>   
+            <div className='col-start-3 col-span-1 float-right'>   
                 <GoCheckCircleFill className='fill-green-600 right-5'/>
-                <GoXCircleFill className='fill-red-600 object-right'/>
+                <GoXCircleFill className='fill-red-600 object-right inline'/>
             </div>
             
             </span>   
