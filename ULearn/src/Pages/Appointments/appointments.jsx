@@ -9,25 +9,38 @@ const AppointmentsPage = () => {
     const { isLoaded, user } = useUser();
     const [appointments, setAppointments] = useState([]);
     const [pending, setPending] = useState([]);
-    const [archive, setArchive] = useState([]);    
+    const [archive, setArchive] = useState([]);  
 
     useEffect(() => {
         const getAppointments = async () => {
             if (user && user.id){
                 try {
                     const response = await axios.get(`http://localhost:3001/appointments/${user.id}`); //get a users appointment
-                    const appointmentsData = response.data[0]?.appointments || [];
-                    //appointmentsData.map(appt )
-                    //const sortedAppointments = appointmentsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                    setAppointments(appointmentsData);
+                    const data = response.data[0]?.appointments || [];
+                    if (pending || appointments){ //if there was already appts in the previous state, clear it
+                        setPending([]);
+                        setAppointments([]);
+                    }
+                    data.map(appointment => ( //map each appt into their correct category
+                        assignAppointment(appointment)
+                    ))
                 } catch (error) {
                     console.error('Error fetching appointments:', error);
                 }
             }
         };
+
+        const assignAppointment = (appointment) => { //checks for the status of an appointment, and assigns them to the appropriate state
+            if (appointment.status == "Pending" || appointment.status == "Waiting"){
+                setPending(prevPending => [...prevPending, appointment]);
+            }
+            else if (appointment.status = "Accepted") {
+                setAppointments(prevAppointments => [...prevAppointments, appointment]);
+            }
+        }
+        
         getAppointments();
     }, [user, isLoaded]);
-
     return (
         <div className='bg-white w-full h-fit min-h-full min-w-screen '> 
             <div className='border-gray-300 border-b-2 bg-white w-screen shadow-lg min-w-full sticky top-0'>

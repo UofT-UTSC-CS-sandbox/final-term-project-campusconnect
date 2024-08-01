@@ -8,7 +8,7 @@ const AppointmentCard = ( props ) => {
     const navigate = useNavigate();
 
     const handleMessageClick = () => {
-        navigate(`/chatRoom`, { state: { clerkid: props.appointment.clerkId, tutorname: props.appointment.otherName, tutorimage: props.appointment.otherImage } })
+        navigate(`/chatRoom`, { state: { clerkid: props.appointment.otherClerkId, tutorname: props.appointment.otherName, tutorimage: props.appointment.otherImage } })
     }
     return (
         <div className="bg-white h-full w-full flex justify-center">
@@ -23,7 +23,7 @@ const AppointmentCard = ( props ) => {
                     </div>
                     <div className="text-gray-500 cursor-pointer">
                         <div className='flex items-center gap-4'>
-                        <MessageButton props={props.appointment.clerkId} handleMessageClick={handleMessageClick}></MessageButton>
+                        <MessageButton props={props.appointment.otherClerkId} handleMessageClick={handleMessageClick}></MessageButton>
                             <button className="w-fit mr-2">
                                 <GoCheckCircleFill  className='fill-green-600 size-7 '/>
                             </button>
