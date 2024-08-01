@@ -8,7 +8,7 @@ import { Tab, Tabs } from '../../components/tabs';
 import { BarChart } from '../../components/BarChart/barChart';
 import ReviewPosts from './reviewPosts';
 import { Link } from 'react-router-dom';
-
+import RequestTutorButton from '../../components/RequestTutorButton';
 
 const TutorProfile = () => {
     //getting the tutor email from homepage
@@ -175,6 +175,12 @@ const TutorProfile = () => {
                                     <p className="text-gray-700">
                                         {tutor && tutor.description}
                                     </p>
+                                </div>
+                            </Tab>
+
+                            <Tab label="Schedule">
+                                <div className="py-4">
+                                    {tutor ? <RequestTutorButton tutorname={tutor.name} tutoremail={tutor.email}/>: null}
                                 </div>
                             </Tab>
                             <Tab label="Reviews">
