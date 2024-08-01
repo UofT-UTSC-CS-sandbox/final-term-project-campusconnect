@@ -13,11 +13,11 @@ const AppointmentSchema = new mongoose.Schema({
      },
     appointments: [
         {
-            otherName: {
+            otherClerkId: {
                 type: String,
                 required: true,
             },
-            otherClerkId: {
+            otherName: {
                 type: String,
                 required: true,
             },
