@@ -7,6 +7,7 @@ import Nav from '../../components/Nav/Nav';
 import { Tab, Tabs } from '../../components/tabs';
 import { BarChart } from '../../components/BarChart/barChart';
 import ReviewPosts from './reviewPosts';
+import RequestTutorButton from '../../components/RequestTutorButton';
 
 const TutorProfile = () => {
     //getting the tutor email from homepage
@@ -173,9 +174,7 @@ const TutorProfile = () => {
                             </Tab>
                             <Tab label="Schedule">
                                 <div className="py-4">
-                                    <p className="text-gray-700">
-                                        Placeholder content for schedule
-                                    </p>
+                                    {tutor ? <RequestTutorButton tutorname={tutor.name} tutoremail={tutor.email}/>: null}
                                 </div>
                             </Tab>
                             <Tab label="Reviews">
