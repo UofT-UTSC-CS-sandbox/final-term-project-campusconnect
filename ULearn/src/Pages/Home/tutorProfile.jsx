@@ -96,7 +96,7 @@ const TutorProfile = () => {
     };
 
     const handleNavigation = () => {
-        navigate('/calendar', { state: { email: email } });
+        navigate('/calendar', { state: { email: email, name: tutor.name } });
     };
 
     return (
@@ -177,18 +177,6 @@ const TutorProfile = () => {
                                     </p>
                                 </div>
                             </Tab>
-                            <Tab label="Schedule">
-                                <div className="py-4">
-                                    <p className="text-gray-700">
-                                    </p>
-                                    <button
-                                        onClick={handleNavigation}
-                                        className="text-blue-500 hover:underline"
-                                    >
-                                        View Availability
-                                    </button>
-                                </div>
-                            </Tab>
                             <Tab label="Reviews">
                                 <div className='overflow-y-scroll max-h-screen'>
                                     <ReviewPosts style='scroll-behaviour:smooth' email={email} />
@@ -196,13 +184,17 @@ const TutorProfile = () => {
                             </Tab>
                         </Tabs>
                     </div>
-                    <div className='flex col-start-4 justify-end mt-5 gap-4'>
-                        <div className='mt-2'>
+                    <div className='flex flex-col items-end gap-4 -z-1'>
+                        <div className='mt-2 mr-10'>
                             Rate: ${tutor && tutor.price}/hr
                         </div>
-                        <button className='bg-blue-500 h-10 w-40 rounded-lg text-white '
+                        <button className='bg-blue-500 h-10 w-40 rounded-lg text-white'
                             onClick={() => handleMessageClick(email)}>
                             Message
+                        </button>
+                        <button className='bg-blue-500 h-10 w-40 rounded-lg text-white'
+                            onClick={handleNavigation}>
+                            View Availability
                         </button>
                     </div>
                 </div>

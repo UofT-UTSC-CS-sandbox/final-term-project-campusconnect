@@ -4,7 +4,7 @@ import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilo
 import "./Calendar.css";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
-import { green } from '@mui/material/colors';
+import Nav from "../../components/Nav/Nav.jsx";
 import axios from 'axios';
  
 
@@ -15,6 +15,7 @@ const Calendar = () => {
     //getting the tutor email from homepage
     const location = useLocation(); // Use useLocation hook
     const tutorEmail = location.state?.email; // Retrieve tutorEmail from state
+    const tutorname = location.state?.name;
     var isTutor = false;
 
     //console.log("Received tutorEmail in Feedback:", tutorEmail);
@@ -36,10 +37,8 @@ const Calendar = () => {
     async function verifyUser() {
         if (String(user.primaryEmailAddress.emailAddress) === tutorEmail) {
             isTutor = true;
-            
         }
         console.log("User is tutor and can edit: ", isTutor);
-        //console.log("User email in Calendar:", user.primaryEmailAddress.emailAddress);
     }
 
 
@@ -58,7 +57,7 @@ const Calendar = () => {
                 id: event.eventID,
                 start: formatDateForDayPilot(event.startTime),
                 end: formatDateForDayPilot(event.endTime),
-                backColor: '#50C878'
+                backColor: 'rgb(22, 86, 166)'
             }));
 
             setEvents(eventsWithColour);
@@ -101,10 +100,11 @@ const Calendar = () => {
         eventClickHandling: "Update",
         eventMoveHandling: "Update",
         eventResizeHandling: "Update",
+        cellHeight: 23,
         
         // this function handles resizing an event
         onEventResized: async (args) => {
-            if (!isTutor) return; // Prevent non-tutors from moving events
+            if (user.primaryEmailAddress != tutorEmail ) return; // Prevent non-tutors from moving events
             const updatedEvent = { ...args.e.data, start: args.newStart, end: args.newEnd };
 
             try {
@@ -128,15 +128,13 @@ const Calendar = () => {
             } catch (error) {
                 console.error('Error updating event:', error);
             }
-
-            
             console.log("Event Resized:", updatedEvent);
         },
         
 
         // this function handles moving an event to a different time
         onEventMoved: async (args) => {
-            if (!isTutor) return; // Prevent non-tutors from moving events
+            if (user.primaryEmailAddress != tutorEmail) return; // Prevent non-tutors from moving events
             
             const updatedEvent = { ...args.e.data, start: args.newStart, end: args.newEnd };
 
@@ -161,29 +159,25 @@ const Calendar = () => {
             } catch (error) {
                 console.error('Error updating event:', error);
             }
-
-            
             console.log("Event Moved:", updatedEvent);
         },
 
         // this function handles adding a time range to create an event
         onTimeRangeSelected: async (args) => {
-            if (!isTutor) return; // Prevent non-tutors from moving events
+            if (user.primaryEmailAddress != tutorEmail) {return}; // Prevent non-tutors from moving events
             const dp = calendarRef.current.control;
             dp.clearSelection();
             const newEvent = {
                 id: DayPilot.guid(),
                 start: args.start.value,
                 end: args.end.value,
-                backColor: '#50C878' // colour used for the event
+                backColor: 'rgb(22, 86, 166)' // colour used for the event
             };
             setEvents(prevEvents => {
                 const updatedEvents = [...prevEvents, newEvent];
                 dp.update({ events: updatedEvents }); // Update the calendar with new events
                 return updatedEvents;
             });
-            // console logs the event that was added
-            //console.log("Event Added:", newEvent);
             console.log("Event Added:", {
                 id: newEvent.id,
                 text: newEvent.text,
@@ -249,24 +243,29 @@ const Calendar = () => {
     });
 
     return (
-        <div style={{ display: "flex" }}>
+        <>
+        <Nav/>
+        <h1 style={{ fontSize: '48px', textAlign: 'center', marginTop: '10px' }}>
+            {tutorname}'s Calendar
+        </h1>
+        <div style={{ display: "flex", marginTop: '10px' }}>
             <div style={{ marginRight: "10px" }}>
                 <DayPilotNavigator
                     selectMode={"Week"}
                     // shows how many months are viewable at a time 
-                    showMonths={3}
+                    showMonths={2}
                     // skips 3 months ahead when pressing the next button
-                    skipMonths={3}
-
+                    skipMonths={2}
                     onTimeRangeSelected={args => {
                         calendarRef.current.control.update({ startDate: args.day });
                     }}
                 />
             </div>
-            <div style={{ flexGrow: 1 }}>
+            <div >
                 <DayPilotCalendar {...config} ref={calendarRef} />
             </div>
         </div>
+        </>
     );
 };
 
