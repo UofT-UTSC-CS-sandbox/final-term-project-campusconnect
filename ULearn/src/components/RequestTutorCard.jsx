@@ -5,35 +5,70 @@ import axios from "axios";
 function RequestTutorCard({ toggle, tutorname, tutoremail }) {
   const { user } = useUser();
   const [visible, setVisible] = useState(false);
-  const [formData, setFormData] = useState({
-    topic: "",
-    description: "",
-    start: "",
-    end: "",
-  });
+  const [availabilities, setAvailabilities] = useState([]);
+  const [availableTime, setAvailableTime] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [topic, setTopic] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
+    if (!isLoading) {
+      console.log(availabilities);
+      return;
+    }
     setVisible(true);
-  }, []);
+    const fetchAvailability = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3001/getAvailability",
+          {
+            params: { tutoremail },
+          }
+        );
+        if (response.status === 200) {
+          console.log(response.data);
+          const formattedAvailabilities = response.data.availableTimes.map(
+            (time) => ({
+              startTime: new Date(time.startTime).toLocaleString(),
+              endTime: new Date(time.endTime).toLocaleString(),
+            })
+          );
+          setAvailabilities(formattedAvailabilities);
 
-  const handleOverlayClick = () => {
+          setIsLoading(false);
+        } else {
+          console.error("Failed to fetch availability ", response);
+        }
+      } catch (error) {
+        console.error("Error fetching availability:", error);
+      }
+    };
+
+    if (tutoremail) {
+      fetchAvailability();
+    } else {
+      console.error("Tutor email is not defined");
+    }
+  }, [isLoading]);
+
+  const handleToggle = () => {
     toggle();
   };
 
+  //Prevents the popup from closing when clicking inside the popup
   const handlePopupClick = (e) => {
     e.stopPropagation();
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handleTimeChange = (event) => {
+    setAvailableTime(event.target.value);
+    console.log(availableTime)
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(availableTime);
+    const [start, end] = availableTime.split("|");
     let tutorData = {};
     try {
       tutorData = await axios.get("http://localhost:3001/getUserByEmail", {
@@ -50,14 +85,15 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
         {
           otherClerkId: user.id,
           otherName: user.fullName,
-          startTime: formData.start,
-          endTime: formData.end,
+          startTime: start,
+          endTime: end,
           status: "Pending",
-          topic: formData.topic,
-          description: formData.description,
+          topic: topic,
+          description: description,
         },
       ],
     };
+    console.log(tutorStudentData);
     try {
       const response = await axios.post(
         "http://localhost:3001/bookAppointment",
@@ -81,11 +117,11 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
         {
           otherClerkId: tutorData.data.clerkId,
           otherName: tutorData.data.name,
-          startTime: formData.start,
-          endTime: formData.end,
+          startTime: start,
+          endTime: end,
           status: "Waiting",
-          topic: formData.topic,
-          description: formData.description,
+          topic: topic,
+          description: description,
         },
       ],
     };
@@ -107,18 +143,27 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
     }
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div
       className={`fixed inset-0 flex items-center justify-center transition-opacity duration-300 ${
         visible ? "opacity-100" : "opacity-0"
       }`}
-      onClick={handleOverlayClick}
+      onClick={handleToggle}
     >
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
       <div
         className="relative flex flex-col bg-white shadow-lg rounded-lg p-2 z-10"
         onClick={handlePopupClick}
       >
+        <button
+          className="absolute top-1 right-3 text-lg text-gray-300"
+          onClick={handleToggle}
+        >
+          x
+        </button>
         <form className="flex flex-col gap-4 p-4" onSubmit={handleSubmit}>
           <h1 className="text-2xl">Request Tutoring From {tutorname}</h1>
           <label htmlFor="topic">Topic: *</label>
@@ -127,38 +172,43 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
             id="topic"
             name="topic"
             required
-            className="border-2 p-2"
-            value={formData.topic}
-            onChange={handleChange}
+            className="border-2 p-2 rounded-sm"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
           />
           <label htmlFor="description">Description:</label>
           <textarea
             id="description"
             name="description"
-            className="border-2 p-2 h-32"
-            value={formData.description}
-            onChange={handleChange}
+            className="border-2 p-2 h-32 rounded-sm"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
-          <label htmlFor="start">Start Time:</label>
-          <input
-            type="datetime-local"
-            id="start"
-            name="start"
-            required
-            className="border-2 p-2"
-            value={formData.start}
-            onChange={handleChange}
-          />
-          <label htmlFor="end">End Time:</label>
-          <input
-            type="datetime-local"
-            id="end"
-            name="end"
-            required
-            className="border-2 p-2"
-            value={formData.end}
-            onChange={handleChange}
-          />
+          <label htmlFor="time">Appointment Time: *</label>
+          {!availabilities ? (
+            <p>No available times</p>
+          ) : (
+            <select
+              id="time"
+              name="start"
+              required
+              className="border-2 p-2 rounded-sm"
+              onChange={handleTimeChange}
+              defaultValue="" 
+            >
+              <option value="" disabled>
+                Select a time
+              </option>
+              {availabilities.map((availability, index) => (
+                <option
+                  key={index}
+                  value={`${availability.startTime}|${availability.endTime}`}
+                >
+                  {`${availability.startTime} - ${availability.endTime}`}
+                </option>
+              ))}
+            </select>
+          )}
           <button
             type="submit"
             className="bg-blue-500 text-white p-2 rounded-lg"
