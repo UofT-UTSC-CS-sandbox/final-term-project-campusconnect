@@ -175,7 +175,7 @@ const TutorProfile = () => {
                             </Tab>
                             <Tab label="Schedule">
                                 <div className="py-4">
-                                    {tutor ? <RequestTutorButton tutorname={tutor.name} tutoremail={tutor.email}/>: null}
+                                    
                                 </div>
                             </Tab>
                             <Tab label="Reviews">
@@ -189,10 +189,17 @@ const TutorProfile = () => {
                         <div className='mt-2'>
                             Rate: ${tutor && tutor.price}/hr
                         </div>
-                        <MessageButton 
-                            props={email}
-                            handleMessageClick={handleMessageClick}
-                        ></MessageButton>
+                        
+                        <div className='w-1/2'>
+                            <MessageButton 
+                                props={email}
+                                handleMessageClick={handleMessageClick}
+                            ></MessageButton>
+                            <div className='mt-2'>
+                                {tutor ? <RequestTutorButton tutorname={tutor.name} tutoremail={tutor.email}/>: null}
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
