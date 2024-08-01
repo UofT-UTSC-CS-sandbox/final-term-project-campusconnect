@@ -10,8 +10,8 @@ const RequestTutorButton = ({tutorname , tutoremail}) => {
 
   return (
     <>
-      <button className="block border-2" onClick={toggleDisplay}>
-        Request
+      <button className="block p-2 bg-blue-500 rounded-md text-white" onClick={toggleDisplay}>
+        Book
       </button>
       {display ? <RequestTutorCard toggle={toggleDisplay} tutorname={tutorname} tutoremail={tutoremail}/> : null}
     </>

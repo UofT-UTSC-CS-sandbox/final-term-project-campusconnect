@@ -13,10 +13,9 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
 
   useEffect(() => {
     if (!isLoading) {
-      console.log(availabilities);
+      setVisible(true);
       return;
     }
-    setVisible(true);
     const fetchAvailability = async () => {
       try {
         const response = await axios.get(
@@ -26,7 +25,6 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
           }
         );
         if (response.status === 200) {
-          console.log(response.data);
           const formattedAvailabilities = response.data.availableTimes.map(
             (time) => ({
               startTime: new Date(time.startTime).toLocaleString(),
@@ -62,12 +60,10 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
 
   const handleTimeChange = (event) => {
     setAvailableTime(event.target.value);
-    console.log(availableTime)
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(availableTime);
     const [start, end] = availableTime.split("|");
     let tutorData = {};
     try {
@@ -93,7 +89,6 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
         },
       ],
     };
-    console.log(tutorStudentData);
     try {
       const response = await axios.post(
         "http://localhost:3001/bookAppointment",
@@ -143,9 +138,6 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
   return (
     <div
       className={`fixed inset-0 flex items-center justify-center transition-opacity duration-300 ${
@@ -153,7 +145,7 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
       }`}
       onClick={handleToggle}
     >
-      <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
       <div
         className="relative flex flex-col bg-white shadow-lg rounded-lg p-2 z-10"
         onClick={handlePopupClick}
@@ -194,7 +186,7 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
               required
               className="border-2 p-2 rounded-sm"
               onChange={handleTimeChange}
-              defaultValue="" 
+              defaultValue=""
             >
               <option value="" disabled>
                 Select a time
