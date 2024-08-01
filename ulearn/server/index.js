@@ -105,10 +105,27 @@ app.post("/bookAppointment", async (req, res) => {
 });
 
 /**
- * @route GET /getAppointments
+ * @route GET /appointments/:userClerkId
  * @access Public
  * @description Fetch all appointments for a user
- * @param {String} email - The email of the user
+ * @param {String} clerkId - The clerkId of the user
+ */
+app.get("/appointments/:userClerkId", async (req, res) => {
+  const { userClerkId } = req.params;
+  try {
+    const appointments = await AppointmentModel.find({ userClerkId });
+    res.json(appointments);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/**
+ * @route GET /getAvailability
+ * @access Public
+ * @description Fetch all availabilities for a tutor
+ * @param {String} email - The email of the tutor
  */
 app.get("/getAvailability", async (req, res) => {
   const { tutoremail } = req.query;

@@ -8,17 +8,17 @@ const AppointmentCard = ( props ) => {
     const navigate = useNavigate();
 
     const handleMessageClick = () => {
-        navigate(`/chatRoom`, { state: { clerkid: props.appointment.clerkId, tutorname: props.appointment.name, tutorimage: props.appointment.image } })
+        navigate(`/chatRoom`, { state: { clerkid: props.appointment.clerkId, tutorname: props.appointment.otherName, tutorimage: props.appointment.otherImage } })
     }
     return (
         <div className="bg-white h-full w-full flex justify-center">
             <div className="w-3/4 mt-10">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2">
-                        <img src={props.appointment.image} alt="User Avatar" className="aspect-square object-cover size-12 rounded-full"/>
+                        <img src={props.appointment.otherImage} alt="User Avatar" className="aspect-square object-cover size-12 rounded-full"/>
                         <div>
-                            <p className="text-gray-800 font-semibold text-2xl">{props.appointment.name}</p>
-                            <p className="text-gray-500 text-md"> {new Date(props.appointment.starttime).toLocaleDateString() + " - " + new Date(props.appointment.endtime).toLocaleDateString()}</p>
+                            <p className="text-gray-800 font-semibold text-2xl">{props.appointment.otherName}</p>
+                            <p className="text-gray-500 text-md"> {new Date(props.appointment.startTime).toLocaleDateString() + " - " + new Date(props.appointment.endTime).toLocaleDateString()}</p>
                         </div>
                     </div>
                     <div className="text-gray-500 cursor-pointer">

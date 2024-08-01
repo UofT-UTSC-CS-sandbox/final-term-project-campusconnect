@@ -21,6 +21,10 @@ const AppointmentSchema = new mongoose.Schema({
                 type: String,
                 required: true,
             },
+            otherImage: {
+                type: String,
+                required: true,
+            },
             topic: {
                 type: String,
                 required: true,

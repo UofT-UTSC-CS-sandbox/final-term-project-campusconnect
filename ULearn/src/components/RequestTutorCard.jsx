@@ -81,6 +81,7 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
         {
           otherClerkId: user.id,
           otherName: user.fullName,
+          otherImage: user.imageUrl,
           startTime: start,
           endTime: end,
           status: "Pending",
@@ -112,6 +113,7 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
         {
           otherClerkId: tutorData.data.clerkId,
           otherName: tutorData.data.name,
+          otherImage: tutorData.data.image,
           startTime: start,
           endTime: end,
           status: "Waiting",

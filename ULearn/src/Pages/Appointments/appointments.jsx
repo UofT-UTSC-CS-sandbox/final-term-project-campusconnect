@@ -13,58 +13,16 @@ const AppointmentsPage = () => {
 
     useEffect(() => {
         const getAppointments = async () => {
-            try {
-                //const response = await axios.get(`http://localhost:3001/appointments/${clerkId}`);
-                //const appointmentsData = response.data[0]?.appointments || [];
-                //appointmentsData.map(appt )
-                //const sortedAppointments = appointmentsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                if (user){
-                    const testappointments = [
-                        {
-                        _id: 1,
-                        clerkId: 124141521,
-                        name: "Aarushi Doshi",
-                        topic: "Sample topic",
-                        description: "Hihihihi",
-                        image: user.imageUrl,
-                        starttime: new Date(),
-                        endtime: new Date()
-                        },
-                        {
-                            _id: 2,
-                            clerkId: 124141521,
-                            name: user.fullName,
-                            topic: "HELP ME",
-                            description: "AHHHHHH",
-                            image: user.imageUrl,
-                            starttime: new Date(),
-                            endtime: new Date()
-                        },
-                        {
-                            _id: 3,
-                            clerkId: 124141521,
-                            name: user.fullName,
-                            topic: "Just testing",
-                            description: ":)",
-                            image: user.imageUrl,
-                            starttime: new Date(),
-                            endtime: new Date()
-                        },
-                        {
-                            _id: 4,
-                            clerkId: 124141521,
-                            name: user.fullName,
-                            topic: "Mor",
-                            description: "e",
-                            image: user.imageUrl,
-                            starttime: new Date(),
-                            endtime: new Date()
-                        }
-                    ]
-                    setAppointments(testappointments);
+            if (user && user.id){
+                try {
+                    const response = await axios.get(`http://localhost:3001/appointments/${user.id}`); //get a users appointment
+                    const appointmentsData = response.data[0]?.appointments || [];
+                    //appointmentsData.map(appt )
+                    //const sortedAppointments = appointmentsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    setAppointments(appointmentsData);
+                } catch (error) {
+                    console.error('Error fetching appointments:', error);
                 }
-            } catch (error) {
-                console.error('Error fetching appointments:', error);
             }
         };
         getAppointments();

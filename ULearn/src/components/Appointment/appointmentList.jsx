@@ -17,13 +17,14 @@ const AppointmentList = ( props ) => {
                 props.appointments.map(appointment => (
                     <div key={appointment._id} className="h-1/12 max-h-30 w-full shadow-md my-2 border-t-2 border-gray-100" onClick={() => handleApptClick(appointment)}>
                         <Appointment
-                            clerkId = {appointment.clerkId}
-                            name = {appointment.name} 
-                            image = {appointment.image}
+                            clerkId = {appointment.otherClerkId}
+                            name = {appointment.otherName} 
+                            image = {appointment.otherImage}
                             topic = {appointment.topic}
                             desc = {appointment.description}
-                            starttime = {appointment.starttime}
-                            endtime = {appointment.endtime}
+                            status = {appointment.status}
+                            starttime = {appointment.startTime}
+                            endtime = {appointment.endTime}
                         >
                         </Appointment>
                         
