@@ -4,7 +4,7 @@
    - Enter name, university, year of study, spoken languages
    - Upload profile picture
    - Set username and password
-   - If signing up as a tutor, upload transcript, personal bio, and take a short AI-powered interview
+   - If signing up as a tutor, upload transcript and personal bio
 
 2. **Homepage**
    - View list of all tutors with the same language preferenses of the user
@@ -32,8 +32,8 @@
    - Students can send an appointment request to the tutor, specifying the course they need help with, the type of help, the specific day and time range
    - Tutors can see a list of appointment requests and accept/decline each request
 
-8. **Recording and AI Summary**
-   - Users can record sessions with tutors and later view the recording along with an AI-summary transcript of the session
+8. **Recording**
+   - Users can record sessions with tutors and later view the recording of the session
 
 
 # User Stories
@@ -92,40 +92,34 @@
 16. As a student, I would like to view a list of my recordings on the ‘Recordings’ tab so that I can look back at any content that I require.
     - Acceptance criteria: Given the student is logged into the app, when they click the recording tab, they should be directed to a page with a list of all their past recordings.
     - Priority: Medium
-17. As a student, I would like to be able to read an auto-generated summary/transcription of the contents of the recorded online sessions, so that I quickly skim through the material.
-    - Acceptance criteria: Given the student is viewing a past recording, when they scroll down, they should see a transcription and summary of what is said in the recording.
-    - Priority: Low
-18. As a user, I would like to share my screen during tutoring sessions, so that answers to questions can be more personalized.
+17. As a user, I would like to share my screen during tutoring sessions, so that answers to questions can be more personalized.
     - Acceptance criteria: Given the user is on a call screen, when they click the screenshare button, then their display should start being shown on the call screen.
     - Priority: High
-19. As a tutor, I would like to utilize a whiteboard during tutoring sessions, so that I can provide in-depth visual explanations to student questions.
-    - Acceptance criteria: Given the user is on a call screen, when they click open whiteboard tab, they should be able to access a screen to draw and write on.
-    - Priority: Low
 
 #### Book Appointments with Tutor
-20. As a student, I would like to see a calendar of times that a selected tutor is available at, so that I can book a session at a time that suits my schedule.
+18. As a student, I would like to see a calendar of times that a selected tutor is available at, so that I can book a session at a time that suits my schedule.
     - Acceptance criteria: Given the student is viewing a tutor’s profile, when they click on the “Hours Available” link, it should open a week-view calendar highlighting available times
     - Priority: Medium
-21. As a student, I would like to request a tutoring session with a tutor by selecting a course, date, time, and description, so that the tutor knows that I am interested in learning from them.
+19. As a student, I would like to request a tutoring session with a tutor by selecting a course, date, time, and description, so that the tutor knows that I am interested in learning from them.
     - Acceptance criteria: Given the student is viewing a tutor’s available hours, when they click the “Book Appointment” button, then a pending request should be sent to the tutor.
     - Priority: High
-22. As a tutor, I would like to view a list of all my requested tutoring sessions, so that I know who would like to learn from me and when.
+20. As a tutor, I would like to view a list of all my requested tutoring sessions, so that I know who would like to learn from me and when.
     - Acceptance criteria: Given the tutor is logged in, when they select the Appointment Requests tab, then they should see a list of pending tutoring requests from students
     - Priority: High
-23. As a tutor, I would like to accept or deny tutoring session requests, so that I can stay organized and manage my schedule effectively.
+21. As a tutor, I would like to accept or deny tutoring session requests, so that I can stay organized and manage my schedule effectively.
     - Acceptance criteria: Given the tutor is viewing their pending requests, when they select the ‘check’ button it should move the request to the Appointments tab and update their availability. When they select the 'X' button it should remove the request from the page.
     - Priority: High
 
 #### Tutor Profile
-24. As a tutor, I would like to be able to add and/or edit my availability throughout the week, so that students can more accurately select a time to book a session with me.
+22. As a tutor, I would like to be able to add and/or edit my availability throughout the week, so that students can more accurately select a time to book a session with me.
     - Acceptance criteria: Given the tutor is viewing their profile, when they click on the hours available link, they should be able to view, add, and edit their week’s availability
     - Priority: High
-25. As a tutor, I would like to edit my hourly rate, GPA, and past courses so that I can attract more students.
+23. As a tutor, I would like to edit my hourly rate, GPA, and past courses so that I can attract more students.
     - Acceptance criteria: Given the tutor is on their profile, when they click the edit button, they should be able to change their hourly rate, GPA, and past courses.
     - Priority: High
 
 #### Tutor Rating
-26. As a student, I would like to be able to rate and give feedback on my tutor, so that I can support my tutor and inform other students of the tutor’s teaching.
+24. As a student, I would like to be able to rate and give feedback on my tutor, so that I can support my tutor and inform other students of the tutor’s teaching.
     - Acceptance criteria: Given the student has completed the call with a tutor, when they end the call and view the give feedback page, they should be able to rate (out of 5 stars) and write feedback for the respective tutor. 
     - Priority: Medium
 
@@ -133,12 +127,11 @@
 
 #### Non-Functional Requirements
 
-1. AI transcription should be fast and 99% accurate
-2. Chat should be real-time
-3. Video/audio calls should be high-quality 
+1. Chat should be real-time
+2. Video/audio calls should be high-quality 
 
 #### System Constraints
 
-1. Transcript uploads should be allowed in either PDF format
+1. Transcript uploads should be allowed in PDF format
 
 
