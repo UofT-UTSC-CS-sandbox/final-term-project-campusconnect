@@ -47,7 +47,7 @@ const FilterSideBar = ({ isOpen, onClose, priceFilter, setPriceFilter, ratingFil
                 </IconButton>
             </div>
             <hr />
-            <Typography className='filter-option-title'>Price Range</Typography>
+            <Typography className='filter-option-title'>Price</Typography>
             <Box className="filter-option">
                 <Slider
                     value={priceFilter}
