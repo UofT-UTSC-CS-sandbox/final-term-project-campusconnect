@@ -9,7 +9,7 @@ require("dotenv").config({ path: "../.env.local" });
 const ReviewModel = require("./models/Review");
 const AppointmentModel = require("./models/Appointment");
 const AvailabilityModel = require("./models/Availability");
-
+const { DayPilot } = require("@daypilot/daypilot-lite-react");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -105,10 +105,27 @@ app.post("/bookAppointment", async (req, res) => {
 });
 
 /**
- * @route GET /getAppointments
+ * @route GET /appointments/:userClerkId
  * @access Public
  * @description Fetch all appointments for a user
- * @param {String} email - The email of the user
+ * @param {String} clerkId - The clerkId of the user
+ */
+app.get("/appointments/:userClerkId", async (req, res) => {
+  const { userClerkId } = req.params;
+  try {
+    const appointments = await AppointmentModel.find({ userClerkId });
+    res.json(appointments);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/**
+ * @route GET /getAvailability
+ * @access Public
+ * @description Fetch all availabilities for a tutor
+ * @param {String} email - The email of the tutor
  */
 app.get("/getAvailability", async (req, res) => {
   const { tutoremail } = req.query;
@@ -555,6 +572,119 @@ app.put('/availability/:tutorEmail/:eventID', async (req, res) => {
       console.error(err);
       res.status(500).json({ error: "Internal server error" });
   }
+});
+
+
+/**
+ * @route PATCH /updateAppointmentStatus
+ * @access Public
+ * @description Updates an appointment's status.
+ */
+app.patch('/updateAppointmentStatus', async (req, res) => {
+  const { clerkId, otherId, status } = req.body;
+  try {
+    const appointment = await AppointmentModel.findOne({ userClerkId: clerkId }); 
+    if (!appointment) {
+      return res.status(404).json({ error: "Appointment not found" });
+    }
+    
+    const appointmentToUpdate = appointment.appointments.find(app => app.otherClerkId === otherId);
+    if (!appointmentToUpdate) {
+      return res.status(404).json({ error: "Appointment with specified otherClerkId not found" });
+    }
+
+    appointmentToUpdate.status = status;
+    await appointment.save();
+    
+    res.json(appointment);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/**
+ * @route POST /updateAvailabilityAfterAccept
+ * @access Public
+ * @description Updates a tutor's availability after accepting an appointment.
+ */
+app.post('/updateAvailabilityAfterAccept', async (req, res) => {
+  const { newAppointmentStartTime, newAppointmentEndTime, tutorEmail } = req.body;
+  const startTime = new Date(newAppointmentStartTime);
+  const endTime = new Date(newAppointmentEndTime);
+  try {
+    const user = await AvailabilityModel.findOne({ tutorEmail: tutorEmail });
+    if (user) {
+      const availableTimeIndex = user.availableTimes.findIndex(time =>
+        new Date(time.startTime).getTime() <= startTime.getTime() &&
+        new Date(time.endTime).getTime() >= endTime.getTime()
+      );
+      if (availableTimeIndex !== -1) {
+        const availableTime = user.availableTimes[availableTimeIndex];
+        if (availableTime.startTime.getTime() === startTime.getTime() &&
+            availableTime.endTime.getTime() === endTime.getTime()) {
+          user.availableTimes.splice(availableTimeIndex, 1);
+        } else if (availableTime.startTime.getTime() === startTime.getTime()) {
+          user.availableTimes[availableTimeIndex].startTime = endTime;
+        } else if (availableTime.endTime.getTime() === endTime.getTime()) {
+          user.availableTimes[availableTimeIndex].endTime = startTime;
+        } else {
+          user.availableTimes.splice(availableTimeIndex, 1, 
+            { 
+              eventID: DayPilot.guid(),
+              startTime: availableTime.startTime, 
+              endTime: startTime 
+            },
+            {
+              eventID: DayPilot.guid(),
+              startTime: endTime,
+              endTime: availableTime.endTime
+            }
+          );
+        }
+        await user.save();
+        res.status(200).json({ message: 'Availability updated successfully' });
+      } else {
+        res.status(404).json({ message: 'No matching available time found for the new appointment' });
+      }
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error updating availability:', error);
+    res.status(500).json({ message: 'Error updating availability', error: error.message });
+  }
+});
+
+/**
+ * @route POST /deleteAppointment
+ * @access Public
+ * @description Deletes an appointment.
+ */
+app.post('/deleteAppointment', async (req, res) => {
+
+  const { clerkId, otherId } = req.body;
+ 
+    try {
+      const appointment = await AppointmentModel.findOne({ userClerkId: clerkId });
+      if (!appointment) {
+        return res.status(404).json({ error: "Appointment not found" });
+      }
+  
+      const appointmentIndex = appointment.appointments.findIndex(app => app.otherClerkId === otherId);
+      if (appointmentIndex === -1) {
+        return res.status(404).json({ error: "Appointment with specified otherClerkId not found" });
+      }
+  
+      appointment.appointments.splice(appointmentIndex, 1);
+      await appointment.save();
+  
+      res.json({ message: "Appointment deleted successfully" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  
 });
 
 

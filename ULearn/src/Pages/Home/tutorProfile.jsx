@@ -7,6 +7,7 @@ import Nav from '../../components/Nav/Nav';
 import { Tab, Tabs } from '../../components/tabs';
 import { BarChart } from '../../components/BarChart/barChart';
 import ReviewPosts from './reviewPosts';
+import MessageButton from '../../components/message';
 import { Link } from 'react-router-dom';
 import RequestTutorButton from '../../components/RequestTutorButton';
 
@@ -180,7 +181,7 @@ const TutorProfile = () => {
 
                             <Tab label="Schedule">
                                 <div className="py-4">
-                                    {tutor ? <RequestTutorButton tutorname={tutor.name} tutoremail={tutor.email}/>: null}
+                                    
                                 </div>
                             </Tab>
                             <Tab label="Reviews">
@@ -194,14 +195,17 @@ const TutorProfile = () => {
                         <div className='mt-2 mr-10'>
                             Rate: ${tutor && tutor.price}/hr
                         </div>
-                        <button className='bg-blue-500 h-10 w-40 rounded-lg text-white'
-                            onClick={() => handleMessageClick(email)}>
-                            Message
-                        </button>
-                        <button className='bg-blue-500 h-10 w-40 rounded-lg text-white'
-                            onClick={handleNavigation}>
-                            View Availability
-                        </button>
+                        
+                        <div className='w-1/2'>
+                            <MessageButton 
+                                props={email}
+                                handleMessageClick={handleMessageClick}
+                            ></MessageButton>
+                            <div className='mt-2'>
+                                {tutor ? <RequestTutorButton tutorname={tutor.name} tutoremail={tutor.email}/>: null}
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

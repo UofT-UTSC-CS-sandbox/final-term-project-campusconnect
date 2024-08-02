@@ -16,6 +16,7 @@ import Recordings from './Pages/Recordings/Recordings.jsx'
 import Feedback from './Pages/Feedback/Feedback.jsx'
 import EditTutorProfile from './Pages/Home/editTutorProfile.jsx'
 import Calendar from './Pages/Calendar/Calendar.jsx'
+import AppointmentsPage from './Pages/Appointments/appointments.jsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -41,6 +42,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/editTutorProfile" element={<EditTutorProfile />} />
           <Route path="/calendar" element={<Calendar />} />
 
+          <Route path="/myappointments" element={<AppointmentsPage />} />
         </Routes>
       </BrowserRouter>
     </StreamVideoCallProvider>
