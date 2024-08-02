@@ -1,15 +1,25 @@
 import { useUser } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
 function RequestTutorCard({ toggle, tutorname, tutoremail }) {
   const { user } = useUser();
   const [visible, setVisible] = useState(false);
   const [availabilities, setAvailabilities] = useState([]);
-  const [availableTime, setAvailableTime] = useState("");
+  const [dates, setDates] = useState([]);
+  const [times, setTimes] = useState([]);
+  const [availableDate, setAvailableDate] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [topic, setTopic] = useState("");
   const [description, setDescription] = useState("");
+  const [availableTime, setAvailableTime] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    // Check form validity on initial render
+    setIsButtonDisabled(!formRef.current.checkValidity());
+  }, []);
 
   useEffect(() => {
     if (!isLoading) {
@@ -25,13 +35,37 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
           }
         );
         if (response.status === 200) {
-          const formattedAvailabilities = response.data.availableTimes.map(
+          const availabilityArray = response.data.availableTimes.map(
             (time) => ({
               startTime: new Date(time.startTime).toLocaleString(),
               endTime: new Date(time.endTime).toLocaleString(),
             })
           );
-          setAvailabilities(formattedAvailabilities);
+
+          setAvailabilities(availabilityArray);
+
+          const datesAvailable = response.data.availableTimes.map((time) => ({
+            startTime: new Date(time.startTime).toLocaleDateString(),
+            endTime: new Date(time.endTime).toLocaleDateString(),
+          }));
+
+          const uniqueDates = Array.from(
+            new Set(datesAvailable.map((a) => a.startTime))
+          ).map((startTime) => {
+            return datesAvailable.find((a) => a.startTime === startTime);
+          });
+
+          uniqueDates.sort(
+            (a, b) => new Date(a.startTime) - new Date(b.startTime)
+          );
+
+          const currentDate = new Date();
+          currentDate.setHours(0, 0, 0, 0);
+          const filteredDates = uniqueDates.filter(
+            (date) => new Date(date.startTime) >= currentDate
+          );
+
+          setDates(filteredDates);
 
           setIsLoading(false);
         } else {
@@ -53,18 +87,77 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
     toggle();
   };
 
+  const handleFormChange = () => {
+    setIsButtonDisabled(!formRef.current.checkValidity());
+  };
+
   //Prevents the popup from closing when clicking inside the popup
   const handlePopupClick = (e) => {
     e.stopPropagation();
   };
 
-  const handleTimeChange = (event) => {
-    setAvailableTime(event.target.value);
+  const handleDateChange = (event) => {
+    const selectedDate = new Date(event.target.value); // Convert to Date object
+    setAvailableDate(selectedDate);
+
+    const availableTimes = availabilities
+      .filter((availability) => {
+        const availabilityDate = new Date(availability.startTime); // Convert to Date object
+        return availabilityDate.toDateString() === selectedDate.toDateString(); // Compare dates
+      })
+      .flatMap((availability) => {
+        const startDate = new Date(availability.startTime);
+        const endDate = new Date(availability.endTime);
+        const intervals = [];
+
+        let currentStart = startDate;
+        while (currentStart < endDate) {
+          let currentEnd = new Date(currentStart);
+          currentEnd.setHours(currentEnd.getHours() + 1);
+
+          if (currentEnd > endDate) {
+            currentEnd = endDate;
+          }
+
+          intervals.push([
+            currentStart.toLocaleTimeString(),
+            currentEnd.toLocaleTimeString(),
+          ]);
+          currentStart = currentEnd;
+        }
+
+        return intervals;
+      });
+
+    setTimes(availableTimes);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const [start, end] = availableTime.split("|");
+    const [startTime, endTime] = availableTime.split("|");
+
+    const selectedStartDate = new Date(availableDate);
+    const selectedEndDate = new Date(availableDate);
+
+    const [startHour, startMinute, startPeriod] = startTime.split(/[: ]/);
+    const [endHour, endMinute, endPeriod] = endTime.split(/[: ]/);
+
+    selectedStartDate.setHours(
+      startPeriod === "PM" && startHour !== "12"
+        ? parseInt(startHour) + 12
+        : parseInt(startHour),
+      parseInt(startMinute)
+    );
+    selectedEndDate.setHours(
+      endPeriod === "PM" && endHour !== "12"
+        ? parseInt(endHour) + 12
+        : parseInt(endHour),
+      parseInt(endMinute)
+    );
+
+    const start = selectedStartDate;
+    const end = selectedEndDate;
+
     let tutorData = {};
     try {
       tutorData = await axios.get("http://localhost:3001/getUserByEmail", {
@@ -73,7 +166,6 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
     } catch (error) {
       console.error("Error fetching user:", error);
     }
-    console.log(tutorData);
     const tutorStudentData = {
       userClerkId: tutorData.data.clerkId,
       userName: tutorData.data.name,
@@ -145,7 +237,7 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
       }`}
       onClick={handleToggle}
     >
-       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+      <div className="absolute inset-0 bg-black bg-opacity-40"></div>
       <div
         className="relative flex flex-col bg-white shadow-lg rounded-lg p-2 z-10"
         onClick={handlePopupClick}
@@ -156,7 +248,12 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
         >
           x
         </button>
-        <form className="flex flex-col gap-4 p-4" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-col gap-4 p-4"
+          onSubmit={handleSubmit}
+          onChange={handleFormChange}
+          ref={formRef}
+        >
           <h1 className="text-2xl">Request Tutoring From {tutorname}</h1>
           <label htmlFor="topic">Topic: *</label>
           <input
@@ -176,34 +273,60 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <label htmlFor="time">Appointment Time: *</label>
-          {!availabilities ? (
-            <p>No available times</p>
+          <label htmlFor="time">Date: *</label>
+          {!dates ? (
+            <p>No dates available</p>
           ) : (
             <select
               id="time"
               name="start"
               required
               className="border-2 p-2 rounded-sm"
-              onChange={handleTimeChange}
+              onChange={handleDateChange}
               defaultValue=""
             >
               <option value="" disabled>
-                Select a time
+                Select a date
               </option>
-              {availabilities.map((availability, index) => (
-                <option
-                  key={index}
-                  value={`${availability.startTime}|${availability.endTime}`}
-                >
-                  {`${availability.startTime} - ${availability.endTime}`}
+              {dates.map((date, index) => (
+                <option key={index} value={`${date.startTime}`}>
+                  {`${date.startTime}`}
+                </option>
+              ))}
+            </select>
+          )}
+          <label htmlFor="time">Time: *</label>
+          {!availableDate ? (
+            <select
+              id="time"
+              name="time"
+              required
+              className="border-2 p-2 rounded-sm text-gray-400"
+              disabled
+            >
+              <option>Please select a date first</option>
+            </select>
+          ) : (
+            <select
+              id="time"
+              name="time"
+              required
+              className="border-2 p-2 rounded-sm"
+              onChange={(e) => setAvailableTime(e.target.value)}
+            >
+              {times.map((time, index) => (
+                <option key={index} value={time.join("|")}>
+                  {`${time[0]} - ${time[1]}`}
                 </option>
               ))}
             </select>
           )}
           <button
             type="submit"
-            className="bg-blue-500 text-white p-2 rounded-lg"
+            className={`p-2 rounded-lg ${
+              isButtonDisabled ? "bg-gray-300" : "bg-blue-500 text-white"
+            }`}
+            disabled={isButtonDisabled}
           >
             Submit
           </button>
