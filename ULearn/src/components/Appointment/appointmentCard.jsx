@@ -16,14 +16,14 @@ const AppointmentCard = ( props ) => {
     const showButton = (status) => {
         if (status == "Pending"){
             return (
-                <div>
+                <span className='w-full'>
                 <button className="w-fit mr-2">
                 <GoCheckCircleFill  className='fill-green-600 size-7 ' onClick={handleCheckClick}/>
                 </button>
                 <button className="w-fit">
                     <GoXCircleFill className='fill-red-600 size-7' onClick={handleXClick}/>
                 </button>
-                </div>
+                </span>
             )
         }
     }
