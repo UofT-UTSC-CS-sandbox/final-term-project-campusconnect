@@ -109,7 +109,7 @@ const AppointmentCard = ( props ) => {
                         <img src={props.appointment.otherImage} alt="User Avatar" className="aspect-square object-cover size-12 rounded-full"/>
                         <div>
                             <p className="text-gray-800 font-semibold text-2xl">{props.appointment.otherName}</p>
-                            <p className="text-gray-500 text-md"> {new Date(props.appointment.startTime).toLocaleDateString() + " - " + new Date(props.appointment.endTime).toLocaleDateString()}</p>
+                            <p className="text-gray-500 text-md"> {new Date(props.appointment.startTime).toLocaleString() + " - " + new Date(props.appointment.endTime).toLocaleString()}</p>
                         </div>
                     </div>
                     <div className="text-gray-500 cursor-pointer">
