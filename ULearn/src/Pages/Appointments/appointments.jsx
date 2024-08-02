@@ -17,9 +17,10 @@ const AppointmentsPage = () => {
                 try {
                     const response = await axios.get(`http://localhost:3001/appointments/${user.id}`); //get a users appointment
                     const data = response.data[0]?.appointments || [];
-                    if (pending || appointments){ //if there was already appts in the previous state, clear it
+                    if (pending || appointments || archive){ //if there was already appts in the previous state, clear it
                         setPending([]);
                         setAppointments([]);
+                        setArchive([]);
                     }
                     data.map(appointment => ( //map each appt into their correct category
                         assignAppointment(appointment)
@@ -34,8 +35,35 @@ const AppointmentsPage = () => {
             if (appointment.status == "Pending" || appointment.status == "Waiting"){
                 setPending(prevPending => [...prevPending, appointment]);
             }
-            else if (appointment.status = "Accepted") {
-                setAppointments(prevAppointments => [...prevAppointments, appointment]);
+            else if (appointment.status == "Accepted") {
+                const currentDate = new Date();
+                const appointmentDate = new Date(appointment.endTime);
+                console.log("appointment date", appointmentDate);
+                console.log("current date", currentDate);
+                if (appointmentDate > currentDate) {
+                    setAppointments(prevAppointments => [...prevAppointments, appointment]);
+                }
+                else if (appointmentDate <= currentDate){
+                    if (user && user.id){
+                        axios.patch("http://localhost:3001/updateAppointmentStatus", {clerkId: appointment.otherClerkId, otherId: user.id, status: "Archived"}) 
+                        .then((response) => {
+                            console.log(response.data);
+                        })
+                        .catch((error) => {
+                            console.error("Error archiving request:", error);
+                        });
+                        axios.patch("http://localhost:3001/updateAppointmentStatus", {clerkId: user.id, otherId: appointment.otherClerkId, status: "Archived"}) 
+                        .then((response) => {
+                            console.log(response.data);
+                        })
+                        .catch((error) => {
+                            console.error("Error archiving request:", error);
+                        });
+                    }
+                }
+            }
+            else if (appointment.status == "Archived"){
+                setArchive(prevArchive => [...prevArchive, appointment]);
             }
         }
         

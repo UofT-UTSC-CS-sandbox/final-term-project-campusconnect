@@ -61,11 +61,12 @@ const AppointmentCard = ( props ) => {
            axios.post("http://localhost:3001/updateAvailabilityAfterAccept", {newAppointmentStartTime, newAppointmentEndTime, tutorEmail})
               .then((response) => {
                 console.log(response.data);
+                toast.success("Appointment accepted and availability updated!");
               })
                 .catch((error) => {
                 console.error("Error updating tutor availability:", error);
             });
-        toast.success("Appointment accepted and availabilty updated!");
+        
            
         }
     }
@@ -91,11 +92,12 @@ const AppointmentCard = ( props ) => {
             axios.post("http://localhost:3001/deleteAppointment", { clerkId: tutorId, otherId: props.appointment.otherClerkId}) 
              .then((response) => {
                  console.log(response.data);
+                 toast.success("Appointment declined!");
                })
                .catch((error) => {
                  console.error("Error deleting appointment:", error);
                });
-            toast.success("Appointment declined!");
+            
         }
     }
 
