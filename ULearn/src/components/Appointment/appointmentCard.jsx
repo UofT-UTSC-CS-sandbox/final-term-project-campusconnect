@@ -13,12 +13,26 @@ const AppointmentCard = ( props ) => {
     let newAppointmentStartTime = new Date(new Date(props.appointment.startTime).toLocaleString());
     let newAppointmentEndTime = new Date(new Date(props.appointment.endTime).toLocaleString());
 
+    const showButton = (status) => {
+        if (status == "Pending"){
+            return (
+                <div>
+                <button className="w-fit mr-2">
+                <GoCheckCircleFill  className='fill-green-600 size-7 ' onClick={handleCheckClick}/>
+                </button>
+                <button className="w-fit">
+                    <GoXCircleFill className='fill-red-600 size-7' onClick={handleXClick}/>
+                </button>
+                </div>
+            )
+        }
+    }
     const handleMessageClick = () => {
         navigate(`/chatRoom`, { state: { clerkid: props.appointment.otherClerkId, tutorname: props.appointment.otherName, tutorimage: props.appointment.otherImage } })
     }
    
     const handleCheckClick = async () => {
-    
+        
          if (props.appointment.status === "Pending"){ //user is tutor
             if (!isLoaded){
                 return;
@@ -101,12 +115,8 @@ const AppointmentCard = ( props ) => {
                     <div className="text-gray-500 cursor-pointer">
                         <div className='flex items-center gap-4'>
                         <MessageButton props={props.appointment.otherClerkId} handleMessageClick={handleMessageClick}></MessageButton>
-                            <button className="w-fit mr-2">
-                                <GoCheckCircleFill  className='fill-green-600 size-7 ' onClick={handleCheckClick}/>
-                            </button>
-                            <button className="w-fit">
-                                <GoXCircleFill className='fill-red-600 size-7' onClick={handleXClick}/>
-                            </button>
+                            {showButton(props.appointment.status)}
+                            
                         </div>
 
                     </div>

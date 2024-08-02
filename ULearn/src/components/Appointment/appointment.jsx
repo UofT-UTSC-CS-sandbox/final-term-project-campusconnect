@@ -18,12 +18,6 @@ const Appointment = ( props ) => {
                 {props.name}
             </div>
             <div className='col-start-3 col-span-1'>
-            <button className="w-fit mr-2">
-                <GoCheckCircleFill  className='fill-green-600 size-7 '/>
-            </button>
-            <button className="w-fit">
-                <GoXCircleFill className='fill-red-600 size-7'/>
-            </button>
             </div>
             
         </div>
