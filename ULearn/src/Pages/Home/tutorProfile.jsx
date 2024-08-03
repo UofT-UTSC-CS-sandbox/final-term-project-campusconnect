@@ -7,17 +7,20 @@ import Nav from '../../components/Nav/Nav';
 import { Tab, Tabs } from '../../components/tabs';
 import { BarChart } from '../../components/BarChart/barChart';
 import ReviewPosts from './reviewPosts';
+import MessageButton from '../../components/message';
+import { Link } from 'react-router-dom';
+import RequestTutorButton from '../../components/RequestTutorButton';
 
 const TutorProfile = () => {
     //getting the tutor email from homepage
-    const {state} = useLocation();
-    const {email} = state;
+    const { state } = useLocation();
+    const { email } = state;
 
     const [tutor, setTutor] = useState();
-    
+
     const navigate = useNavigate();
 
-    const {user, isLoaded} = useUser(null);
+    const { user, isLoaded } = useUser(null);
     useEffect(() => {
         if (!isLoaded) {
             console.log("User not loaded");
@@ -82,19 +85,23 @@ const TutorProfile = () => {
     const displayCourses = (courses) => {
         if (!courses) return '';
         let newcourses = [' • ']
-        newcourses = newcourses+courses.slice().join(' • ');
+        newcourses = newcourses + courses.slice().join(' • ');
         return newcourses;
     };
 
     const displayLanguages = (lang) => {
         if (!lang) return '';
         let newlang = [' • ']
-        newlang = newlang+lang.slice().join(' • ');
+        newlang = newlang + lang.slice().join(' • ');
         return newlang;
     };
 
+    const handleNavigation = () => {
+        navigate('/calendar', { state: { email: email, name: tutor.name } });
+    };
+
     return (
-        <div className='bg-white w-full h-fit min-h-full min-w-screen '> 
+        <div className='bg-white w-full h-fit min-h-full min-w-screen '>
             <div className='border-gray-300 border-b-2 bg-white w-screen shadow-lg min-w-full sticky top-0'>
                 <Nav></Nav>
             </div>
@@ -171,11 +178,13 @@ const TutorProfile = () => {
                                     </p>
                                 </div>
                             </Tab>
+
                             <Tab label="Schedule">
                                 <div className="py-4">
-                                    <p className="text-gray-700">
-                                        Placeholder content for schedule
-                                    </p>
+                                    <button className='bg-blue-500 h-10 w-40 rounded-lg text-white'
+                                    onClick={handleNavigation}>
+                                    View Availability
+                                    </button>
                                 </div>
                             </Tab>
                             <Tab label="Reviews">
@@ -185,14 +194,21 @@ const TutorProfile = () => {
                             </Tab>
                         </Tabs>
                     </div>
-                    <div className='flex col-start-4 justify-end mt-5 gap-4'>
-                        <div className='mt-2'>
+                    <div className='flex flex-col items-end gap-4 -z-1'>
+                        <div className='mt-2 mr-10'>
                             Rate: ${tutor && tutor.price}/hr
                         </div>
-                        <button className='bg-blue-500 h-10 w-40 rounded-lg text-white '
-                            onClick={() => handleMessageClick(email)}>
-                            Message
-                        </button>
+                        
+                        <div className='w-1/2'>
+                            <MessageButton 
+                                props={email}
+                                handleMessageClick={handleMessageClick}
+                            ></MessageButton>
+                            <div className='mt-2'>
+                                {tutor ? <RequestTutorButton tutorname={tutor.name} tutoremail={tutor.email}/>: null}
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

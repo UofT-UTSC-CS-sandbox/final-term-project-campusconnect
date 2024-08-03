@@ -1,33 +1,35 @@
-import './Nav.css'
-import React from 'react'
-import { IoMdChatbubbles, IoMdRadioButtonOn  } from "react-icons/io";
-import { MdPerson, MdHomeFilled } from "react-icons/md";
-import { UserButton, useUser } from '@clerk/clerk-react'; 
-import EditButtonNav from './EditButtonNav.jsx';
+import "./Nav.css";
+import React from "react";
+import { IoMdChatbubbles, IoMdRadioButtonOn } from "react-icons/io";
+import { MdHomeFilled } from "react-icons/md";
+import { UserButton } from "@clerk/clerk-react";
+import EditButtonNav from "./EditButtonNav.jsx";
+import { PiCalendarCheckFill } from "react-icons/pi";
 
 const Nav = () => {
   return (
-    <nav className='nav-wrapper'>
-        <UserButton/>
-        <div className="profile-container">
-            <a href="/homePage">
-                <MdHomeFilled className='nav-icons'/>
-            </a>
-            <a href="/chatRoom">
-                <IoMdChatbubbles className='nav-icons'/>
-            </a>
-            <a href="/recordings">
-                <IoMdRadioButtonOn className='nav-icons'/>
-            </a>
-            <a href="#">
-                <MdPerson className='nav-icons'/>
-            </a>
-            <a href="/editTutorProfile">
-                <EditButtonNav />
-            </a>
+    <nav className="nav-wrapper">
+      <a href="/homePage" style={{ fontSize: "20px" }}>ULearn</a>
+      <div className="profile-container">
+        <a href="/homePage">
+          <MdHomeFilled className="nav-icons" />
+        </a>
+        <a href="/chatRoom">
+          <IoMdChatbubbles className="nav-icons" />
+        </a>
+        <a href="/recordings">
+          <IoMdRadioButtonOn className="nav-icons" />
+        </a>          
+        <a href="/myAppointments">
+          <PiCalendarCheckFill className="nav-icons" />
+        </a>
+        <EditButtonNav className="nav-icons" />
+        <div className="nav-icons">
+          <UserButton style={{margin: "0"}}/>
         </div>
+      </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Nav
+export default Nav;
