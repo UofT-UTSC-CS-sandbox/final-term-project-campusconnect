@@ -134,13 +134,14 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const [startTime, endTime] = availableTime.split("|");
 
     const selectedStartDate = new Date(availableDate);
     const selectedEndDate = new Date(availableDate);
 
-    const [startHour, startMinute, startPeriod] = startTime.split(/[: ]/);
-    const [endHour, endMinute, endPeriod] = endTime.split(/[: ]/);
+    const [startHour, startMinute, startSecond, startPeriod] = startTime.split(/[: ]/);
+    const [endHour, endMinute, endSecond, endPeriod] = endTime.split(/[: ]/);
 
     selectedStartDate.setHours(
       startPeriod === "PM" && startHour !== "12"
@@ -314,8 +315,12 @@ function RequestTutorCard({ toggle, tutorname, tutoremail }) {
               name="time"
               required
               className="border-2 p-2 rounded-sm"
+              default=""
               onChange={(e) => setAvailableTime(e.target.value)}
             >
+              <option value="" disabled>
+                Select a time
+              </option>
               {times.map((time, index) => (
                 <option key={index} value={time.join("|")}>
                   {`${time[0]} - ${time[1]}`}
