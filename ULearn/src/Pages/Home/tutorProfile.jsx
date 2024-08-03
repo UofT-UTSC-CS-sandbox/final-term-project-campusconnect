@@ -181,7 +181,10 @@ const TutorProfile = () => {
 
                             <Tab label="Schedule">
                                 <div className="py-4">
-                                    
+                                    <button className='bg-blue-500 h-10 w-40 rounded-lg text-white'
+                                    onClick={handleNavigation}>
+                                    View Availability
+                                    </button>
                                 </div>
                             </Tab>
                             <Tab label="Reviews">
