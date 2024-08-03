@@ -9,7 +9,7 @@ import { PiCalendarCheckFill } from "react-icons/pi";
 const Nav = () => {
   return (
     <nav className="nav-wrapper">
-      <h1 style={{ fontSize: "20px" }}>ULearn</h1>
+      <a href="/homePage" style={{ fontSize: "20px" }}>ULearn</a>
       <div className="profile-container">
         <a href="/homePage">
           <MdHomeFilled className="nav-icons" />
