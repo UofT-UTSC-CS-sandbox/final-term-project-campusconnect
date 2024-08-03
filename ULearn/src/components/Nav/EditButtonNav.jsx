@@ -23,7 +23,9 @@ const EditButtonNav = () => {
         return;
     }
     return (
+      <a href="/editTutorProfile">
         <MdModeEdit className='nav-icons'/>
+        </a>
     );
 }
 export default EditButtonNav;
