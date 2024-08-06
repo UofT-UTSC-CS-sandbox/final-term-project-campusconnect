@@ -2,32 +2,31 @@ name: GitHub Actions
 run-name: ${{ github.actor }} is running ${{ github.workflow }}
 on: 
   push:
-    branches: #trigger workflow for pushes to main branch
-      - main
-  
+    branches: [main]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: clone repo
+      - name: Clone repo
         uses: actions/checkout@v3
 
-      - name: install frontend
+      - name: Install frontend
         run: |
-            cd ulearn
-            npm install
+          cd ulearn
+          npm install
   
-      - name: install backend
+      - name: Install backend
         run: |
-            cd ulearn
-            cd server
-            npm install
+          cd ulearn/server
+          npm install
       
-      - name: container
+      - name: Log in to Docker Hub
         run: |
-          docker build -t your_dockerhub_username/your_image_name:${GITHUB_SHA} .
-          docker push your_dockerhub_username/your_image_name:${GITHUB_SHA}
-        env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+          echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t your_dockerhub_username/your_image_name:${{ github.sha }} .
+          docker push your_dockerhub_username/your_image_name:${{ github.sha }}

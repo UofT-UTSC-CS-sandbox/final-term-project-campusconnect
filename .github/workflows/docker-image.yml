@@ -1,28 +1,31 @@
-name: Docker Image
-
-on:
+name: GitHub Actions
+run-name: ${{ github.actor }} is running ${{ github.workflow }}
+on: 
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
-  docker_image:
+  deploy:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 20
     steps:
-    - name: clone repo
-      uses: actions/checkout@v4
+      - name: Clone repo
+        uses: actions/checkout@v3
+
+      - name: Install frontend
+        run: |
+          cd ulearn
+          npm install
+  
+      - name: Install backend
+        run: |
+          cd ulearn/server
+          npm install
       
-    - name: Login to docker hub
-      uses: docker/login-action@v1
-      with:
-        username: ulearn
-        password: aaammulearn
-        
-    - name: Build and push Docker image
-      env:
-        DOCKER_IMAGE_TAG: latest
-      run: |
-        docker build -t #insert name here :${DOCKER_IMAGE_TAG} .
-        docker push #insert name here :${DOCKER_IMAGE_TAG}
+      - name: Log in to Docker Hub
+        run: |
+          echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+      - name: Build and push Docker image
+        run: |
+          docker build -t your_dockerhub_username/your_image_name:${{ github.sha }} .
+          docker push your_dockerhub_username/your_image_name:${{ github.sha }}
