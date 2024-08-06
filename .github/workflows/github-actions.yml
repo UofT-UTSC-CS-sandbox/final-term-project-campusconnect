@@ -4,10 +4,6 @@ on:
   push:
     branches: #trigger workflow for pushes to main branch
       - main
-
-  docker:
-    types:
-      - push
   
 jobs:
   deploy:
@@ -34,4 +30,4 @@ jobs:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         
           run: |
-            docker pull your_dockerhub_username/your_image_name:${GITHUB_SHA}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/your_image_name:${{ github.sha }}
