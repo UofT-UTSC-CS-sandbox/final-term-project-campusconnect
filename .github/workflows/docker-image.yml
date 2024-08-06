@@ -26,8 +26,12 @@ jobs:
       
       - name: Log in to Docker Hub
         run: |
-          echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
-      - name: Build and push Docker image
+          echo "$DOCKER_HUB_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Build and push Docker image      
         run: |
           docker build -t your_dockerhub_username/your_image_name:${{ github.sha }} .
           docker push your_dockerhub_username/your_image_name:${{ github.sha }}
