@@ -1,4 +1,4 @@
-FROM node:20.0.0-alpine AS frontend
+FROM node:20.0.0-alpine AS build
 
 WORKDIR /ulearn
 
@@ -9,7 +9,7 @@ COPY ulearn/package*.json ./
 RUN npm install
 
 # Copy source code
-COPY ulearn
+COPY ulearn .
 
-# Build frontend
+# Build application
 RUN npm run build
